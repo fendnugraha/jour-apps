@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chart_of_accounts', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('acc_code', 30)->unique();
-            $table->string('acc_name', 100)->unique();
-            $table->foreignId('account_id');
-            $table->bigInteger('st_balance')->default(0);
+            $table->string('name', 60);
+            $table->string('type', 15);
+            $table->string('description', 90);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chart_of_accounts');
+        Schema::dropIfExists('contacts');
     }
 };
