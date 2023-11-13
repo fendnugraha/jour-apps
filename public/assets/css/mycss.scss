@@ -1,0 +1,96 @@
+// @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Quicksand", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // font-size: 0.7rem;
+}
+
+body {
+  background: rgb(245, 245, 245);
+}
+
+nav.navbar {
+  ul {
+    li {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+a.setting-link {
+  text-decoration: none;
+  color: black;
+}
+
+.card {
+  border-radius: 1.5rem;
+  padding: 0.5rem 0 0.5rem 0;
+  border: none;
+}
+
+.card.card-page-title,
+.card.card-setting-menu {
+  padding: 5px 40px 5px 40px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(99, 99, 246);
+  font-weight: bold;
+  border-radius: 0 0px 30px 30px;
+
+  p,
+  h4 {
+    margin: 0;
+    // letter-spacing: 1px;
+  }
+}
+
+table,
+tr,
+td,
+th {
+  font-size: 0.7rem;
+}
+
+a.setting-icon-action {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  height: 13rem;
+  width: 13rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+
+  h1 {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar {
+    height: 35px;
+    background-color: rgb(99, 99, 246);
+
+    .container {
+      .collapse {
+        ul.navbar-nav {
+          li.nav-item {
+            a.nav-link {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      a.text-username {
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
