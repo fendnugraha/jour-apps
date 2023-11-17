@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App JOUR</title>
+    <title>Jour Apps</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
@@ -53,7 +53,7 @@
                 </div>
                 <button type="submit" class="btn btn-dark mt-1">Sign in</button>
             </form>
-            <p class="mt-2">Need an account? <a href="<?= url("auth/register"); ?> ">Click here!</a></p>
+            <p class="mt-2">Need an account? <a href="/auth/register ">Click here!</a></p>
         </div>
 
     </div>

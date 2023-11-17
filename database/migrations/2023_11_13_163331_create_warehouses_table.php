@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('w_code', 5);
             $table->string('w_name', 30);
             $table->string('address');
-            $table->foreignId('account_id');
+            $table->foreignId('chart_of_account_id');
             $table->timestamps();
         });
     }

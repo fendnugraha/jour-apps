@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App POS - Register</title>
-    <link rel="stylesheet" href="<?= base_url(); ?>/assets/css/bootstrap.css">
+    <title>Jour Apps - {{ $title }}</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <style>
         html,
         body,
@@ -26,29 +26,50 @@
     <div class="container d-flex justify-content-center align-items-center gap-3">
         <div class="reg-form">
             <h1>Registrasi User</h1>
-            <form action="<?= base_url('auth/register'); ?>" method="post" class="mb-3">
+            <form action="/auth/register" method="post" class="mb-3">
+                @csrf
                 <div class="mb-1 row">
-                    <label for="username" class="col-sm col-form-label">Username</label>
+                    <label for="email" class="col-sm col-form-label">Email Address</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="username" id="username" value="<?= set_value('username'); ?>">
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{old('email')}}">
+                        @error('email')
+                        <div class="invalid-feedback">
+                            <small>{{ $message }}</small>
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-1 row">
-                    <label for="fullname" class="col-sm col-form-label">Full Name</label>
+                    <label for="name" class="col-sm col-form-label">Full Name</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="fullname" id="fullname" value="<?= set_value('fullname'); ?>">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}">
+                        @error('name')
+                        <div class="invalid-feedback">
+                            <small>{{ $message }}</small>
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-1 row">
                     <label for="password" class="col-sm col-form-label">Password</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" name="password" id="password" value="<?= set_value('password'); ?>">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="">
+                        @error('password')
+                        <div class="invalid-feedback">
+                            <small>{{ $message }}</small>
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-1 row">
                     <label for="cpassword" class="col-sm col-form-label">Confirm Password</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" name="cpassword" id="cpassword" value="<?= set_value('cpassword'); ?>">
+                        <input type="password" class="form-control @error('cpassword') is-invalid @enderror" name="cpassword" id="cpassword" value="">
+                        @error('cpassword')
+                        <div class="invalid-feedback">
+                            <small>{{ $message }}</small>
+                        </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-1 row">
@@ -63,22 +84,17 @@
                 </div>
                 <div class="d-flex align-items-center justify-content-between">
                     <button class="btn btn-primary" type="submit">Submit</button>
-                    <span>Sudah punya akun? <a href="<?= base_url('auth'); ?>">Klik untuk login!</a></span>
+                    <span>Sudah punya akun? <a href="/">Klik untuk login!</a></span>
 
                 </div>
             </form>
-
-        </div>
-        <div>
-            <?php echo validation_errors('<div class="alert alert-warning alert-dismissible fade show error" role="alert">', '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>'); ?>
 
         </div>
     </div>
 
 
 
-    <script src="<?= base_url(); ?>/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/bootstrap.js"></script>
 </body>
 
 </html>
