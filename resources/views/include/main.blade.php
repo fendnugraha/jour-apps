@@ -28,7 +28,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark shadow-lg">
         <div class="container">
-            <a class="navbar-brand" href="#"><?= $this->session->userdata('brand-name'); ?></a>
+            <a class="navbar-brand" href="#">DOA IBU</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -91,19 +91,21 @@
                         <a class="nav-link" href="<?= url('setting'); ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Setting</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-warning active" href="#"><i class="fa-solid fa-masks-theater"></i> <strong><?= $this->session->userdata('fullname'); ?></strong></a>
+                        {{-- <a class="nav-link text-warning active" href="#"><i class="fa-solid fa-masks-theater"></i> <strong>{{ auth()->user()-name }}</strong></a> --}}
                     </li>
                 </ul>
             </div>
             <div class="d-flex">
-                <a class="nav-link text-light text-username" href="<?= url('auth/logout'); ?>"><i class="fa-solid fa-power-off"></i></a>
+                <form action="/auth/logout" method="post">
+                    <button type="submit" class="nav-link"></button>
+                </form>
             </div>
         </div>
 
     </nav>
     <div class="container mt-0">
         <div class="card card-page-title">
-            <p><?= $title; ?></p>
+            <p>{{ $title }}</p>
         </div>
     </div>
     <div class="container mt-3">

@@ -1,8 +1,6 @@
-@extends('main.header')
+@extends('include/main')
 
 @section('container')
 
-
-<h1>TEST</h1>
 
 @endsection

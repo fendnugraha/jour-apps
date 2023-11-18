@@ -10,9 +10,9 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
-        * {
+        /* * {
             font-family: "Quicksand", sans-serif;
-        }
+        } */
 
         html,
         body,
@@ -37,21 +37,38 @@
 </head>
 
 <body>
+    @if(session()->has('login_error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> {{session('login_error')}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      @endif
     <div class="container d-flex justify-content-center align-items-center">
-        <div class="login-form">
-            <h4><img src="assets/img/jour-logo.png" height="64rem"> Apps <sup>by</sup> <img src="assets/img/logo-long.png" height="64rem"> &trade;</h4>
-            <form action="<?= url('auth'); ?>" method="post">
-                <div class="row">
-                    <div class="col-sm">
-                        <label for="username" class="form-label"><i class="fa-solid fa-face-smile"></i> Username</label>
-                        <input type="text" class="form-control" name="username" id="username">
-                    </div>
-                    <div class="col-sm">
-                        <label for="password" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
-                        <input type="password" class="form-control" name="password" id="password">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-dark mt-1">Sign in</button>
+        <div class="login-form" style="width: 30vw">
+            <h4 class="text-center"><img src="assets/img/jour-logo.png" height="74rem">
+                <sup>by <img src="assets/img/logo-long.png" height="20rem"></sup>
+            </h4>
+            <form action="/" method="post" class="mt-3">
+                @csrf
+                    <div class="form-floating mb-2">
+                        <input type="email" class="form-control form-control-sm @error('email') is-invalid @enderror" id="email" name="email" placeholder="name@example.com" value="{{old('email')}}" required>
+                        @error('email')
+                          <div class="invalid-feedback">
+                              <small>{{ $message }}</small>
+                          </div>
+                          @enderror
+                        <label for="email">Email address</label>
+                      </div>
+                      <div class="form-floating">
+                        <input type="password" class="form-control form-control-sm @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required>
+                        @error('password')
+                          <div class="invalid-feedback">
+                              <small>{{ $message }}</small>
+                          </div>
+                          @enderror
+                        <label for="password">Password</label>
+                      </div>
+                <button type="submit" class="btn btn-dark mt-2">Sign in</button>
             </form>
             <p class="mt-2">Need an account? <a href="/auth/register ">Click here!</a></p>
         </div>

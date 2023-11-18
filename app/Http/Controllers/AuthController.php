@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -34,5 +35,22 @@ class AuthController extends Controller
 
         // $request->session()->flash('success', 'Registrasion successfull, Please login!');
         return \redirect('/auth/register_success');
+    }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email:dns',
+            'password' => 'required'
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return \redirect()->intended('/home');
+        }
+
+        return back()->with([
+            'login_error' => 'The provided credentials do not match our records.',
+        ]);
     }
 }

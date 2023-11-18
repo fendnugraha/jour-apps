@@ -18,9 +18,16 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
+Route::post('/', [AuthController::class, 'authenticate']);
+
 Route::get('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/register', [AuthController::class, 'store']);
 
 Route::get('/auth/register_success', function () {
     return view('auth/register_success');
+});
+Route::get('/home', function () {
+    return view('home/index', [
+        'title' => 'Home'
+    ]);
 });
