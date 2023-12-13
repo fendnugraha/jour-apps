@@ -1,120 +1,107 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jour Apps - {{ $title }}</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/assets/img/favicon/site.webmanifest">
+        <link rel="mask-icon" href="/assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/assets/css/jquery-ui.css">
+        <!-- <link rel="stylesheet" href="/assets/css/datatables.min.css"> -->
+        <link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" href="/assets/css/all.min.css">
+        <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
+        <!-- <link rel="stylesheet" href="/assets/css/dataTables.jqueryui.min.css"> -->
+        <!-- <link rel="stylesheet" href="/assets/css/jquery.dataTables.min.css"> -->
+        <link href="/assets/css/sidebars.css" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/css/mycss.css">
+    </head>
+  <body>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jour Apps - {{ $title }}</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/assets/img/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="/assets/css/bootstrap.css">
-    <link rel="stylesheet" href="/assets/css/jquery-ui.css">
-    <!-- <link rel="stylesheet" href="/assets/css/datatables.min.css"> -->
-    <link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="/assets/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
-    <!-- <link rel="stylesheet" href="/assets/css/dataTables.jqueryui.min.css"> -->
-    <!-- <link rel="stylesheet" href="/assets/css/jquery.dataTables.min.css"> -->
-    <link rel="stylesheet" href="/assets/css/mycss.css">
-</head>
+<main class="d-flex flex-nowrap">
 
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-lg">
-        <div class="container">
-            <a class="navbar-brand" href="#">DOA IBU</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="<?= url('home'); ?> "><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="# ">Dashboard</a>
-                    </li> -->
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Transaksi
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?= url('purchase'); ?>">Pembelian</a></li>
-                            <li><a class="dropdown-item" href="<?= url('sales'); ?>">Penjualan</a></li>
-                        </ul>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= url('finance/jurnal'); ?>"><i class="fa-solid fa-book"></i> Jurnal</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-money-bill-transfer"></i> Hutang Piutang
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?= url('finance/payable'); ?>">Hutang</a></li>
-                            <li><a class="dropdown-item" href="<?= url('finance/receivable'); ?>">Piutang</a></li>
-                        </ul>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="<?= url('report'); ?>">Report</a>
-                    </li> -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-clipboard-list"></i> Report
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="<?= url('report/cashflow'); ?>">Cashflow</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="<?= url('report/neraca'); ?>">Neraca Lajur</a></li>
-                            <li><a class="dropdown-item" href="<?= url('report/neracaMonthly'); ?>">Neraca Bulanan</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="<?= url('report/profitLossStatementDaily'); ?>">Daily Profit</a></li>
-                            <li><a class="dropdown-item" href="<?= url('report/profitLossStatement'); ?>">Laba Rugi</a></li>
-                            <li><a class="dropdown-item" href="<?= url('report/profitLossStatementMonthly'); ?>">Laba Rugi Bulanan</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="<?= url('report/generalLedger'); ?>">Buku Besar</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= url('setting'); ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Setting</a>
-                    </li>
-                    <li class="nav-item">
-                        {{-- <a class="nav-link text-warning active" href="#"><i class="fa-solid fa-masks-theater"></i> <strong>{{ auth()->user()-name }}</strong></a> --}}
-                    </li>
-                </ul>
-            </div>
-            <div class="d-flex">
-                <form action="/auth/logout" method="post">
-                    <button type="submit" class="nav-link"></button>
-                </form>
-            </div>
+  <div class="flex-shrink-0 p-3" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
+      <span class="fs-5 fw-semibold">DOA IBU Inc.</span>
+    </a>
+    <ul class="list-unstyled ps-0">
+      <li class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+          Home
+        </button>
+        <div class="collapse show" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Updates</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</a></li>
+          </ul>
         </div>
-
-    </nav>
-    <div class="container mt-0">
-        <div class="card card-page-title">
-            <p>{{ $title }}</p>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+          Dashboard
+        </button>
+        <div class="collapse" id="dashboard-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li>
+          </ul>
         </div>
-    </div>
-    <div class="container mt-3">
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+          Orders
+        </button>
+        <div class="collapse" id="orders-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Processed</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Shipped</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Returned</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="border-top my-3"></li>
+      <li class="mb-1">
+        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+          Account
+        </button>
+        <div class="collapse" id="account-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New...</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Profile</a></li>
+            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Settings</a></li>
+            <li><form action="/auth/logout" method="post">
+            @csrf
+            <button type="submit" class="link-body-emphasis d-inline-flex rounded" style="background-color: transparent;
+                background-repeat: no-repeat;
+                border: none;">Sign out</button></form></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="container overflow-auto">
+
 
         @yield('container')
 
 
     </div>
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+</main>
+    
+
+
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="/assets/js/bootstrap.js"></script> -->
     <!-- <script src="/assets/js/datatables.min.js"></script> -->
     <!-- <script src="/assets/js/popper.min.js"></script> -->
@@ -124,24 +111,9 @@
     <script src="/assets/js/dataTables.bootstrap5.min.js"></script>
     <script src="/assets/js/all.min.js"></script>
     <script src="/assets/js/fontawesome.min.js"></script>
+    <script src="/assets/js/sidebars.js"></script>
     <script src="/assets/js/myjs.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('table.display').DataTable();
-            $('table.display-noorder').DataTable({
-                "ordering": false,
-                // "paging": false
-            });
-        });
-
-        $(function() {
-            $(".datepicker").datepicker({
-                dateFormat: 'yy/mm/dd',
-                showOtherMonths: true,
-                selectOtherMonths: true
-            }).val();
-        });
-    </script>
 </body>
 
+    
 </html>

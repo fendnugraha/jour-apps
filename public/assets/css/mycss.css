@@ -1,28 +1,72 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-* {
-  font-family: "Quicksand", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  background: rgb(245, 245, 245);
+  font-family: "Quicksand", sans-serif;
+  background-color: rgb(233, 233, 233);
+}
+body #login-failed-alert {
+  bottom: 10vh;
+  right: 2%;
+  width: 25vw;
+}
+body table tr {
+  font-size: 0.7em;
 }
 
-nav.navbar ul li {
-  font-size: 0.9rem;
+.nav-link {
+  font-weight: 700;
+}
+
+header .dropdown a#user-email-addr-dropdown {
+  background-color: rgb(71, 74, 255);
+  text-decoration: none;
+  padding: 5px 15px 5px 15px;
+  border-radius: 25px;
+  border: 0;
+  transition: 0.2s;
+}
+header .dropdown a#user-email-addr-dropdown #user-email-addr {
+  color: white;
+}
+header .dropdown a#user-email-addr-dropdown:hover {
+  background-color: rgb(56, 59, 255);
+}
+header .dropdown a#user-email-addr-dropdown:hover #user-email-addr {
+  color: white;
+}
+header .dropdown .dropdown-menu {
+  background-color: rgb(71, 74, 255);
+}
+header .dropdown .dropdown-menu a.dropdown-item {
+  color: white;
+}
+header .dropdown .dropdown-menu hr {
+  background-color: white;
+}
+header .dropdown .dropdown-menu a.dropdown-item:hover {
+  background-color: rgb(56, 59, 255);
+}
+
+.card {
+  border-radius: 20px;
+  border: none;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon-db {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  color: rgb(85, 85, 85);
+  font-size: 1.7em;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 a.setting-link {
   text-decoration: none;
   color: black;
-}
-
-.card {
-  border-radius: 1.5rem;
-  padding: 0.5rem 0 0.5rem 0;
-  border: none;
 }
 
 .card.card-page-title,
@@ -40,13 +84,6 @@ a.setting-link {
   margin: 0;
 }
 
-table,
-tr,
-td,
-th {
-  font-size: 0.7rem;
-}
-
 a.setting-icon-action {
   background-color: white;
   padding: 20px;
@@ -59,20 +96,161 @@ a.setting-icon-action {
   justify-content: center;
   text-decoration: none;
   color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 a.setting-icon-action h1 {
   font-size: 3.5rem;
 }
 
-@media (min-width: 992px) {
-  .navbar {
-    height: 35px;
-    background-color: rgb(99, 99, 246);
-  }
-  .navbar .container .collapse ul.navbar-nav li.nav-item a.nav-link {
-    font-size: 1rem;
-  }
-  .navbar .container a.text-username {
-    font-size: 1.1rem;
+.dashboard-area {
+  height: 80vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 2fr 1.5fr;
+  grid-template-areas: "assets liabilities equity finance" "kas kas piutang finance" "kas kas hutang finance" "revenue hpp profit expense";
+  gap: 15px;
+}
+.dashboard-area-assets {
+  background-color: rgb(52, 83, 255);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: assets;
+}
+.dashboard-area-assets span {
+  font-size: 2.1em;
+  font-weight: 700;
+}
+.dashboard-area-liabilities {
+  background-color: rgb(52, 83, 255);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: liabilities;
+}
+.dashboard-area-liabilities span {
+  font-size: 2.1em;
+  font-weight: 700;
+}
+.dashboard-area-equity {
+  background-color: rgb(52, 83, 255);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: equity;
+}
+.dashboard-area-equity span {
+  font-size: 2.1em;
+  font-weight: 700;
+}
+.dashboard-area-kas {
+  background-color: rgb(52, 83, 255);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: kas;
+}
+.dashboard-area-kas .account-value span {
+  font-size: 3.3em;
+  color: rgb(252, 217, 103);
+}
+.dashboard-area-kas .card-cash-list {
+  overflow: auto;
+}
+.dashboard-area-kas .card-cash-list .card-cash-list-items {
+  background-color: rgb(121, 141, 255);
+  padding: 15px;
+  border-radius: 25px;
+}
+.dashboard-area-kas .card-cash-list .card-cash-list-items span {
+  font-size: 1em;
+}
+.dashboard-area-kas table {
+  width: 100%;
+  font-size: 0.9em;
+  height: 100%;
+}
+.dashboard-area-kas table tr, .dashboard-area-kas table th, .dashboard-area-kas table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.425);
+  padding: 10px;
+}
+.dashboard-area-kas span {
+  font-size: 2em;
+  font-weight: 700;
+}
+.dashboard-area-piutang {
+  background-color: rgb(85, 85, 85);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: piutang;
+}
+.dashboard-area-piutang h3 {
+  font-weight: 700;
+  color: rgb(252, 217, 103);
+}
+.dashboard-area-hutang {
+  background-color: rgb(85, 85, 85);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: hutang;
+}
+.dashboard-area-hutang h3 {
+  font-weight: 700;
+  color: rgb(252, 217, 103);
+}
+.dashboard-area-revenue {
+  background-color: rgb(250, 38, 84);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: revenue;
+}
+.dashboard-area-hpp {
+  background-color: rgb(250, 38, 84);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: hpp;
+}
+.dashboard-area-profit {
+  background-color: rgb(250, 38, 84);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: profit;
+}
+.dashboard-area-expense {
+  background-color: rgb(250, 38, 84);
+  color: rgba(255, 255, 255, 0.8);
+  grid-area: expense;
+}
+.dashboard-area-finance {
+  grid-area: finance;
+  background-color: #ddd;
+}
+.dashboard-area-finance .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.dashboard-area-finance .card-body .card-finance-indicator {
+  background-color: white;
+  padding: 5px 15px 5px 15px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dashboard-area-finance .card-body .card-finance-indicator-icon {
+  background-color: rgb(52, 83, 255);
+  border-radius: 50%;
+  color: wheat;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dashboard-area-finance .card-body .card-finance-indicator-content {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+.dashboard-area-finance .card-body .card-finance-indicator-content span {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+.dashboard-area-finance .card-body .card-finance-indicator h5 {
+  font-size: 0.65em;
+}
+
+@media (max-width: 991.98px) {
+  .dashboard-area {
+    display: flex;
+    flex-direction: column;
   }
 }/*# sourceMappingURL=mycss.css.map */
