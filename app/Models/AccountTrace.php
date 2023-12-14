@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class AccountTrace extends Model
 {
     use HasFactory;
+
+    public function jurnal()
+    {
+    }
 }
