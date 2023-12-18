@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory;
+
+    // protected $fillable = [
+    //     'code',
+    //     'name',
+    //     'status',
+    //     'type'
+    // ];
+
+    public function chartofaccount()
+    {
+        return $this->hasMany(ChartOfAccount::class);
+    }
 }

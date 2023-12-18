@@ -21,4 +21,11 @@ class AccountTraceController extends Controller
             'accountTrace' => AccountTrace::all()
         ]);
     }
+
+    public function addjournal()
+    {
+        return view('home/addjournal', [
+            'title' => 'Home / Add Journal'
+        ]);
+    }
 }

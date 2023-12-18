@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Jour Apps - {{ $title }}</title>
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">
@@ -79,7 +80,7 @@
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New...</a></li>
             <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Profile</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Settings</a></li>
+            <li><a href="/setting" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Settings</a></li>
             <li><form action="/auth/logout" method="post">
             @csrf
             <button type="submit" class="link-body-emphasis d-inline-flex rounded" style="background-color: transparent;
@@ -95,10 +96,9 @@
       <h4>{{ $title }}</h4>
     </div>
     
-    
     @yield('container')
     
-    
+  
   </div>
 </main>
     

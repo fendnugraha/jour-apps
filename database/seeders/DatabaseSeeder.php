@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AccountTrace;
 use App\Models\Warehouse;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call([
+            AccountSeeder::class,
+            ChartOfAccountSeeder::class
+        ]);
 
         Warehouse::create([
             'w_code' => 'HQT',
@@ -47,6 +52,8 @@ class DatabaseSeeder extends Seeder
             'status' => 1,
             'warehouse_id' => 1
         ]);
+
+        AccountTrace::factory(20)->create();
 
         // \App\Models\User::factory(10)->create();
     }
