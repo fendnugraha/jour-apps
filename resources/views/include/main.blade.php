@@ -90,13 +90,16 @@
       </li>
     </ul>
   </div>
-  <div class="container overflow-auto">
-
-
-        @yield('container')
-
-
+  <div class="container overflow-auto p-3">
+    <div class="breadchrumb-area mb-3">
+      <h4>{{ $title }}</h4>
     </div>
+    
+    
+    @yield('container')
+    
+    
+  </div>
 </main>
     
 

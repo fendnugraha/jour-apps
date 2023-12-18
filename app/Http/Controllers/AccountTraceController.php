@@ -17,7 +17,7 @@ class AccountTraceController extends Controller
     public function jurnal()
     {
         return view('home/jurnal', [
-            'title' => 'Jurnal',
+            'title' => 'Home / Jurnal',
             'accountTrace' => AccountTrace::all()
         ]);
     }

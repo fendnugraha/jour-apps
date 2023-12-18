@@ -1,8 +1,6 @@
 @extends('include.main')
    
    @section('container')
-   <span class="fs-5 fw-semibold">Dashboard</span>
-   <hr>
     <!-- Main Content -->
 <div class="dashboard-area">
     <div class="card dashboard-area-assets">
