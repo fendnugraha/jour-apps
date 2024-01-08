@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('receivables', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('waktu');
+            $table->dateTime('date_issued');
+            $table->dateTime('due_date');
             $table->string('invoice', 60)->index();
             $table->string('description', 160);
             $table->integer('bill_amount');
-            $table->integer('pay_amount');
-            $table->integer('pay_stats');
-            $table->integer('pay_nth');
+            $table->integer('payment_amount');
+            $table->integer('payment_status');
+            $table->integer('payment_nth');
             $table->foreignId('contact_id');
             $table->foreignId('account_id');
             $table->timestamps();

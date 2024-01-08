@@ -12,15 +12,15 @@ $(document).ready(function () {
 
 new DataTable('.display', {
     lengthMenu: [
-        [5,10, 25, 50, -1],
-        [5,10, 25, 50, 'All']
+        [7,10, 25, 50, -1],
+        [7,10, 25, 50, 'All']
     ]
 });
 
-new DataTable('table.display-noorder', {
+new DataTable('table.display-no-order', {
     ordering:false,
     lengthMenu: [
-        [5,10, 25, 50, -1],
-        [5,10, 25, 50, 'All']
+        [7,10, 25, 50, -1],
+        [7,10, 25, 50, 'All']
     ]
 });

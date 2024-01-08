@@ -1,7 +1,8 @@
 @extends('include.main')
 
 @section('container')
-
+<a href="/setting" class="btn btn-primary mb-3"><i class="fa-solid fa-arrow-left"></i></a>
+<a href="/setting/accounts/add" class="btn btn-primary mb-3"><i class="fa-solid fa-plus"></i></a>
 <div class="card">
     <div class="card-body">
         <table class="table display">

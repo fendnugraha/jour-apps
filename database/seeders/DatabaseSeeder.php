@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             'warehouse_id' => 1
         ]);
 
-        AccountTrace::factory(20)->create();
+        // AccountTrace::factory(20)->create();
 
         // \App\Models\User::factory(10)->create();
     }
