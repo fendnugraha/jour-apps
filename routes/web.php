@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\AccountTraceController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ChartOfAccountController;
-use App\Http\Controllers\ReceivableController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\AccountTraceController;
+use App\Http\Controllers\ChartOfAccountController;
 
 
 /*
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Login Area
-Route::get('/', [AuthController::class, 'index']);
+Route::get('/', [AuthController::class, 'index'])->middleware('guest');
 
 Route::post('/', [AuthController::class, 'authenticate'])->name('login')->middleware('guest');
 Route::post('/auth/logout', [AuthController::class, 'logout']);
@@ -61,7 +62,17 @@ Route::delete('/jurnal/{id}/delete', [AccountTraceController::class, 'destroy'])
 
 // Piutang Area
 Route::get('/piutang', [ReceivableController::class, 'index'])->middleware('auth');
+Route::get('/piutang/{id}/invoice', [ReceivableController::class, 'invoice'])->middleware('auth');
 Route::get('/piutang/addPiutang', [ReceivableController::class, 'addReceivable'])->middleware('auth');
+Route::post('/piutang/addPiutang', [ReceivableController::class, 'store'])->middleware('auth');
+Route::get('/piutang/{id}/edit', [ReceivableController::class, 'edit'])->middleware('auth');
+Route::put('/piutang/{id}/edit', [ReceivableController::class, 'update'])->name('piutang.update')->middleware('auth');
+Route::delete('/piutang/{id}/delete', [ReceivableController::class, 'destroy'])->name('piutang.delete')->middleware('auth');
+Route::get('/piutang/{id}/detail', [ReceivableController::class, 'detail'])->middleware('auth');
+Route::get('/piutang/{id}/edit-detail', [ReceivableController::class, 'editDetail'])->middleware('auth');
+Route::post('/piutang/{id}/edit-detail', [ReceivableController::class, 'updateDetail'])->middleware('auth');
+Route::post('piutang/payment', [ReceivableController::class, 'storePayment'])->middleware('auth');
+Route::get('/piutang/addReceivableDeposit', [ReceivableController::class, 'addReceivableDeposit'])->middleware('auth');
 
 
 // End Piutang Area
@@ -77,4 +88,15 @@ Route::put('/setting/accounts/{id}/edit', [ChartOfAccountController::class, 'upd
 Route::delete('/setting/accounts/{id}/delete', [ChartOfAccountController::class, 'destroy'])->name('coa.delete')->middleware('auth');
 
 // End ChartOfAccount Area
+// ========================================================================================================
+
+// Contact Area
+
+Route::get('/setting/contacts', [ContactController::class, 'index'])->middleware('auth');
+Route::post('/setting/contacts/add', [ContactController::class, 'store'])->middleware('auth');
+Route::get('/setting/contacts/{id}/edit', [ContactController::class, 'edit'])->middleware('auth');
+Route::put('/setting/contacts/{id}/edit', [ContactController::class, 'update'])->name('contact.update')->middleware('auth');
+Route::delete('/setting/contacts/{id}/delete', [ContactController::class, 'destroy'])->name('contact.delete')->middleware('auth');
+
+// End Contact Area
 // ========================================================================================================

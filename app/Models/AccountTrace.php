@@ -11,9 +11,11 @@ class AccountTrace extends Model
 {
     use HasFactory;
 
-    public function account()
+    protected $guarded = ['id'];
+
+    public function receivable()
     {
-        return $this->hasMany(ChartOfAccount::class);
+        return $this->belongsTo(Receivable::class, 'invoice', 'invoice')->where('payment_nth', 'payment_nth');
     }
 
     public function user()

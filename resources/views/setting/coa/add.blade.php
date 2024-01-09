@@ -47,7 +47,7 @@
             <div class="d-flex mt-3 justify-content-start gap-2 align-items-center">
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="reset" class="btn btn-secondary">Reset</button>
-            <a href="/setting/coa" class="btn btn-danger">Cancel</a>
+            <a href="/setting/accounts" class="btn btn-danger">Cancel</a>
         </div>
         </form>
     </div>

@@ -1,43 +1,74 @@
 @extends('include.main')
 
 @section('container')
-
-<div class="dropdown mb-2">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa-solid fa-plus"></i> Add New
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="/piutang/addPiutang">Piutang</a></li>
-      <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Awal</a></li>
-      <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Saldo</a></li>
-      <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Penjualan Barang</a></li>
-    </ul>
+<div class="row mb-3">
+    <div class="col-lg">
+        <div class="card">
+            <div class="card-body">
+                <h3>Invoices</h3>
+                <h1><i class="fa-solid fa-file-invoice"></i> {{ number_format($bill_total->count()) }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg">
+        <div class="card">
+            <div class="card-body">
+                <h3>Bills</h3>
+                <h1><i class="fa-solid fa-receipt"></i> {{custom_number($bill_total->sum('bill'))}}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg">
+        <div class="card">
+            <div class="card-body">
+                <h3>Payments</h3>
+                <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($bill_total->sum('payment'))}}</h1>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="content-menu-nav d-flex gap-2 mb-3">
+    <a href="/jurnal" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Go back</a>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-plus"></i> Add New
+        </button>
+        <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/piutang/addPiutang">Piutang</a></li>
+        <li><a class="dropdown-item" href="/piutang/addReceivableDeposit">Piutang Saldo dan Awal</a></li>
+        <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Penjualan Barang</a></li>
+        </ul>
+    </div>
+</div>
+<h4>Receivable Total: {{ number_format($bill_total->sum('balance')) }}</h4>
 <table class="table display-no-order">
 <thead>
 <tr>
-    <th>WAKTU</th>
-    <th>INVOICE</th>
-    <th>DESKRIPSI</th>
-    <th>JUMLAH</th>
-    <th>ACTION</th>
+    <th>Contact</th>
+    <th>Balance</th>
+    <th>Status</th>
+    <th>Detail</th>
 </tr>
 </thead>
 <tbody>
-    @foreach ($receivables as $rv)
+    
+    @foreach ($bill_total as $rv)
     <tr>
-         <td>{{ $rv->date_issued }}</td> 
-         <td>{{ $rv->invoice }}</td>
-         <td>{{ $rv->description }}</td>
-         <td>{{ number_format($rv->amount) }}</td>
+         <td>{{ strtoupper($rv->contact->name) }}</td>
+         <td>{{ number_format($rv->balance) }}</td>
          <td>
-            <a href="/jurnal/{{ $rv->id }}" class="btn btn-primary btn-sm">
+             <span class="badge {{ $rv->balance == 0 ? 'text-bg-success' : 'text-bg-danger' }}">
+            {{ $rv->balance == 0 ? 'Paid' : 'Unpaid' }}</span>
+        </td>
+         <td>
+            <a href="/piutang/{{ $rv->contact->id }}/detail" class="badge text-bg-primary">
                 <i class="fa-solid fa-eye"></i>
             </a>
          </td>  
     </tr>
     @endforeach
+    
 </tbody>
 </table>
 

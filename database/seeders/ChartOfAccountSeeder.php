@@ -15,7 +15,7 @@ class ChartOfAccountSeeder extends Seeder
     {
         $acc_coa = [
             ['acc_code' => '10100-001', 'acc_name' => 'Kas Kecil', 'account_id' => 1, 'st_balance' => 0],
-            ['acc_code' => '10100-002', 'acc_name' => 'Kas Besar Admin (Dana Belum Disetor]', 'account_id' => 1, 'st_balance' => 0],
+            ['acc_code' => '10100-002', 'acc_name' => 'Kas Besar Admin (Dana Belum Disetor)', 'account_id' => 1, 'st_balance' => 0],
             ['acc_code' => '10200-001', 'acc_name' => 'Bank BCA an GEMILANG SOLUSI MUAMALAH', 'account_id' => 2, 'st_balance' => 0],
             ['acc_code' => '10400-001', 'acc_name' => 'Piutang Usaha', 'account_id' => 4, 'st_balance' => 0],
             ['acc_code' => '10400-002', 'acc_name' => 'Piutang Karyawan', 'account_id' => 4, 'st_balance' => 0],
@@ -23,11 +23,11 @@ class ChartOfAccountSeeder extends Seeder
             ['acc_code' => '20100-001', 'acc_name' => 'Hutang Usaha', 'account_id' => 19, 'st_balance' => 0],
             ['acc_code' => '20100-002', 'acc_name' => 'Deposit Customer', 'account_id' => 19, 'st_balance' => 0],
             ['acc_code' => '20100-003', 'acc_name' => 'Fee Customer (Markup)', 'account_id' => 19, 'st_balance' => 0],
-            ['acc_code' => '30100-001', 'acc_name' => 'Modal (Ekuitas]', 'account_id' => 26, 'st_balance' => 0],
+            ['acc_code' => '30100-001', 'acc_name' => 'Modal (Ekuitas)', 'account_id' => 26, 'st_balance' => 0],
             ['acc_code' => '30100-002', 'acc_name' => 'Laba Rugi', 'account_id' => 26, 'st_balance' => 0],
-            ['acc_code' => '30100-003', 'acc_name' => 'Modal Diambil (Prive]', 'account_id' => 26, 'st_balance' => 0],
+            ['acc_code' => '30100-003', 'acc_name' => 'Modal Diambil (Prive)', 'account_id' => 26, 'st_balance' => 0],
             ['acc_code' => '40100-001', 'acc_name' => 'Penjualan Barang', 'account_id' => 27, 'st_balance' => 0],
-            ['acc_code' => '50100-001', 'acc_name' => 'Harga Pokok Penjualan (HPP]', 'account_id' => 31, 'st_balance' => 0],
+            ['acc_code' => '50100-001', 'acc_name' => 'Harga Pokok Penjualan (HPP)', 'account_id' => 31, 'st_balance' => 0],
             ['acc_code' => '60105-001', 'acc_name' => 'Beban Listrik', 'account_id' => 37, 'st_balance' => 0],
             ['acc_code' => '60105-002', 'acc_name' => 'Beban Jasa Internet dan Telepon', 'account_id' => 37, 'st_balance' => 0],
             ['acc_code' => '60109-001', 'acc_name' => 'Beban Pemeliharaan Listrik, Air, Internet, Telepon, CCTV', 'account_id' => 41, 'st_balance' => 0],

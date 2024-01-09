@@ -1,13 +1,11 @@
 <?php
-function custom_number($n)
+function custom_number($number)
 {
-    if ($n < 1000000000 || $n < -1000000000) {
-        // Anything less than a billion
-        $n_format = number_format($n / 1000000, 2) . ' M';
-    } else {
-        // At least a billion
-        $n_format = number_format($n / 1000000000, 2) . ' B';
+    $suffix = '';
+    if ($number >= 1000) {
+        $units = ['', 'K', 'M', 'B', 'T'];
+        $suffix = $units[floor(log10($number) / 3)];
+        $number = round($number / pow(1000, $suffix ? array_search($suffix, $units) : 0), 2);
     }
-
-    return $n_format;
+    return $number . $suffix;
 }

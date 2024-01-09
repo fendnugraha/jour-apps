@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Contact extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function receivables()
+    {
+        return $this->hasMany(Receivable::class);
+    }
 }

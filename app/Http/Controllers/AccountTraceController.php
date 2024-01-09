@@ -12,7 +12,7 @@ class AccountTraceController extends Controller
     {
         return view('journal/index', [
             'title' => 'Journal Home',
-            'accountTrace' => AccountTrace::with('debt', 'cred')->get(),
+            'accountTrace' => AccountTrace::with('debt', 'cred')->orderBy('date_issued', 'desc')->get(),
         ]);
     }
 
@@ -42,7 +42,7 @@ class AccountTraceController extends Controller
     {
 
         $request->validate([
-            'waktu' => 'required',
+            'date_issued' => 'required',
             'debt_code' => 'required',
             'cred_code' => 'required',
             'amount' => 'required|numeric',
@@ -50,11 +50,11 @@ class AccountTraceController extends Controller
         ]);
 
         $accountTrace = new AccountTrace();
-        $accountTrace->waktu = $request->waktu;
+        $accountTrace->date_issued = $request->date_issued;
         $accountTrace->invoice = $accountTrace->invoice_journal();
         $accountTrace->debt_code = $request->debt_code;
         $accountTrace->cred_code = $request->cred_code;
-        $accountTrace->jumlah = $request->amount;
+        $accountTrace->amount = $request->amount;
         $accountTrace->description = $request->description;
         $accountTrace->user_id = Auth()->user()->id;
         $accountTrace->warehouse_id = Auth()->user()->warehouse_id;
@@ -78,7 +78,7 @@ class AccountTraceController extends Controller
     {
 
         $request->validate([
-            'waktu' => 'required',
+            'date_issued' => 'required',
             'debt_code' => 'required',
             'cred_code' => 'required',
             'amount' => 'required|numeric',
@@ -86,21 +86,22 @@ class AccountTraceController extends Controller
         ]);
 
         $accountTrace = AccountTrace::find($id);
-        $accountTrace->waktu = $request->waktu;
+        $accountTrace->date_issued = $request->date_issued;
         $accountTrace->debt_code = $request->debt_code;
         $accountTrace->cred_code = $request->cred_code;
-        $accountTrace->jumlah = $request->amount;
+        $accountTrace->amount = $request->amount;
         $accountTrace->description = $request->description . ' (Edited)';
         $accountTrace->user_id = Auth()->user()->id;
         $accountTrace->save();
 
-        return redirect('/jurnal');
+        return redirect('/jurnal')->with('success', 'Data Berhasil Diupdate');
     }
 
     public function destroy($id)
     {
         $accountTrace = AccountTrace::find($id);
         $accountTrace->delete();
-        return redirect('/jurnal');
+
+        return redirect('/jurnal')->with('success', 'Data Berhasil Dihapus');
     }
 }

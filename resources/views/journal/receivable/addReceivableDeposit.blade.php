@@ -33,22 +33,18 @@
                     @enderror
                 </div>
             </div>
-            <div class="mb-2 row">
-                <label for="debt_code" class="col-sm col-form-label">Sumber Dana</label>
-                <div class="col-sm-8">
-                    <select name="cred_code" id="cred_code" class="form-select @error('cred_code') is-invalid @enderror">
-                        <option value="">Pilih Sumber Dana</option>
-                        @foreach ($rscFund as $ac)
-                            <option value="{{ $ac->acc_code }}" {{old('cred_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('cred_code')
-                    <div class="invalid-feedback">
-                        <small>{{ $message }}</small>
-                    </div>
-                    @enderror
-                </div>
-            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="cred_code" id="flexRadioDefault1" value="20100-002" {{old('cred_code') == '20100-002' ? 'checked' : ''}} {{old('cred_code') == null ? 'checked' : ''}}>
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Piutang Deposit
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="cred_code" id="flexRadioDefault2" value="30100-001" {{old('cred_code') == '30100-001' ? 'checked' : ''}}>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Saldo Awal Piutang (Modal)
+                </label>
+              </div>
             <div class="mb-1 row">
                 <label for="contact" class="col-sm col-form-label">Contact</label>
                 <div class="col-sm-8">

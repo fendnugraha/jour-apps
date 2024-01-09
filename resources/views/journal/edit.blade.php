@@ -8,10 +8,10 @@
             @csrf
             @method('PUT')
             <div class="mb-2 row">
-                <label for="waktu" class="col-sm col-form-label">Waktu</label>
+                <label for="date_issued" class="col-sm col-form-label">date_issued</label>
                 <div class="col-sm-8">
-                    <input type="datetime-local" class="form-control @error('waktu') is-invalid @enderror" name="waktu" id="waktu" value="{{$accountTrace->waktu}}">
-                    @error('waktu')
+                    <input type="datetime-local" class="form-control @error('date_issued') is-invalid @enderror" name="date_issued" id="date_issued" value="{{$accountTrace->date_issued}}">
+                    @error('date_issued')
                     <div class="invalid-feedback">
                         <small>{{ $message }}</small>
                     </div>
@@ -64,7 +64,7 @@
               <div class="mb-2 row">
                 <label for="amount" class="col-sm col-form-label">Amount</label>
                 <div class="col-sm-8">
-                  <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{$accountTrace->jumlah}}">
+                  <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{$accountTrace->amount}}">
                   @error('amount')
                   <div class="invalid-feedback">
                       <small>{{ $message }}</small>
