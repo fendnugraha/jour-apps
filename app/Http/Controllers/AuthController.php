@@ -64,4 +64,13 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+
+    public function users()
+    {
+        $users = User::with('warehouse')->get();
+        return view('setting/users/index', [
+            'title' => 'Users',
+            'users' => $users
+        ]);
+    }
 }

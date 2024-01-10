@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('deposit_account', 60)->default('20100-002');
             $table->string('modal_account', 60)->default('30100-001');
             $table->string('profit_loss_account', 60)->default('30100-002');
+            $table->string('cost_account', 60)->default('50100-001');
+            $table->string('sales_account', 60)->default('50100-001');
             $table->timestamps();
         });
     }

@@ -64,6 +64,87 @@ class ReceivableController extends Controller
         ]);
     }
 
+    public function addReceivableSales()
+    {
+        $coa = ChartOfAccount::where('account_id', 4)->get();
+
+        return view('journal.receivable.addReceivableSales', [
+            'title' => 'Add Receivable Sales',
+            'contacts' => Contact::all(),
+            'rcv' => $coa,
+        ]);
+    }
+
+    public function storeReceivableSales(Request $request)
+    {
+        $request->validate([
+            'date_issued' => 'required',
+            'cost' => 'required|numeric',
+            'sales' => 'required|numeric',
+            'description' => 'required|max:160',
+            'contact' => 'required',
+            'debt_code' => 'required',
+        ]);
+
+        try {
+            $dateIssued = Carbon::parse($request->date_issued);
+            $rcv = new Receivable();
+            $invoice_number = $rcv->invoice_receivable($request->contact);
+
+            DB::transaction(function () use ($request, $invoice_number, $dateIssued) {
+                Receivable::create([
+                    'date_issued' => $dateIssued,
+                    'due_date' => $dateIssued->copy()->addDays(30),
+                    'invoice' => $invoice_number,
+                    'description' => $request->description,
+                    'bill_amount' => $request->sales,
+                    'payment_amount' => 0,
+                    'payment_status' => 0,
+                    'payment_nth' => 0,
+                    'contact_id' => $request->contact,
+                    'account_code' => $request->debt_code
+                ]);
+
+                $account_trace = [
+                    [
+                        'date_issued' => $dateIssued,
+                        'invoice' => $invoice_number,
+                        'description' => $request->description,
+                        'debt_code' => $request->debt_code,
+                        'cred_code' => '40100-001',
+                        'amount' => $request->sales,
+                        'status' => 1,
+                        'rcv_pay' => 'Receivable',
+                        'payment_status' => 0,
+                        'payment_nth' => 0,
+                        'user_id' => auth()->user()->id,
+                        'warehouse_id' => auth()->user()->warehouse_id
+                    ],
+                    [
+                        'date_issued' => $dateIssued,
+                        'invoice' => $invoice_number,
+                        'description' => $request->description,
+                        'debt_code' => '50100-001',
+                        'cred_code' => '10600-001',
+                        'amount' => $request->cost,
+                        'status' => 1,
+                        'rcv_pay' => 'Receivable',
+                        'payment_status' => 0,
+                        'payment_nth' => 0,
+                        'user_id' => auth()->user()->id,
+                        'warehouse_id' => auth()->user()->warehouse_id
+                    ],
+                ];
+
+                AccountTrace::insert($account_trace);
+            });
+
+            return redirect('/piutang')->with('success', 'Receivable added successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -318,16 +399,25 @@ class ReceivableController extends Controller
         $account_trace = AccountTrace::where([
             ['invoice', $rcv->invoice],
             ['payment_nth', $rcv->payment_nth]
-        ])->first();
+        ])->get();
 
         if ($rcv->bill_amount > 0 && $invoice->count() > 1) {
             return redirect()->back()->with('error', 'Receivable has been paid');
         }
 
+        // Check if records exist before attempting deletion
+        if ($rcv) {
+            $rcv->delete();
+        }
 
-        $rcv->delete();
-        $account_trace->delete();
+        if ($account_trace->isNotEmpty()) {
+            // Delete each account_trace individually
+            foreach ($account_trace as $trace) {
+                $trace->delete();
+            }
+        }
 
+        // After deletion logic
         if (!$rcv) {
             return redirect('/piutang')->with('success', 'Receivable deleted successfully');
         }

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\Warehouse;
+use App\Models\AccountTrace;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -54,6 +55,11 @@ class DatabaseSeeder extends Seeder
             'status' => 1,
             'warehouse_id' => 1
         ]);
+        Contact::create([
+            'name' => 'General',
+            'type' => 'Customer',
+            'Description' => 'General Customer',
+        ]);
 
         Contact::factory()->count(50)->create();
 
@@ -69,9 +75,12 @@ class DatabaseSeeder extends Seeder
             'deposit_account' => '20100-002',
             'modal_account' => '30100-001',
             'profit_loss_account' => '30100-002',
+            'cost_account' => '40100-001',
+            'sales_account' => '50100-001',
         ]);
-        // AccountTrace::factory(20)->create();
 
-        // \App\Models\User::factory(10)->create();
+        AccountTrace::factory(500)->create();
+
+        \App\Models\User::factory(30)->create();
     }
 }

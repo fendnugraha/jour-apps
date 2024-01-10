@@ -17,12 +17,12 @@ class AccountTraceFactory extends Factory
     public function definition(): array
     {
         return [
-            'waktu' => date('Y-m-d H:i:s'),
-            'invoice' => 'JR.' . \date('YmdHis') . '.' . \mt_rand(0, 100),
+            'date_issued' => date('Y-m-d H:i'),
+            'invoice' => 'JR.BK.' . \date('dmY') . '.' . \sprintf('%07d', \mt_rand(1, 9999)),
             'description' => fake()->sentence(\mt_rand(6, 10)),
-            'debt_code' => \mt_rand(1, 30),
-            'cred_code' => \mt_rand(1, 30),
-            'jumlah' => \round(\mt_rand(100000, 10000000), 2),
+            'debt_code' => $this->faker->randomElement(['60101-001', '60101-004', '60101-003']),
+            'cred_code' => $this->faker->randomElement(['10100-001', '10100-002', '10200-001']),
+            'amount' => \round(\mt_rand(1, 99), 2) * 1000,
             'status' => 1,
             'user_id' => \mt_rand(1, 2),
             'warehouse_id' => 1

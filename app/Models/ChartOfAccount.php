@@ -45,6 +45,11 @@ class ChartOfAccount extends Model
         return $this->hasMany(Receivable::class, 'account_code', 'acc_code');
     }
 
+    public function warehouse()
+    {
+        return $this->hasMany(Warehouse::class);
+    }
+
     public function acc_code($account_id)
     {
         $accounts = Account::find($account_id);

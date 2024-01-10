@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(AccountTrace::class);
     }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 }

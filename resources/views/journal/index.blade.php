@@ -7,9 +7,9 @@
           Add New
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/jurnal/addjournal">Jurnal</a></li>
+          <li><a class="dropdown-item" href="/jurnal/addjournal">Jurnal Umum</a></li>
           <li><a class="dropdown-item" href="/jurnal/adddeposit">Deposit</a></li>
-          <li><a class="dropdown-item" href="#">Penjualan (Value)</a></li>
+          <li><a class="dropdown-item" href="/jurnal/addSalesValues">Penjualan (Value)</a></li>
         </ul>
     </div>
     <div class="dropdown mb-2">

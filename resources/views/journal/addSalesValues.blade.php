@@ -3,7 +3,7 @@
 @section('container')
 <div class="card">
   <div class="card-body">
-<form action="/jurnal/addjournal" method="post">
+<form action="/jurnal/addSalesValues" method="post">
 @csrf
 <div class="mb-2 row">
   <label for="date_issued" class="col-sm col-form-label">date_issued</label>
@@ -32,11 +32,10 @@
       @enderror
   </div>
 </div>
-<input type="text" name="cred_code" id="cred_code" value="20100-002" hidden>
   <div class="mb-2 row">
     <label for="description" class="col-sm col-form-label">Description</label>
     <div class="col-sm-8">
-      <textarea name="description" id="description" cols="30" rows="3" class="form-control @error('description') is-invalid @enderror">{{old('description') == null ? 'Deposit ID' : old('description')}}</textarea>
+      <textarea name="description" id="description" cols="30" rows="3" class="form-control @error('description') is-invalid @enderror">{{old('description') == null ? 'Penjualan Barang' : old('description')}}</textarea>
       @error('description')
       <div class="invalid-feedback">
           <small>{{ $message }}</small>
@@ -45,10 +44,21 @@
     </div>
   </div>
   <div class="mb-2 row">
-    <label for="amount" class="col-sm col-form-label">Amount</label>
+    <label for="cost" class="col-sm col-form-label">cost</label>
     <div class="col-sm-8">
-      <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{old('amount')}}" placeholder="Jumlah Deposit">
-      @error('amount')
+      <input type="number" class="form-control @error('cost') is-invalid @enderror" name="cost" id="cost" value="{{old('cost')}}" placeholder="Harga Pokok">
+      @error('cost')
+      <div class="invalid-feedback">
+          <small>{{ $message }}</small>
+      </div>
+      @enderror
+    </div>
+  </div>
+  <div class="mb-2 row">
+    <label for="sales" class="col-sm col-form-label">sales</label>
+    <div class="col-sm-8">
+      <input type="number" class="form-control @error('sales') is-invalid @enderror" name="sales" id="sales" value="{{old('sales')}}" placeholder="Harga Jual">
+      @error('sales')
       <div class="invalid-feedback">
           <small>{{ $message }}</small>
       </div>

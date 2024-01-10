@@ -37,7 +37,7 @@
         <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="/piutang/addPiutang">Piutang</a></li>
         <li><a class="dropdown-item" href="/piutang/addReceivableDeposit">Piutang Saldo dan Awal</a></li>
-        <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Penjualan Barang</a></li>
+        <li><a class="dropdown-item" href="/piutang/addReceivableSales">Piutang Penjualan Barang</a></li>
         </ul>
     </div>
 </div>
