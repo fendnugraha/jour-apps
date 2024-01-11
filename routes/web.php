@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PayableController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\AccountTraceController;
@@ -74,8 +75,6 @@ Route::put('/piutang/{id}/edit', [ReceivableController::class, 'update'])->name(
 Route::delete('/piutang/{id}/delete', [ReceivableController::class, 'destroy'])->name('piutang.delete')->middleware('auth');
 Route::get('/piutang/{id}/detail', [ReceivableController::class, 'detail'])->middleware('auth');
 
-Route::get('/piutang/{id}/edit-detail', [ReceivableController::class, 'editDetail'])->middleware('auth');
-Route::post('/piutang/{id}/edit-detail', [ReceivableController::class, 'updateDetail'])->middleware('auth');
 Route::post('piutang/payment', [ReceivableController::class, 'storePayment'])->middleware('auth');
 
 Route::get('/piutang/addReceivableDeposit', [ReceivableController::class, 'addReceivableDeposit'])->middleware('auth');
@@ -85,6 +84,21 @@ Route::post('/piutang/addReceivableSales', [ReceivableController::class, 'storeR
 
 
 // End Piutang Area
+// ========================================================================================================
+
+// Hutang Area
+Route::get('/hutang', [PayableController::class, 'index'])->middleware('auth');
+Route::get('/hutang/{id}/invoice', [PayableController::class, 'invoice'])->middleware('auth');
+Route::get('/hutang/add', [PayableController::class, 'create'])->middleware('auth');
+Route::post('/hutang/add', [PayableController::class, 'store'])->middleware('auth');
+Route::get('/hutang/{id}/detail', [PayableController::class, 'detail'])->middleware('auth');
+Route::get('/hutang/{id}/edit', [PayableController::class, 'edit'])->middleware('auth');
+Route::put('/hutang/{id}/edit', [PayableController::class, 'update'])->name('hutang.update')->middleware('auth');
+Route::delete('/hutang/{id}/delete', [PayableController::class, 'destroy'])->name('hutang.delete')->middleware('auth');
+
+Route::post('hutang/payment', [PayableController::class, 'payment'])->middleware('auth');
+
+// End Hutang Area
 // ========================================================================================================
 
 // ChartOfAccount Area

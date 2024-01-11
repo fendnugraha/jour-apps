@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-body">
                 <h4>Bills</h4>
-                <h1><i class="fa-solid fa-receipt"></i> {{custom_number($rcvs->bill)}}</h1>
+                <h1><i class="fa-solid fa-receipt"></i> {{custom_number($pybs->bill)}}</h1>
             </div>
         </div>
     </div>
@@ -14,7 +14,7 @@
         <div class="card">
             <div class="card-body">
                 <h4>Payments</h4>
-                <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($rcvs->payment)}}</h1>
+                <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($pybs->payment)}}</h1>
             </div>
         </div>
     </div>
@@ -22,24 +22,24 @@
         <div class="card">
             <div class="card-body">
                 <h4>Balance</h4>
-                <h1><i class="fa-solid fa-file-invoice"></i> {{custom_number($rcvs->balance)}}</h1>
+                <h1><i class="fa-solid fa-file-invoice"></i> {{custom_number($pybs->balance)}}</h1>
             </div>
         </div>
     </div>
 </div>
 
 <div class="content-menu-nav d-flex gap-2 mb-3">
-    <a href="/piutang" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Go back</a>
-    <div class="dropdown">
+    <a href="/hutang" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Go back</a>
+    <a href="/hutang/add" class="btn btn-primary"><i class="fa-solid fa-plus-circle"></i> Add new</a>
+    {{-- <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-plus"></i> Add New
         </button>
         <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="/piutang/addPiutang">Piutang</a></li>
-        <li><a class="dropdown-item" href="/piutang/addReceivableDeposit">Piutang Saldo & Awal</a></li>
-        <li><a class="dropdown-item" href="/jurnal/addjournal">Piutang Penjualan Barang</a></li>
+        <li><a class="dropdown-item" href="/hutang/add">Hutang</a></li>
+        <li><a class="dropdown-item" href="/hutang/addReceivableDeposit">Hutang Saldo & Awal</a></li>
         </ul>
-    </div>
+    </div> --}}
     <!-- Button trigger modal -->
 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#paymentModal">
     <i class="fa-solid fa-credit-card"></i> Input Pembayaran
@@ -54,7 +54,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="/piutang/payment" method="POST">
+          <form action="/hutang/payment" method="POST">
             @csrf            
             <!-- Isi form pembayaran di sini -->
             <div class="mb-3">
@@ -83,14 +83,14 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="debt_code" class="form-label">Akun Debet</label>
-                <select name="debt_code" id="debt_code" class="form-select {{ $errors->has('debt_code') ? 'is-invalid' : '' }}">
+                <label for="cred_code" class="form-label">Akun Debet</label>
+                <select name="cred_code" id="cred_code" class="form-select {{ $errors->has('cred_code') ? 'is-invalid' : '' }}">
                     <option value="">Pilih Akun Debet</option>
                     @foreach ($rscFund as $ac)
-                        <option value="{{ $ac->acc_code }}" {{ old('debt_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                        <option value="{{ $ac->acc_code }}" {{ old('cred_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
                     @endforeach
                 </select>
-                @error('debt_code')
+                @error('cred_code')
                 <div class="invalid-feedback">
                     <small>{{ $message }}</small>
                 </div>
@@ -123,7 +123,7 @@
   </div>
   
 </div>
-<h4>{{ $rcvs->contact->name }}</h4>
+<h4>{{ $pybs->contact->name }}</h4>
 <table class="display-no-order table">
     <thead>
         <tr>
@@ -135,12 +135,12 @@
         </tr>
     </thead>
     <tbody>
-        @if ($rcv)
+        @if ($pyb)
         @php
             $balance = 0;
         @endphp
 
-        @foreach ($rcv as $r)
+        @foreach ($pyb as $r)
         <tr>
             <td>{{ $r->date_issued }}</td>
             <td>
@@ -150,10 +150,10 @@
             <td>{{ number_format($r->bill_amount) == 0 ? '' : number_format($r->bill_amount) }}</td>
             <td>{{ number_format($r->payment_amount) == 0 ? '' : number_format($r->payment_amount) }}</td>
             <td>
-                <a href="/piutang/{{ $r->id }}/invoice" class="btn btn-primary">
+                <a href="/hutang/{{ $r->id }}/invoice" class="btn btn-primary">
                     <i class="fa-solid fa-eye"></i>
                 </a>
-                <form action="/piutang/{{ $r->id }}/delete" method="POST" class="d-inline">
+                <form action="/hutang/{{ $r->id }}/delete" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
 
@@ -176,6 +176,5 @@
     @endif
     </tbody>
 </table>
-
 
 @endsection

@@ -55,6 +55,6 @@ class AccountTrace extends Model
         } else {
             $kd = "0000001";
         }
-        return 'JR.BK.' . date('ymd') . '.' . Auth()->user()->id . '.' . \sprintf("%07s", $kd);
+        return 'JR.BK.' . date('dmY') . '.' . Auth()->user()->id . '.' . \sprintf("%07s", $kd);
     }
 }

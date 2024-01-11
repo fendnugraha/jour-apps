@@ -46,6 +46,6 @@ class Receivable extends Model
             $kd = "0000001";
         }
 
-        return 'RC.BK.' . date('ymd') . '.' . $contact_id . '.' . $kd;
+        return 'RC.BK.' . date('dmY') . '.' . $contact_id . '.' . $kd;
     }
 }

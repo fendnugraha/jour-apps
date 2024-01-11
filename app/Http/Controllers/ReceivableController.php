@@ -251,7 +251,7 @@ class ReceivableController extends Controller
 
         $request->validate([
             'invoice' => 'required',
-            'amount' => 'required|numeric|max:' . $rcv->balance,
+            'amount' => 'required|numeric|max:' . ($rcv->balance ?? 0),
             'description' => 'required|max:160',
             'debt_code' => 'required',
             'date_issued' => 'required',
@@ -339,10 +339,7 @@ class ReceivableController extends Controller
         $request->validate([
             'date_issued' => 'required',
             'amount' => 'required|numeric',
-            'description' => 'required|max:160',
-            'contact' => 'required',
-            'debt_code' => 'required',
-            'cred_code' => 'required',
+            'description' => 'required|max:160'
         ]);
 
         try {
@@ -363,8 +360,6 @@ class ReceivableController extends Controller
                     'payment_amount' => $request->amount,
                     'payment_status' => $payment_status,
                     'payment_nth' => $payment_nth,
-                    'contact_id' => $request->contact,
-                    'account_code' => $request->debt_code
                 ]);
 
                 AccountTrace::where('invoice', $invoice_number)
@@ -373,15 +368,7 @@ class ReceivableController extends Controller
                         'date_issued' => $dateIssued,
                         'invoice' => $invoice_number,
                         'description' => $request->description,
-                        'debt_code' => $request->debt_code,
-                        'cred_code' => $rcv->account_code,
                         'amount' => $request->amount,
-                        'status' => 1,
-                        'rcv_pay' => 'Receivable',
-                        'payment_status' => $payment_status,
-                        'payment_nth' => $payment_nth,
-                        'user_id' => auth()->user()->id,
-                        'warehouse_id' => auth()->user()->warehouse_id
                     ]);
             });
 

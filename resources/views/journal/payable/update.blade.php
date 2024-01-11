@@ -17,12 +17,49 @@
                     @enderror
                 </div>
             </div>
+            <div class="mb-2 row">
+                <label for="debt_code" class="col-sm col-form-label">Akun Piutang</label>
+                <div class="col-sm-8">
+                    <select name="debt_code" id="debt_code" class="form-select @error('debt_code') is-invalid @enderror">
+                        <option value="">Pilih Akun Piutang</option>
+                        <option value="{{ $account_trace->debt_code }}" selected>{{ $account_trace->debt_code }} - {{ $account_trace->debt->acc_name }}</option>
+                        @foreach ($rsvAccount as $ac)
+                            <option value="{{ $ac->acc_code }}" {{old('debt_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('debt_code')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="debt_code" class="col-sm col-form-label">Sumber Dana</label>
+                <div class="col-sm-8">
+                    <select name="cred_code" id="cred_code" class="form-select @error('cred_code') is-invalid @enderror">
+                        <option value="">Pilih Sumber Dana</option>
+                        <option value="{{ $account_trace->cred_code }}" selected>{{ $account_trace->cred_code }} - {{ $account_trace->cred->acc_name }}</option>
+                        @foreach ($rscFund as $ac)
+                            <option value="{{ $ac->acc_code }}" {{old('cred_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('cred_code')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
+                </div>
+            </div>
             <div class="mb-1 row">
                 <label for="contact" class="col-sm col-form-label">Contact</label>
                 <div class="col-sm-8">
-                    <select name="contact" id="contact" class="form-select @error('contact') is-invalid @enderror" disabled>
+                    <select name="contact" id="contact" class="form-select @error('contact') is-invalid @enderror">
                         <option value="">Pilih Contact</option>
                         <option value="{{ $rcv->contact->id }}" selected>{{ $rcv->contact->name }}</option>
+                        @foreach ($contacts as $ct)
+                            <option value="{{ $ct->id }}" {{old('contact') == $ct->id ? 'selected' : ''}}>{{ $ct->name }}</option>
+                        @endforeach
                     </select>
                     @error('contact')
                     <div class="invalid-feedback">

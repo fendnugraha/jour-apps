@@ -24,3 +24,16 @@ new DataTable('table.display-no-order', {
         [7,10, 25, 50, 'All']
     ]
 });
+
+$(document).ready(function () {
+    $("#modal-checkbox-payable").click(function () {
+        if ($(this).is(":checked")) {
+            $("#debt-code-payable").prop("disabled", true);
+        } else {
+            $("#debt-code-payable").prop("disabled", false);
+        }
+    });
+});
+
+
+
