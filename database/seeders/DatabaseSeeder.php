@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             'sales_account' => '50100-001',
         ]);
 
-        // AccountTrace::factory(500)->create();
+        AccountTrace::factory(500)->create();
 
         // \App\Models\User::factory(30)->create();
     }

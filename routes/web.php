@@ -8,6 +8,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\AccountTraceController;
 use App\Http\Controllers\ChartOfAccountController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,12 @@ Route::get('/home', [AccountTraceController::class, 'index'])->middleware('auth'
 Route::get('/setting', function () {
     return view('home.setting', [
         'title' => 'Setting',
+    ]);
+})->middleware('auth');
+
+Route::get('/report', function () {
+    return view('home.report', [
+        'title' => 'Report',
     ]);
 })->middleware('auth');
 
@@ -136,4 +143,12 @@ Route::get('/setting/users', [AuthController::class, 'users'])->middleware('auth
 Route::get('/setting/warehouses', [WarehouseController::class, 'index'])->middleware('auth');
 
 // End Warehouse Area
+// ========================================================================================================
+
+// Report Area
+
+Route::get('/report/cashflow', [ReportController::class, 'index'])->middleware('auth');
+Route::get('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
+
+// End Report Area
 // ========================================================================================================
