@@ -17,7 +17,7 @@ class AccountTraceFactory extends Factory
     public function definition(): array
     {
         return [
-            'date_issued' => date('Y-m-d H:i'),
+            'date_issued' => $this->faker->dateTimeThisMonth()->format('Y-m-d H:i'),
             'invoice' => 'JR.BK.' . \date('dmY') . '.' . \sprintf('%07d', \mt_rand(1, 9999)),
             'description' => fake()->sentence(\mt_rand(6, 10)),
             'debt_code' => $this->faker->randomElement(['60101-001', '60101-004', '60101-003']),

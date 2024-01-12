@@ -25,14 +25,9 @@ class ChartOfAccount extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public function accountTraceDebt()
+    public function account_trace()
     {
         return $this->hasMany(AccountTrace::class, 'debt_code', 'acc_code');
-    }
-
-    public function accountTraceCred()
-    {
-        return $this->hasMany(AccountTrace::class, 'cred_code', 'acc_code');
     }
 
     public function receivable()

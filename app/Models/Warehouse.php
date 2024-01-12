@@ -9,7 +9,7 @@ class Warehouse extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'phone'];
+    protected $guarded = ['id'];
 
     public function user()
     {

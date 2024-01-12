@@ -101,14 +101,14 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 5">
       @if (session('success'))
           <div class="alert alert-success alert-dismissible fade show" role="alert">
-              {{ session('success') }}
+              <strong>Success!</strong> {{ session('success') }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
       @endif
       
       @if (session('error'))
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ session('error') }}
+              <strong>Error!</strong> {{ session('error') }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
       @endif

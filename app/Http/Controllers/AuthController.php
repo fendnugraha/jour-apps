@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,7 +35,11 @@ class AuthController extends Controller
         User::create($validatedData);
 
         // $request->session()->flash('success', 'Registrasion successfull, Please login!');
-        return \redirect('/auth/register_success');
+        if ($request->logged_in !== null) {
+            return \redirect('/setting/users')->with('success', 'Registrasion successfull, Please login!');
+        } else {
+            return \redirect('/auth/register_success');
+        }
     }
 
     public function authenticate(Request $request)
@@ -56,11 +61,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        User::where('id', Auth::id())->update(['last_login' => now()]);
+
         Auth::logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
 
         return redirect('/');
     }
@@ -72,5 +80,45 @@ class AuthController extends Controller
             'title' => 'Users',
             'users' => $users
         ]);
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        return view('setting/users/edit', [
+            'title' => 'Edit User',
+            'user' => $user,
+            'warehouses' => Warehouse::all()
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'warehouse' => 'required|exists:warehouses,id',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect('/setting/users')->with('error', 'User not found.');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->warehouse_id = $request->warehouse;
+        $user->save();
+
+        return redirect('/setting/users')->with('success', 'User updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect('/setting/users')->with('success', 'User deleted successfully.');
     }
 }

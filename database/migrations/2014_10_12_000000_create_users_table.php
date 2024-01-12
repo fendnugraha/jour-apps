@@ -18,8 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role', 30)->default('Staff');
-            $table->integer('registered_at')->default(time());
-            $table->integer('last_login')->default(time());
+            $table->timestamp('last_login')->default(now());
             $table->integer('status')->default(1);
             $table->foreignId('warehouse_id')->default(1);
             $table->rememberToken();

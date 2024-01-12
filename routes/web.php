@@ -1,14 +1,15 @@
 <?php
 
+use App\Models\ChartOfAccount;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PayableController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\AccountTraceController;
 use App\Http\Controllers\ChartOfAccountController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,7 @@ Route::get('/setting', function () {
 Route::get('/report', function () {
     return view('home.report', [
         'title' => 'Report',
+        'account' => ChartOfAccount::all()
     ]);
 })->middleware('auth');
 
@@ -134,6 +136,10 @@ Route::delete('/setting/contacts/{id}/delete', [ContactController::class, 'destr
 // User Area
 
 Route::get('/setting/users', [AuthController::class, 'users'])->middleware('auth');
+Route::post('/setting/user/add', [AuthController::class, 'store'])->middleware('auth');
+Route::get('/setting/user/{id}/edit', [AuthController::class, 'edit'])->middleware('auth');
+Route::put('/setting/user/{id}/edit', [AuthController::class, 'update'])->name('user.update')->middleware('auth');
+Route::delete('/setting/user/{id}/delete', [AuthController::class, 'destroy'])->name('user.delete')->middleware('auth');
 
 // End User Area
 // ========================================================================================================
@@ -141,6 +147,10 @@ Route::get('/setting/users', [AuthController::class, 'users'])->middleware('auth
 // Warehouse Area
 
 Route::get('/setting/warehouses', [WarehouseController::class, 'index'])->middleware('auth');
+Route::post('/setting/warehouse/add', [WarehouseController::class, 'store'])->middleware('auth');
+Route::get('/setting/warehouse/{id}/edit', [WarehouseController::class, 'edit'])->middleware('auth');
+Route::put('/setting/warehouse/{id}/edit', [WarehouseController::class, 'update'])->name('warehouse.update')->middleware('auth');
+Route::delete('/setting/warehouse/{id}/delete', [WarehouseController::class, 'destroy'])->name('warehouse.delete')->middleware('auth');
 
 // End Warehouse Area
 // ========================================================================================================
@@ -148,7 +158,9 @@ Route::get('/setting/warehouses', [WarehouseController::class, 'index'])->middle
 // Report Area
 
 Route::get('/report/cashflow', [ReportController::class, 'index'])->middleware('auth');
-Route::get('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
+Route::post('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
+Route::post('/report/balance-sheet', [ReportController::class, 'balanceSheet'])->middleware('auth');
+Route::post('/report/profit-loss', [ReportController::class, 'profitLoss'])->middleware('auth');
 
 // End Report Area
 // ========================================================================================================

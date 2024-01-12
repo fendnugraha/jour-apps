@@ -34,31 +34,24 @@ class DatabaseSeeder extends Seeder
             'chart_of_account_id' => 1
         ]);
 
-        User::factory()->create([
-            'name' => 'administrator',
-            'email' => 'administrator@jour-mail.com',
-            'password' => bcrypt(88888888),
-            'role' => 'Staff',
-            'registered_at' => time(),
-            'last_login' => time(),
-            'status' => 1,
-            'warehouse_id' => 1
-        ]);
-
-        User::factory()->create([
-            'name' => 'fend',
-            'email' => 'fendnugraha92@gmail.com',
-            'password' => bcrypt(88888888),
-            'role' => 'Administrator',
-            'registered_at' => time(),
-            'last_login' => time(),
-            'status' => 1,
-            'warehouse_id' => 1
-        ]);
         Contact::create([
             'name' => 'General',
             'type' => 'Customer',
             'Description' => 'General Customer',
+        ]);
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@jour.com',
+            'password' => bcrypt('admin123'),
+            'warehouse_id' => 1
+        ]);
+
+        User::create([
+            'name' => 'fend',
+            'email' => 'fend@jour.com',
+            'password' => bcrypt('user123'),
+            'warehouse_id' => 1
         ]);
 
         Contact::factory()->count(50)->create();
@@ -79,7 +72,7 @@ class DatabaseSeeder extends Seeder
             'sales_account' => '50100-001',
         ]);
 
-        AccountTrace::factory(500)->create();
+        // AccountTrace::factory(500)->create();
 
         // \App\Models\User::factory(30)->create();
     }

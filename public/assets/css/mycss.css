@@ -84,7 +84,7 @@ a.setting-link {
   margin: 0;
 }
 
-a.setting-icon-action {
+a.setting-icon-action, button.setting-icon-action {
   background-color: white;
   padding: 20px;
   border-radius: 15px;
@@ -98,7 +98,7 @@ a.setting-icon-action {
   color: black;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
-a.setting-icon-action h1 {
+a.setting-icon-action h1, button.setting-icon-action h1 {
   font-size: 3.5rem;
 }
 

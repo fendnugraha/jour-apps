@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="mb-2 row">
-    <label for="cost" class="col-sm col-form-label">cost</label>
+    <label for="cost" class="col-sm col-form-label">Cost (Harga Pokok)</label>
     <div class="col-sm-8">
       <input type="number" class="form-control @error('cost') is-invalid @enderror" name="cost" id="cost" value="{{old('cost')}}" placeholder="Harga Pokok">
       @error('cost')
@@ -55,7 +55,7 @@
     </div>
   </div>
   <div class="mb-2 row">
-    <label for="sales" class="col-sm col-form-label">sales</label>
+    <label for="sales" class="col-sm col-form-label">Sales (Harga Jual)</label>
     <div class="col-sm-8">
       <input type="number" class="form-control @error('sales') is-invalid @enderror" name="sales" id="sales" value="{{old('sales')}}" placeholder="Harga Jual">
       @error('sales')

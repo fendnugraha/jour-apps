@@ -30,10 +30,10 @@
         <td>{{ $w->chartofaccount->acc_name }}</td>
         <td>{{ $w->created_at }}</td>
         <td>
-            <a href="/setting/contacts/{{ $w->id }}/edit" class="btn btn-warning btn-sm">
+            <a href="/setting/warehouse/{{ $w->id }}/edit" class="btn btn-warning btn-sm">
                 <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <form action="{{ route('contact.delete', $w->id) }}" method="POST" class="d-inline">
+            <form action="{{ route('warehouse.delete', $w->id) }}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i>
@@ -49,33 +49,43 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addContactLabel">Add Contact</h1>
+          <h1 class="modal-title fs-5" id="addContactLabel">Add Warehouse</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="/setting/contacts/add" method="post">
+          <form action="/setting/warehouse/add" method="post">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Contact name</label>
-                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="name" name="name" value="{{ old('name') }}">
-                @error('name')
+                <label for="w_code" class="form-label">Warehouse code</label>
+                <input type="text" class="form-control {{ $errors->has('w_code') ? 'is-invalid' : '' }}" id="w_code" name="w_code" value="{{ old('w_code') }}">
+                @error('w_code')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="type" class="form-label">Contact type</label>
-                <select name="type" id="type" class="form-select {{ $errors->has('type') ? 'is-invalid' : '' }}">
-                    <option value="customer" {{ old('type') == 'customer' ? 'selected' : '' }}>Customer</option>
-                    <option value="supplier" {{ old('type') == 'supplier' ? 'selected' : '' }}>Supplier</option>
-                    <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>Other</option>
+                <label for="w_name" class="form-label">Warehouse name</label>
+                <input type="text" class="form-control {{ $errors->has('w_name') ? 'is-invalid' : '' }}" id="w_name" name="w_name" value="{{ old('w_name') }}">
+                @error('w_name')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="account" class="form-label">Cash Account</label>
+                <select name="account" id="account" class="form-select {{ $errors->has('account') ? 'is-invalid' : '' }}">
+                    <option value="">Pilih Akun</option>
+                    @foreach ($account as $ac)
+                        <option value="{{ $ac->id }}" {{ old('account') == $ac->id ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" cols="30" rows="5" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" value="{{ old('description') }}">{{ old('description') }}</textarea>
-                @error('description')
+                <label for="address" class="form-label">address</label>
+                <textarea name="address" id="address" cols="30" rows="5" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" value="{{ old('address') }}">{{ old('address') }}</textarea>
+                @error('address')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

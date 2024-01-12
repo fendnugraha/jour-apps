@@ -4,7 +4,7 @@
 
 <a href="/setting" class="btn btn-primary mb-3"><i class="fa-solid fa-arrow-left"></i> Go back</a>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addContact">
+<button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addUser">
     <i class="fa-solid fa-plus"></i> Add new user
  </button>
   
@@ -34,56 +34,85 @@
         <td>{{ $u->status }}</td>
         <td>{{ $u->warehouse->w_name }}</td>
         <td>
-            <a href="/setting/contacts/{{ $u->id }}/edit" class="btn btn-warning btn-sm">
+            <a href="/setting/user/{{ $u->id }}/edit" class="btn btn-warning btn-sm">
                 <i class="fa-solid fa-pen-to-square"></i>
             </a>
-            <form action="{{ route('contact.delete', $u->id) }}" method="POST" class="d-inline">
+            {{-- <form action="{{ route('users.delete', $u->id) }}" method="POST" class="d-inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i>
                 </button>
-            </form>
+            </form> --}}
         </td>
     </tr>
     @endforeach
 </tbody>
 </table>
 <!-- Modal -->
-<div class="modal fade" id="addContact" tabindex="-1" aria-labelledby="addContactLabel" aria-hidden="true">
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="addUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addContactLabel">Add Contact</h1>
+          <h1 class="modal-title fs-5" id="addUserLabel">Add User</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form action="/setting/contacts/add" method="post">
+          <form action="/setting/user/add" method="post">
             @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">Contact name</label>
-                <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="name" name="name" value="{{ old('name') }}">
-                @error('name')
-                <div class="invalid-feedback">
-                    {{ $message }}
+            <input type="hidden" name="logged_in" value="logged_in">
+            <div class="mb-2 row">
+                <label for="email" class="col-sm col-form-label">Email Address</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{old('email')}}">
+                    @error('email')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
                 </div>
-                @enderror
             </div>
-            <div class="mb-3">
-                <label for="type" class="form-label">Contact type</label>
-                <select name="type" id="type" class="form-select {{ $errors->has('type') ? 'is-invalid' : '' }}">
-                    <option value="customer" {{ old('type') == 'customer' ? 'selected' : '' }}>Customer</option>
-                    <option value="supplier" {{ old('type') == 'supplier' ? 'selected' : '' }}>Supplier</option>
-                    <option value="other" {{ old('type') == 'other' ? 'selected' : '' }}>Other</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" cols="30" rows="5" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" value="{{ old('description') }}">{{ old('description') }}</textarea>
-                @error('description')
-                <div class="invalid-feedback">
-                    {{ $message }}
+            <div class="mb-2 row">
+                <label for="name" class="col-sm col-form-label">Full Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}">
+                    @error('name')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
                 </div>
-                @enderror
+            </div>
+            <div class="mb-2 row">
+                <label for="password" class="col-sm col-form-label">Password</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="">
+                    @error('password')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="cpassword" class="col-sm col-form-label">Confirm Password</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control @error('cpassword') is-invalid @enderror" name="cpassword" id="cpassword" value="">
+                    @error('cpassword')
+                    <div class="invalid-feedback">
+                        <small>{{ $message }}</small>
+                    </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="role" class="col-sm col-form-label">Role</label>
+                <div class="col-sm-8">
+                    <select name="role" class="form-control" id="role">
+                        <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Administrator</option>
+                        <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Kasir</option>
+                        <option value="3" {{ old('role') == 3 ? 'selected' : '' }}>Staff</option>
+                    </select>
+                </div>
             </div>
         
         </div>
