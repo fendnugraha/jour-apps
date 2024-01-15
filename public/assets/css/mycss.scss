@@ -18,14 +18,20 @@ body {
   // background-color: rgb(233, 233, 233);
 
   #login-failed-alert {
-    bottom: 10vh;
+    top: 5vh;
     right: 2%;
     width: 25vw;
+    position: absolute;
+    z-index: 1000;
   }
 }
   
 .card {
   border: 0;
+}
+
+.card.card-widget {
+  border-radius: 15px;
 }
 
 table, tr {
@@ -58,6 +64,10 @@ table, tr {
     }
 
     .accordion {
+      .accordion-button {
+        background-color: $my-secondary-color;
+        color: $my-quinary-color;
+      }
 
       .accordion-button:hover {
         background-color: $my-quinary-color;
@@ -73,8 +83,25 @@ table, tr {
       }
 
       .nav-link:hover {
-        background-color: $my-secondary-color;
+        background-color: $my-quinary-color;
+        color: $my-secondary-color;
       }
+    }
+
+    .sidebar-menu-link {
+      height: 52px;
+        border-bottom: #f5f5f5 solid 1px;
+        display: flex;
+        align-items: center;
+        background-color: $my-secondary-color;
+        color: $my-quinary-color;
+        padding: 16px 20px;
+        text-decoration: none;
+    }
+
+    .sidebar-menu-link:hover {
+      background-color: $my-quinary-color;
+      color: $my-secondary-color;
     }
 
     .copyright {
@@ -99,6 +126,27 @@ table, tr {
   main.content {
     width: 100%;
     padding: 20px;
+
+    .setting-icon {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      align-items: center;
+      gap: 30px;
+
+      .setting-icon-action {
+        text-decoration: none;
+        background-color: $my-secondary-color;
+        height: 200px;
+        width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 15px;
+        color: $my-quinary-color;
+      }
+    }
   }
 }
 

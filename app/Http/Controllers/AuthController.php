@@ -55,7 +55,7 @@ class AuthController extends Controller
         }
 
         return back()->with([
-            'login_error' => 'The provided credentials do not match our records.',
+            'login_error' => 'Username or Password is wrong, please try again or Register new account!',
         ]);
     }
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
     {
         $users = User::with('warehouse')->get();
         return view('setting/users/index', [
-            'title' => 'Users',
+            'title' => 'User Management',
             'users' => $users
         ]);
     }

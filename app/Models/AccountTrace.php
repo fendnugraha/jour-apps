@@ -68,17 +68,14 @@ class AccountTrace extends Model
         ])
             ->where('debt_code', $account_code)
             ->orWhere('cred_code', $account_code)
+            ->whereBetween('date_issued', [
+                Carbon::parse($start_date)->startOfDay(),
+                Carbon::parse($end_date)->endOfDay(),
+            ])
             ->get();
 
         $debit = $transaction->where('debt_code', $account_code)->sum('amount');
         $kredit = $transaction->where('cred_code', $account_code)->sum('amount');
-
-        if ($debit == null) {
-            $debit = 0;
-        }
-        if ($kredit == null) {
-            $kredit = 0;
-        }
 
         if ($initBalance->Account->status == "D") {
             return $initBalance->st_balance + $debit - $kredit;
@@ -89,36 +86,53 @@ class AccountTrace extends Model
 
     public function profitLossCount($start_date, $end_date)
     {
+        // Use relationships if available
+        $start_date = Carbon::parse($start_date)->startOfDay();
+        $end_date = Carbon::parse($end_date)->endOfDay();
+
+        // \dd($start_date, $end_date);
         $coa = ChartOfAccount::all();
 
-        foreach ($coa as $key => $value) {
-            $value->balance = $this->endBalanceBetweenDate($value->acc_code, $start_date, $end_date);
+        foreach ($coa as $coaItem) {
+            // Use a more descriptive variable name
+            $coaItem->balance = $this->endBalanceBetweenDate($coaItem->acc_code, $start_date, $end_date);
         }
 
-        $revenue = $coa->WhereIn('account_id', \range(27, 30))->sum('balance');
-        $cost = $coa->WhereIn('account_id', ['31', '32'])->sum('balance');
-        $expense = $coa->WhereIn('account_id', \range(33, 45))->sum('balance');
+        // Use collections for filtering
+        $revenue = $coa->whereIn('account_id', ['27', '28', '29', '30'])->sum('balance');
+        $cost = $coa->whereIn('account_id', ['31', '32'])->sum('balance');
+        $expense = $coa->whereIn('account_id', \range(33, 45))->sum('balance');
 
-        ChartOfAccount::Where('acc_code', '30100-002')->update(['st_balance' => $revenue - $cost - $expense]);
+        // \dd($coa->whereIn('account_id', \range(27, 30))->toArray());
 
+        // Use Eloquent to update a specific record
+        ChartOfAccount::where('acc_code', '30100-002')->update(['st_balance' => $revenue - $cost - $expense]);
+
+        // Return the calculated profit or loss
         return $revenue - $cost - $expense;
     }
 
+
     public function equityCount($end_date)
     {
+        // Use relationships if available
         $coa = ChartOfAccount::all();
 
-        foreach ($coa as $key => $value) {
-            $value->balance = $this->endBalanceBetweenDate($value->acc_code, '0000-00-00', $end_date);
+        foreach ($coa as $coaItem) {
+            // Use a more descriptive variable name
+            $coaItem->balance = $this->endBalanceBetweenDate($coaItem->acc_code, '0000-00-00', $end_date);
         }
 
-        $initBalance = $coa->Where('acc_code', '30100-001')->first()->st_balance;
-        $assets = $coa->WhereIn('account_id', \range(1, 18))->sum('balance');
-        $liabilities = $coa->WhereIn('account_id', \range(19, 25))->sum('balance');
-        $equity = $coa->Where('account_id', 26)->sum('balance');
+        // Use collections for filtering
+        $initBalance = $coa->firstWhere('acc_code', '30100-001')->st_balance;
+        $assets = $coa->whereIn('account_id', \range(1, 18))->groupBy('account_id')->sum('balance');
+        $liabilities = $coa->whereIn('account_id', \range(19, 25))->groupBy('account_id')->sum('balance');
+        $equity = $coa->where('account_id', 26)->groupBy('account_id')->sum('balance');
 
-        ChartOfAccount::Where('acc_code', '30100-001')->update(['st_balance' => $initBalance + $assets - $liabilities - $equity]);
+        // Use Eloquent to update a specific record
+        ChartOfAccount::where('acc_code', '30100-001')->update(['st_balance' => $assets - $liabilities - $equity]);
 
-        return $initBalance + $assets - $liabilities - $equity;
+        // Return the calculated equity
+        return $assets - $liabilities - $equity;
     }
 }

@@ -1,11 +1,17 @@
 body #login-failed-alert {
-  bottom: 10vh;
+  top: 5vh;
   right: 2%;
   width: 25vw;
+  position: absolute;
+  z-index: 1000;
 }
 
 .card {
   border: 0;
+}
+
+.card.card-widget {
+  border-radius: 15px;
 }
 
 table, tr {
@@ -34,6 +40,10 @@ table, tr {
 .sidebar .brand-name span {
   color: #bdc3af;
 }
+.sidebar .accordion .accordion-button {
+  background-color: #f4f9fb;
+  color: #150b04;
+}
 .sidebar .accordion .accordion-button:hover {
   background-color: #150b04;
   color: #f4f9fb;
@@ -46,7 +56,22 @@ table, tr {
   background-color: #bdc3af;
 }
 .sidebar .accordion .nav-link:hover {
+  background-color: #150b04;
+  color: #f4f9fb;
+}
+.sidebar .sidebar-menu-link {
+  height: 52px;
+  border-bottom: #f5f5f5 solid 1px;
+  display: flex;
+  align-items: center;
   background-color: #f4f9fb;
+  color: #150b04;
+  padding: 16px 20px;
+  text-decoration: none;
+}
+.sidebar .sidebar-menu-link:hover {
+  background-color: #150b04;
+  color: #f4f9fb;
 }
 .sidebar .copyright {
   bottom: 0;
@@ -66,6 +91,25 @@ table, tr {
 .main-content main.content {
   width: 100%;
   padding: 20px;
+}
+.main-content main.content .setting-icon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 30px;
+}
+.main-content main.content .setting-icon .setting-icon-action {
+  text-decoration: none;
+  background-color: #f4f9fb;
+  height: 200px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 15px;
+  color: #150b04;
 }
 
 .dashboard-area {

@@ -2,7 +2,15 @@
 
 @section('container')
 
-<div class="card">
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+
+        <main class="content">
+
+
+        <!-- Content  -->
+        <div class="card">
     <div class="card-body">
         <form action="{{ route('coa.update', $coa->id) }}" method="post">
             @csrf
@@ -38,4 +46,8 @@
     </div>
 </div>
 
-@endsection
+
+
+
+        </main>
+@endsection 

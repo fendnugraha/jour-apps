@@ -13,43 +13,67 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('settings.reports.index', [
+        $account_trace = new AccountTrace();
+        $test = $account_trace->endBalanceBetweenDate('30100-002', '2024-01-01', '2024-01-01');
+        $profit = $account_trace->profitLossCount('2024-01-01', '2024-01-01');
+
+        $account_code = '40100-001';
+        $start_date = '2024-01-01';
+        $end_date = '2024-01-01';
+
+        $transaction = $account_trace->whereBetween('date_issued', [
+            Carbon::parse($start_date)->startOfDay(),
+            Carbon::parse($end_date)->endOfDay(),
+        ])
+            ->where('debt_code', $account_code)
+            ->orWhere('cred_code', $account_code)
+            ->whereBetween('date_issued', [
+                Carbon::parse($start_date)->startOfDay(),
+                Carbon::parse($end_date)->endOfDay(),
+            ])
+            ->get();
+
+        \dd($transaction->toArray());
+        return view('report.index', [
             'title' => 'Reports',
             'active' => 'reports',
-            'reports' => Report::all()
+            'test' => $test,
+            'profit' => $profit
         ]);
     }
 
     public function generalLedger(Request $request)
     {
+        $startDate = Carbon::parse($request->start_date)->subDay();
+        $endDate = \Carbon\Carbon::parse($request->end_date)->addDay();
         $account_trace = AccountTrace::where('debt_code', $request->accounts)
-            ->whereBetween('date_issued', [$request->start_date, $request->end_date])
+            ->whereBetween('date_issued', [$request->start_date, $endDate])
             ->orWhere('cred_code', $request->accounts)
-            ->WhereBetween('date_issued', [$request->start_date, $request->end_date])
+            ->WhereBetween('date_issued', [$request->start_date, $endDate])
             ->orderBy('date_issued', 'asc')
             ->get();
 
         if ($request->accounts == null) {
-            $account_trace = AccountTrace::whereBetween('date_issued', [$request->start_date, $request->end_date])
+            $account_trace = AccountTrace::whereBetween('date_issued', [$request->start_date, $endDate])
                 ->orderBy('date_issued', 'asc')
                 ->get();
         }
 
         $debt_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
             ->where('debt_code', $request->accounts)
-            ->whereBetween('date_issued', [$request->start_date, $request->end_date])
+            ->whereBetween('date_issued', [$request->start_date, $endDate])
             ->first();
 
         $cred_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-            ->whereBetween('date_issued', [$request->start_date, $request->end_date])
+            ->whereBetween('date_issued', [$request->start_date, $endDate])
             ->where('cred_code', $request->accounts)->first();
 
         if ($request->accounts == null) {
             $debt_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-                ->whereBetween('date_issued', [$request->start_date, $request->end_date])
+                ->whereBetween('date_issued', [$request->start_date, $endDate])
                 ->first();
             $cred_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-                ->whereBetween('date_issued', [$request->start_date, $request->end_date])
+                ->whereBetween('date_issued', [$request->start_date, $endDate])
                 ->first();
         }
 
@@ -80,35 +104,46 @@ class ReportController extends Controller
 
     public function balanceSheet(Request $request)
     {
-        $coa = ChartOfAccount::with(['account'])
-            ->get();
+        $accountTrace = new AccountTrace();
+        $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
+        // dd($endDate);
 
-        $account_trace = new AccountTrace();
-        $account_trace->profitLossCount('0000-00-00', $request->end_date);
-        $account_trace->equityCount($request->end_date);
+        // Process profitLossCount and equityCount first
+        $accountTrace->profitLossCount('0000-00-00', $endDate);
+        $accountTrace->equityCount($endDate);
 
-        $transactions = $account_trace->load('debt', 'cred')
+        // Fetch transactions
+        $transactions = $accountTrace->load('debt', 'cred')
             ->whereBetween('date_issued', [
-                Carbon::parse($request->start_date)->startOfDay(),
-                Carbon::parse($request->end_date)->endOfDay(),
+                '0000-00-00', $endDate,
             ])
             ->get();
 
-        foreach ($coa as $value) {
-            $debit = $transactions->where('debt_code', $value->acc_code)->sum('amount');
-            $credit = $transactions->where('cred_code', $value->acc_code)->sum('amount');
+        // Fetch chart of accounts
+        $chartOfAccounts = ChartOfAccount::with(['account', 'account_trace'])
+            ->get();
 
-            $value->balance = $value->st_balance + $debit - $credit;
+        // Calculate balances
+        foreach ($chartOfAccounts as $coaItem) {
+            $debit = $transactions->where('debt_code', $coaItem->acc_code)->sum('amount');
+            $credit = $transactions->where('cred_code', $coaItem->acc_code)->sum('amount');
+
+            if ($coaItem->Account->status == "D") {
+                $coaItem->balance = $coaItem->st_balance + $debit - $credit;
+            } else {
+                $coaItem->balance = $coaItem->st_balance + $credit - $debit;
+            }
         }
 
         return view('report.balance-sheet', [
             'title' => 'Balance Sheet',
             'active' => 'reports',
-            'assets' => $coa->load('account_trace')->whereIn('account_id', \range(1, 18))->groupBy('account_id'),
-            'liabilities' => $coa->load('account_trace')->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
-            'equity' => $coa->where('account_id', 26)->groupBy('account_id'),
+            'assets' => $chartOfAccounts->whereIn('account_id', \range(1, 18))->groupBy('account_id'),
+            'liabilities' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
+            'equity' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
         ], \compact('transactions'))->with($request->all());
     }
+
 
     public function profitLoss(Request $request)
     {
@@ -129,7 +164,12 @@ class ReportController extends Controller
         foreach ($coa as $value) {
             $debit = $transactions->where('debt_code', $value->acc_code)->sum('amount');
             $credit = $transactions->where('cred_code', $value->acc_code)->sum('amount');
-            $value->balance = $debit - $credit;
+
+            if ($value->Account->status == "D") {
+                $value->balance = $debit - $credit;
+            } else {
+                $value->balance = $credit - $debit;
+            }
         }
 
         return view('report.profit-loss', [
@@ -138,6 +178,25 @@ class ReportController extends Controller
             'revenue' => $coa->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
             'cost' => $coa->whereIn('account_id', \range(31, 32))->groupBy('account_id'),
             'expense' => $coa->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
+        ])->with($request->all());
+    }
+
+    public function cashflowReport(Request $request)
+    {
+        $account_trace = new AccountTrace();
+        $account_trace->profitLossCount('0000-00-00', $request->end_date);
+        $account_trace->equityCount($request->end_date);
+
+        $transactions = $account_trace->load('debt', 'cred')
+            ->whereBetween('date_issued', [
+                Carbon::parse($request->start_date)->startOfDay(),
+                Carbon::parse($request->end_date)->endOfDay(),
+            ])->get();
+
+        return view('report.cashflow-report', [
+            'title' => 'Cash Flow Report',
+            'active' => 'reports',
+            'transactions' => $transactions
         ])->with($request->all());
     }
 }

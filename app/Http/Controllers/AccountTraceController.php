@@ -13,7 +13,7 @@ class AccountTraceController extends Controller
     {
         return view('journal/index', [
             'title' => 'Journal Home',
-            'accountTrace' => AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])->orderBy('date_issued', 'desc')->get(),
+            'accountTrace' => AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])->orderBy('id', 'desc')->get(),
         ]);
     }
 

@@ -2,7 +2,15 @@
 
 @section('container')
 
-<a href="/setting" class="btn btn-primary mb-3"><i class="fa-solid fa-arrow-left"></i> Go back</a>
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+
+        <main class="content">
+
+
+        <!-- Content  -->
+        <a href="/setting" class="btn btn-primary mb-3"><i class="fa-solid fa-arrow-left"></i> Go back</a>
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addContact">
     <i class="fa-solid fa-plus"></i> Add warehouse
@@ -101,4 +109,6 @@
       </div>
     </div>
   </div>
-@endsection
+
+        </main>
+@endsection 

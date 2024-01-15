@@ -2,10 +2,10 @@
 
 @section('container')
     @if(session()->has('login_error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="login-failed-alert">
         <strong>Login failed!</strong> {{session('login_error')}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+    </div>
       @endif
       <div class="container-fluid"
         style="background-image: url(/assets/img/wpp.jpg);background-repeat: no-repeat;background-size: cover;backdrop-filter: blur(15px);">
@@ -40,14 +40,14 @@
                                 </div>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+                            <button type="submit" class="btn btn-dark w-100 mb-3">Login</button>
                         </form>
                         <small class="text-muted text-center d-block">Don't have an account? <a
                                 href="/auth/register">Register</a></small>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted text-center d-block">&copy; 2023 Jour by <img src="/assets/img/logo-long.png"
-                                alt="" width="60"> All rights reserved.</small>
+                                alt="" width="80"> All rights reserved.</small>
                     </div>
                 </div>
             </div>

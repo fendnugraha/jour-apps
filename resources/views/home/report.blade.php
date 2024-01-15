@@ -1,6 +1,15 @@
 @extends('include.main')
 
 @section('container')
+
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+
+        <main class="content">
+
+
+        <!-- Content  -->
         <div class="setting-icon d-flex justify-content-between flex-wrap gap-3">
             <a href="/report/profit-loss" class="setting-icon-action">
                 <h1><i class="fa-solid fa-sliders"></i></h1> <span class="setting-icon-text">Cashflow</span>
@@ -113,5 +122,6 @@
   </div>
   {{-- ================================================= --}}
 
-  
-@endsection
+
+        </main>
+@endsection 
