@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <title>Jour Apps - {{ $title }}</title>
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicon/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon/favicon-32x32.png">
@@ -19,85 +20,15 @@
         <link rel="stylesheet" href="/assets/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="/assets/css/all.min.css">
         <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
-        <!-- <link rel="stylesheet" href="/assets/css/dataTables.jqueryui.min.css"> -->
-        <!-- <link rel="stylesheet" href="/assets/css/jquery.dataTables.min.css"> -->
-        <link href="/assets/css/sidebars.css" rel="stylesheet">
         <link rel="stylesheet" href="/assets/css/mycss.css">
+        {{-- @vite('resources/css/app.css') --}}
     </head>
   <body>
+    <div class="d-flex vh-100">
 
-<main class="d-flex flex-nowrap">
-
-  <div class="flex-shrink-0 p-3" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom">
-      <span class="fs-5 fw-semibold">DOA IBU Inc.</span>
-    </a>
-    <ul class="list-unstyled ps-0">
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-          Home
-        </button>
-        <div class="collapse show" id="home-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Updates</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          Dashboard
-        </button>
-        <div class="collapse" id="dashboard-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="/home" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="/jurnal" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Jurnal</a></li>
-            <li><a href="/report" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Report</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-          Orders
-        </button>
-        <div class="collapse" id="orders-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Processed</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Shipped</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          Account
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New...</a></li>
-            <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Profile</a></li>
-            <li><a href="/setting" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Settings</a></li>
-            <li><form action="/auth/logout" method="post">
-            @csrf
-            <button type="submit" class="link-body-emphasis d-inline-flex rounded" style="background-color: transparent;
-                background-repeat: no-repeat;
-                border: none;">Sign out</button></form></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <div class="container overflow-auto p-3">
-    <div class="breadchrumb-area mb-3">
-      <h4>{{ $title }}</h4>
+    @yield('container') 
+    
     </div>
-    
-    @yield('container')
-    
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 5">
       @if (session('success'))
           <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -113,9 +44,6 @@
           </div>
       @endif
   </div>
-  
-  </div>
-</main>
     
 
 

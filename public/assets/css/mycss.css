@@ -1,105 +1,71 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-body {
-  font-family: "Quicksand", sans-serif;
-  background-color: rgb(233, 233, 233);
-}
 body #login-failed-alert {
   bottom: 10vh;
   right: 2%;
   width: 25vw;
 }
-body table tr {
-  font-size: 0.7em;
-}
-
-.nav-link {
-  font-weight: 700;
-}
-
-header .dropdown a#user-email-addr-dropdown {
-  background-color: rgb(71, 74, 255);
-  text-decoration: none;
-  padding: 5px 15px 5px 15px;
-  border-radius: 25px;
-  border: 0;
-  transition: 0.2s;
-}
-header .dropdown a#user-email-addr-dropdown #user-email-addr {
-  color: white;
-}
-header .dropdown a#user-email-addr-dropdown:hover {
-  background-color: rgb(56, 59, 255);
-}
-header .dropdown a#user-email-addr-dropdown:hover #user-email-addr {
-  color: white;
-}
-header .dropdown .dropdown-menu {
-  background-color: rgb(71, 74, 255);
-}
-header .dropdown .dropdown-menu a.dropdown-item {
-  color: white;
-}
-header .dropdown .dropdown-menu hr {
-  background-color: white;
-}
-header .dropdown .dropdown-menu a.dropdown-item:hover {
-  background-color: rgb(56, 59, 255);
-}
 
 .card {
-  border-radius: 20px;
-  border: none;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  border: 0;
 }
 
-.card-icon-db {
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  color: rgb(85, 85, 85);
-  font-size: 1.7em;
-  border-radius: 50%;
+table, tr {
+  font-size: 0.75rem;
+  vertical-align: middle;
+}
+
+.bg-my-color {
+  background-color: #87232f;
+}
+
+.sidebar {
+  width: 20%;
+  background-color: #f4f9fb;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.sidebar .brand-name {
+  color: white;
+  height: 62px;
+  background-color: #87232f;
+  text-align: center;
+  font-size: 1.6rem;
+}
+.sidebar .brand-name span {
+  color: #bdc3af;
+}
+.sidebar .accordion .accordion-button:hover {
+  background-color: #150b04;
+  color: #f4f9fb;
+}
+.sidebar .accordion .nav-link {
+  height: 52px;
+  border-bottom: #f5f5f5 solid 1px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  background-color: #bdc3af;
+}
+.sidebar .accordion .nav-link:hover {
+  background-color: #f4f9fb;
+}
+.sidebar .copyright {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
 }
 
-a.setting-link {
-  text-decoration: none;
-  color: black;
+.main-content {
+  height: 100%;
+  width: 80%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
-
-.card.card-page-title,
-.card.card-setting-menu {
-  padding: 5px 40px 5px 40px;
-  background-color: rgb(255, 255, 255);
-  color: rgb(99, 99, 246);
-  font-weight: bold;
-  border-radius: 0 0px 30px 30px;
+.main-content .navbar {
+  background-color: #f4f9fb;
 }
-.card.card-page-title p,
-.card.card-page-title h4,
-.card.card-setting-menu p,
-.card.card-setting-menu h4 {
-  margin: 0;
-}
-
-a.setting-icon-action, button.setting-icon-action {
-  background-color: white;
+.main-content main.content {
+  width: 100%;
   padding: 20px;
-  border-radius: 15px;
-  height: 13rem;
-  width: 13rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: black;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-a.setting-icon-action h1, button.setting-icon-action h1 {
-  font-size: 3.5rem;
 }
 
 .dashboard-area {

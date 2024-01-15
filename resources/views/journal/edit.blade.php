@@ -2,13 +2,17 @@
 
 @section('container')
 
-<div class="card">
-    <div class="card-body">
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+
+        <main class="content">
+        <!-- Content  -->
         <form action="{{ route('jurnal.update', $accountTrace->id) }}" method="post">
             @csrf
             @method('PUT')
             <div class="mb-2 row">
-                <label for="date_issued" class="col-sm col-form-label">date_issued</label>
+                <label for="date_issued" class="col-sm col-form-label">Tanggal</label>
                 <div class="col-sm-8">
                     <input type="datetime-local" class="form-control @error('date_issued') is-invalid @enderror" name="date_issued" id="date_issued" value="{{$accountTrace->date_issued}}">
                     @error('date_issued')
@@ -78,8 +82,9 @@
               <a href="/jurnal" class="btn btn-danger">Cancel</a>
             </div>
         </form>
-
+       <!-- End Content -->
+    </main>
     </div>
-</div>
+
 
 @endsection

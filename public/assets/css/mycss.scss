@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 $myprimary-color: rgb(52, 83, 255);
 $mysecondary-color: rgb(85, 85, 85);
@@ -6,122 +6,99 @@ $mysuccess-color: rgb(0, 199, 99);
 $mywarning-color: rgb(252, 217, 103);
 $mydanger-color: rgb(250, 38, 84);
 $mywhite-color: rgba(255,255,255,0.8);
+$my-color: #87232f;
+$my-primary-color: #3252e2;
+$my-secondary-color: #f4f9fb;
+$my-tertiary-color: #bdc3af;
+$my-quaternary-color: #5c5241;
+$my-quinary-color: #150b04;
 
 body {
-  font-family: 'Quicksand', sans-serif;
-  background-color: rgb(233, 233, 233);
+  // font-family: 'Quicksand', sans-serif;
+  // background-color: rgb(233, 233, 233);
 
   #login-failed-alert {
     bottom: 10vh;
     right: 2%;
     width: 25vw;
   }
-
-  table tr{
-    font-size: 0.7em;
-  }
 }
-
-.nav-link {
-  font-weight: 700;
-}
-
-header {
-  .dropdown{
-      a#user-email-addr-dropdown{
-        background-color: rgb(71, 74, 255);
-        text-decoration: none;
-        padding: 5px 15px 5px 15px;
-        border-radius: 25px;
-        border: 0;
-        transition: 0.2s;
-
-        #user-email-addr {
-          color: white;
-        }
-
-        &:hover {
-          background-color: rgb(56, 59, 255);
-
-          #user-email-addr {
-          color: white;
-        }
-        }
-      }
-
-      .dropdown-menu {
-        background-color: rgba(71, 74, 255, 1);
-
-        a.dropdown-item {
-          color: white;
-        }
-
-        hr {
-          background-color: white;
-        }
-
-        a.dropdown-item:hover {
-          background-color: rgb(56, 59, 255);
-        }
-      }
-  }
-}
-
+  
 .card {
-  // background-color: rgba($color: #000000, $alpha: 0.2);
-  border-radius: 20px;
-  border: none;
-  box-shadow: 1px 1px 5px rgba($color: #000000, $alpha: 0.2);
+  border: 0;
 }
 
-.card-icon-db{
-  width: 50px;
-  height: 50px;
-  background-color: white;
-  color: $mysecondary-color;
-  font-size: 1.7em;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+table, tr {
+  font-size: 0.75rem;
+  vertical-align: middle;
 }
 
-a.setting-link {
-  text-decoration: none;
-  color: black;
+.bg-my-color {
+  background-color: $my-color;
 }
 
-.card.card-page-title,
-.card.card-setting-menu {
-  padding: 5px 40px 5px 40px;
-  background-color: rgb(255, 255, 255);
-  color: rgb(99, 99, 246);
-  font-weight: bold;
-  border-radius: 0 0px 30px 30px;
 
-  p,
-  h4 {
-    margin: 0;
-    // letter-spacing: 1px;
+.sidebar {
+    width: 20%;
+    background-color: $my-secondary-color;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+
+    .brand-name {
+      color: white;
+      height: 62px;
+      background-color: $my-color;
+      text-align: center;
+      font-size: 1.6rem;
+
+      span {
+        color: $my-tertiary-color;
+      }
+    }
+
+    .accordion {
+
+      .accordion-button:hover {
+        background-color: $my-quinary-color;
+        color: $my-secondary-color;
+      }
+
+      .nav-link {
+        height: 52px;
+        border-bottom: #f5f5f5 solid 1px;
+        display: flex;
+        align-items: center;
+        background-color: $my-tertiary-color;
+      }
+
+      .nav-link:hover {
+        background-color: $my-secondary-color;
+      }
+    }
+
+    .copyright {
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
+
   }
-}
 
-a.setting-icon-action, button.setting-icon-action {
-  background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-  height: 13rem;
-  width: 13rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: black;
-  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+.main-content {
+  // background-color: cadetblue;
+  height: 100%;
+  width: 80%;
+  overflow-x: hidden;
+  overflow-y: auto;
 
-  h1 {
-    font-size: 3.5rem;
+  .navbar {
+    background-color: $my-secondary-color;
+  }
+
+  main.content {
+    width: 100%;
+    padding: 20px;
   }
 }
 

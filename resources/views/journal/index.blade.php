@@ -1,35 +1,38 @@
 @extends('include.main')
 
 @section('container')
-<div class="content-menu d-flex gap-2">
-    <div class="dropdown mb-2">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Add New
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/jurnal/addjournal">Jurnal Umum</a></li>
-          <li><a class="dropdown-item" href="/jurnal/adddeposit">Deposit</a></li>
-          <li><a class="dropdown-item" href="/jurnal/addSalesValues">Penjualan (Value)</a></li>
-        </ul>
-    </div>
-    <div class="dropdown mb-2">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Finance
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/piutang">Piutang</a></li>
-          <li><a class="dropdown-item" href="/hutang">Hutang</a></li>
-        </ul>
-    </div>
-</div>
 
-<div class="card">
-    <div class="card-body">
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+        <main class="content">
+        <!-- Content  -->
+        
+        <div class="content-menu d-flex gap-2">
+            <div class="dropdown mb-2">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Add New
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/jurnal/addjournal">Jurnal Umum</a></li>
+                  <li><a class="dropdown-item" href="/jurnal/adddeposit">Deposit</a></li>
+                  <li><a class="dropdown-item" href="/jurnal/addSalesValues">Penjualan (Value)</a></li>
+                </ul>
+            </div>
+            <div class="dropdown mb-2">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Finance
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/piutang">Piutang</a></li>
+                  <li><a class="dropdown-item" href="/hutang">Hutang</a></li>
+                </ul>
+            </div>
+        </div>
+        
         <table class="table display-no-order">
             <thead>
                 <tr>
-                    <th>WAKTU</th>
-                    <th>INVOICE</th>
                     <th>DESKRIPSI</th>
                     <th>JUMLAH</th>
                     <th>STATUS</th>
@@ -40,14 +43,14 @@
                 @foreach ($accountTrace as $acctrace)                   
                 
                 <tr>
-                    <td>{{ $acctrace->date_issued }}</td>
-                    <td>{{ $acctrace->invoice }}</td>
                     <td>
                         <span class="badge text-bg-success">{{ $acctrace->debt->acc_name ?? ''}} x {{ $acctrace->cred->acc_name ?? ''}}</span>
                         <span class="badge text-bg-warning">{{ $acctrace->warehouse->w_name}}</span>
                         <span class="badge text-bg-dark">{{ $acctrace->user->name}}</span>
                         <br>
-                        #{{ $acctrace->id }}. {{ $acctrace->description }}
+                        <small>#{{ $acctrace->id }} | {{ $acctrace->date_issued }} | {{ $acctrace->invoice }}</small>
+                        <br>
+                        Note: {{ $acctrace->description }}
                     </td>
                     <td>{{ number_format($acctrace->amount) }}</td>
                     <td>
@@ -78,7 +81,9 @@
                 @endforeach
             </tbody>
         </table>
+    </main>
+        <!-- End Content -->
     </div>
-</div>
+
 
 @endsection

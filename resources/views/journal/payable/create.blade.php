@@ -2,8 +2,12 @@
 
 @section('container')
 
-<div class="card">
-    <div class="card-body">
+    @include('include.sidebar')
+    <div class="main-content">
+        @include('include.topbar')
+
+        <main class="content">
+        <!-- Content  -->
         <form action="/hutang/add" method="post">
             @csrf
             <div class="mb-2 row">
@@ -96,8 +100,10 @@
             <button type="reset" class="btn btn-secondary">Reset</button>
             <a href="/hutang" class="btn btn-danger">Cancel</a>
         </div>
-        </form>             
+        </form>   
+       <!-- End Content -->
+    </main>
     </div>
-</div>
+
 
 @endsection
