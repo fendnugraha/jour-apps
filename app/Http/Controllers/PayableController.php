@@ -41,9 +41,9 @@ class PayableController extends Controller
     {
         return view('journal.payable.create', [
             'title' => 'Form Tambah Hutang',
-            'contacts' => Contact::all(),
-            'account' => ChartOfAccount::where('account_id', 19)->get(),
-            'rscFund' => ChartOfAccount::whereIn('account_id', [1, 2, 6])->get()
+            'contacts' => Contact::orderBy('name')->get(),
+            'account' => ChartOfAccount::where('account_id', 19)->orderBy('acc_code')->get(),
+            'rscFund' => ChartOfAccount::whereIn('account_id', [1, 2, 6])->orderBy('acc_code')->get()
         ]);
     }
 
@@ -147,7 +147,7 @@ class PayableController extends Controller
         return view('journal.payable.edit', [
             'title' => 'Edit Hutang',
             'pyb' => $pyb,
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
             'account' => ChartOfAccount::where('account_id', 19)->get(),
             'rscFund' => ChartOfAccount::whereIn('account_id', [1, 2, 6])->get()
         ]);

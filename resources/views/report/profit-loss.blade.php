@@ -51,7 +51,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2">{{ $accountGroup->first()->account->name }}</th>
+                            <th>{{ $accountGroup->first()->account->name }}</th>
+                            <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,7 +70,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2">{{ $accountGroup->first()->account->name }}</th>
+                            <th>{{ $accountGroup->first()->account->name }}</th>
+                            <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +90,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2">{{ $accountGroup->first()->account->name }}</th>
+                            <th>{{ $accountGroup->first()->account->name }}</th>
+                            <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
                         </tr>
                     </thead>
                     <tbody>

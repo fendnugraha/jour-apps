@@ -10,7 +10,7 @@
         <!-- Content  -->
         <div class="row mb-3">
             <div class="col-lg">
-                <div class="card text-bg-dark">
+                <div class="card card-widget text-bg-dark">
                     <div class="card-body">
                         <h4>Bills</h4>
                         <h1><i class="fa-solid fa-receipt"></i> {{custom_number($rcvs->bill)}}</h1>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-lg">
-                <div class="card bg-secondary-subtle">
+                <div class="card card-widget bg-secondary-subtle">
                     <div class="card-body">
                         <h4>Payments</h4>
                         <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($rcvs->payment)}}</h1>
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="col-lg">
-                <div class="card text-bg-secondary">
+                <div class="card card-widget text-bg-secondary">
                     <div class="card-body">
                         <h4>Balance</h4>
                         <h1><i class="fa-solid fa-file-invoice"></i> {{custom_number($rcvs->balance)}}</h1>

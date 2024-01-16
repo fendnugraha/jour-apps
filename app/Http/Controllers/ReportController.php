@@ -8,37 +8,23 @@ use App\Models\AccountTrace;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class ReportController extends Controller
 {
     public function index()
     {
         $account_trace = new AccountTrace();
-        $test = $account_trace->endBalanceBetweenDate('30100-002', '2024-01-01', '2024-01-01');
-        $profit = $account_trace->profitLossCount('2024-01-01', '2024-01-01');
+        $initEquity = $account_trace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
+        $lastEquity = $account_trace->equityCount(Carbon::now()->endOfMonth()->endOfDay(), FALSE);
 
-        $account_code = '40100-001';
-        $start_date = '2024-01-01';
-        $end_date = '2024-01-01';
+        // \dd(Carbon::now()->endOfDay());
 
-        $transaction = $account_trace->whereBetween('date_issued', [
-            Carbon::parse($start_date)->startOfDay(),
-            Carbon::parse($end_date)->endOfDay(),
-        ])
-            ->where('debt_code', $account_code)
-            ->orWhere('cred_code', $account_code)
-            ->whereBetween('date_issued', [
-                Carbon::parse($start_date)->startOfDay(),
-                Carbon::parse($end_date)->endOfDay(),
-            ])
-            ->get();
-
-        \dd($transaction->toArray());
         return view('report.index', [
             'title' => 'Reports',
             'active' => 'reports',
-            'test' => $test,
-            'profit' => $profit
+            'initEquity' => $initEquity,
+            'lastEquity' => $lastEquity
         ]);
     }
 
@@ -94,13 +80,61 @@ class ReportController extends Controller
         ])->with($request->all());
     }
 
-    public function cashflow()
+    public function cashflow(Request $request)
     {
+        $chartOfAccounts = ChartOfAccount::with(['account', 'account_trace'])
+            ->get();
+        $start_date = Carbon::parse($request->start_date)->startOfDay();
+        $end_date = Carbon::parse($request->end_date)->endOfDay();
+
+        foreach ($chartOfAccounts as $value) {
+            $debit = AccountTrace::where('debt_code', 'LIKE', '10100%')
+                ->where('cred_code', $value->acc_code)
+                ->whereBetween('date_issued', [$start_date, $end_date])
+                ->orWhere('debt_code', 'LIKE', '10200%')
+                ->where('cred_code', $value->acc_code)
+                ->whereBetween('date_issued', [$start_date, $end_date])
+                ->sum('amount');
+
+            $credit = AccountTrace::where('cred_code', 'LIKE', '10100%')
+                ->where('debt_code', $value->acc_code)
+                ->whereBetween('date_issued', [$start_date, $end_date])
+                ->orWhere('cred_code', 'LIKE', '10200%')
+                ->where('debt_code', $value->acc_code)
+                ->whereBetween('date_issued', [$start_date, $end_date])
+                ->sum('amount');
+
+            $value->balance = $debit - $credit;
+        }
+
+        $initBalance = $chartOfAccounts->whereIn('account_id', [1, 2])->sum('st_balance');
+
+        $account_trace = new AccountTrace();
+        $startBalance = $account_trace->cashflowCount('0000-00-00', $start_date);
+        $endBalance = $account_trace->cashflowCount('0000-00-00', $end_date);
+
+        if ($startBalance == 0) {
+            $percentageChange = 0;
+        } else {
+            $percentageChange = ($endBalance - $startBalance) / $startBalance * 100;
+        }
+
         return view('report.cashflow', [
             'title' => 'Cash Flow',
             'active' => 'reports',
-        ]);
+            'pendapatan' => $chartOfAccounts->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
+            'piutang' => $chartOfAccounts->whereIn('account_id', [4, 5])->groupBy('account_id'),
+            'hutang' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
+            'modal' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
+            'biaya' => $chartOfAccounts->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
+            'startBalance' => $initBalance + $startBalance,
+            'endBalance' => $initBalance + $endBalance,
+            'percentageChange' => $percentageChange,
+            'growth' => $endBalance - $startBalance
+        ])->with($request->all());
     }
+
+
 
     public function balanceSheet(Request $request)
     {
@@ -111,6 +145,20 @@ class ReportController extends Controller
         // Process profitLossCount and equityCount first
         $accountTrace->profitLossCount('0000-00-00', $endDate);
         $accountTrace->equityCount($endDate);
+
+        $initEquity = $accountTrace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
+        $lastEquity = $accountTrace->equityCount($endDate, FALSE);
+
+        // Assuming you already have $initEquity and $lastEquity calculated
+
+        $percentageChange = 0; // Default value if $initEquity is 0 to avoid division by zero
+
+        if ($initEquity != 0) {
+            $percentageChange = (($lastEquity - $initEquity) / $initEquity) * 100;
+        }
+
+        // Now $percentageChange contains the calculated percentage change
+
 
         // Fetch transactions
         $transactions = $accountTrace->load('debt', 'cred')
@@ -141,6 +189,7 @@ class ReportController extends Controller
             'assets' => $chartOfAccounts->whereIn('account_id', \range(1, 18))->groupBy('account_id'),
             'liabilities' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
             'equity' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
+            'percentageChange' => $percentageChange
         ], \compact('transactions'))->with($request->all());
     }
 
@@ -178,25 +227,6 @@ class ReportController extends Controller
             'revenue' => $coa->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
             'cost' => $coa->whereIn('account_id', \range(31, 32))->groupBy('account_id'),
             'expense' => $coa->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
-        ])->with($request->all());
-    }
-
-    public function cashflowReport(Request $request)
-    {
-        $account_trace = new AccountTrace();
-        $account_trace->profitLossCount('0000-00-00', $request->end_date);
-        $account_trace->equityCount($request->end_date);
-
-        $transactions = $account_trace->load('debt', 'cred')
-            ->whereBetween('date_issued', [
-                Carbon::parse($request->start_date)->startOfDay(),
-                Carbon::parse($request->end_date)->endOfDay(),
-            ])->get();
-
-        return view('report.cashflow-report', [
-            'title' => 'Cash Flow Report',
-            'active' => 'reports',
-            'transactions' => $transactions
         ])->with($request->all());
     }
 }

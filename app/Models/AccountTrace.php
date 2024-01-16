@@ -14,6 +14,10 @@ class AccountTrace extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'amount' => 'float', // Adjust this based on your actual data type
+    ];
+
     public function receivable()
     {
         return $this->belongsTo(Receivable::class, 'invoice', 'invoice')->where('payment_nth', 'payment_nth');
@@ -113,26 +117,46 @@ class AccountTrace extends Model
     }
 
 
-    public function equityCount($end_date)
+    public function equityCount($end_date, $includeEquity = true)
     {
-        // Use relationships if available
         $coa = ChartOfAccount::all();
 
         foreach ($coa as $coaItem) {
-            // Use a more descriptive variable name
             $coaItem->balance = $this->endBalanceBetweenDate($coaItem->acc_code, '0000-00-00', $end_date);
         }
 
-        // Use collections for filtering
-        $initBalance = $coa->firstWhere('acc_code', '30100-001')->st_balance;
-        $assets = $coa->whereIn('account_id', \range(1, 18))->groupBy('account_id')->sum('balance');
-        $liabilities = $coa->whereIn('account_id', \range(19, 25))->groupBy('account_id')->sum('balance');
-        $equity = $coa->where('account_id', 26)->groupBy('account_id')->sum('balance');
+        $initBalance = $coa->where('acc_code', '30100-001')->first()->st_balance;
+        $assets = $coa->whereIn('account_id', \range(1, 18))->sum('balance');
+        $liabilities = $coa->whereIn('account_id', \range(19, 25))->sum('balance');
+        $equity = $coa->where('account_id', 26)->sum('balance');
 
         // Use Eloquent to update a specific record
-        ChartOfAccount::where('acc_code', '30100-001')->update(['st_balance' => $assets - $liabilities - $equity]);
+        ChartOfAccount::where('acc_code', '30100-001')->update(['st_balance' => $initBalance + $assets - $liabilities - $equity]);
 
         // Return the calculated equity
-        return $assets - $liabilities - $equity;
+        return ($includeEquity ? $initBalance : 0) + $assets - $liabilities - ($includeEquity ? $equity : 0);
+    }
+
+    public function cashflowCount($start_date, $end_date)
+    {
+        $cashAccount = ChartOfAccount::with('account', 'account_trace')->get();
+
+        foreach ($cashAccount as $value) {
+            $debit = $this->where('debt_code', $value->acc_code)->whereBetween('date_issued', [
+                Carbon::parse($start_date)->startOfDay(),
+                Carbon::parse($end_date)->endOfDay(),
+            ])->sum('amount');
+
+            $credit = $this->where('cred_code', $value->acc_code)->whereBetween('date_issued', [
+                Carbon::parse($start_date)->startOfDay(),
+                Carbon::parse($end_date)->endOfDay(),
+            ])->sum('amount');
+
+            $value->balance = $debit - $credit;
+        }
+
+        $result = $cashAccount->whereIn('account_id', [1, 2])->sum('balance');
+
+        return $result;
     }
 }

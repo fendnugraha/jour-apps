@@ -24,7 +24,7 @@ class AccountTraceController extends Controller
         return view('journal/addjournal', [
             'title' => 'Journal / Add Journal',
             'invoice' => $accountTrace->invoice_journal(),
-            'account' => ChartOfAccount::all()
+            'account' => ChartOfAccount::orderBy('acc_code', 'asc')->get()
         ]);
     }
 
@@ -34,7 +34,7 @@ class AccountTraceController extends Controller
 
         return view('journal/adddeposit', [
             'title' => 'Journal / Add Deposit Customer',
-            'account' => ChartOfAccount::all()
+            'account' => ChartOfAccount::orderBy('acc_code', 'asc')->get()
         ]);
     }
 
@@ -123,7 +123,7 @@ class AccountTraceController extends Controller
         $accountTrace = AccountTrace::find($id);
         return view('journal/edit', [
             'title' => 'Journal / Edit Journal',
-            'account' => ChartOfAccount::all()
+            'account' => ChartOfAccount::orderBy('acc_code', 'asc')->get()
         ], compact('accountTrace'));
     }
 

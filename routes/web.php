@@ -157,7 +157,7 @@ Route::delete('/setting/warehouse/{id}/delete', [WarehouseController::class, 'de
 
 // Report Area
 
-Route::get('/report/cashflow', [ReportController::class, 'index'])->middleware('auth');
+Route::post('/report/cashflow', [ReportController::class, 'cashflow'])->middleware('auth');
 Route::post('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
 Route::post('/report/balance-sheet', [ReportController::class, 'balanceSheet'])->middleware('auth');
 Route::post('/report/profit-loss', [ReportController::class, 'profitLoss'])->middleware('auth');

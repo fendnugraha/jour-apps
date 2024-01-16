@@ -8,9 +8,9 @@
 
         <main class="content">
         <!-- Content  -->
-        <div class="row mb-3">
+        <div class="row mb-3 g-1">
             <div class="col-lg">
-                <div class="card text-bg-warning">
+                <div class="card card-widget text-bg-dark">
                     <div class="card-body">
                         <h3>Invoices</h3>
                         <h1><i class="fa-solid fa-file-invoice"></i> {{ number_format($bill_total->count()) }}</h1>
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="col-lg">
-                <div class="card text-bg-warning">
+                <div class="card card-widget text-bg-dark">
                     <div class="card-body">
                         <h3>Bills</h3>
                         <h1><i class="fa-solid fa-receipt"></i> {{custom_number($bill_total->sum('bill'))}}</h1>
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="col-lg">
-                <div class="card text-bg-secondary">
+                <div class="card card-widget text-bg-secondary">
                     <div class="card-body">
                         <h3>Payments</h3>
                         <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($bill_total->sum('payment'))}}</h1>
@@ -48,7 +48,7 @@
                 </ul>
             </div>
         </div>
-        <h4>Receivable Total: {{ number_format($bill_total->sum('balance')) }}</h4>
+        <h4>Total: {{ number_format($bill_total->sum('balance')) }}</h4>
         <table class="table display-no-order">
         <thead>
         <tr>

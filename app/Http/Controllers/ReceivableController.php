@@ -36,18 +36,18 @@ class ReceivableController extends Controller
     {
         return view('journal.receivable.invoice', [
             'title' => 'Receivable Invoice',
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
         ]);
     }
 
     public function addReceivable()
     {
-        $coa = ChartOfAccount::where('account_id', 4)->get();
-        $rscFund = ChartOfAccount::whereIn('account_id', [1, 2, 6])->get();
+        $coa = ChartOfAccount::where('account_id', 4)->orderBy('acc_code', 'asc')->get();
+        $rscFund = ChartOfAccount::whereIn('account_id', [1, 2, 6])->orderBy('acc_code', 'asc')->get();
 
         return view('journal.receivable.addReceivable', [
             'title' => 'Add Receivable',
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
             'rcv' => $coa,
             'rscFund' => $rscFund
         ]);
@@ -59,7 +59,7 @@ class ReceivableController extends Controller
 
         return view('journal.receivable.addReceivableDeposit', [
             'title' => 'Add Receivable Deposit',
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
             'rcv' => $coa,
         ]);
     }
@@ -70,7 +70,7 @@ class ReceivableController extends Controller
 
         return view('journal.receivable.addReceivableSales', [
             'title' => 'Add Receivable Sales',
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
             'rcv' => $coa,
         ]);
     }
@@ -323,7 +323,7 @@ class ReceivableController extends Controller
             'rcv' => $rcv,
             'rscFund' => $rscFund,
             'rsvAccount' => ChartOfAccount::where('account_id', 4)->get(),
-            'contacts' => Contact::all(),
+            'contacts' => Contact::orderBy('name')->get(),
             'account_trace' => $account_trace
         ]);
     }

@@ -10,8 +10,8 @@
 
 
         <!-- Content  -->
-        <h1>Test: {{ $test }}</h1>
-        <h1>profit: {{ $profit }}</h1>
+        <h1>Init: {{ $initEquity }}</h1>
+        <h1>Last: {{ $lastEquity }}</h1>
        
 
 
