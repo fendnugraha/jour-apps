@@ -229,4 +229,62 @@ class ReportController extends Controller
             'expense' => $coa->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
         ])->with($request->all());
     }
+
+    public function dailyProfit(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+
+        // If month and year are not provided in the request, use the current month and year
+        if ($month == null && $year == null) {
+            $month = Carbon::now()->month;
+            $year = Carbon::now()->year;
+        }
+
+        $account_trace = new AccountTrace();
+
+        $dailyProfits = [];
+        $sumRevenue = 0; // Variable to store the total sum of revenue
+        $sumCost = 0;    // Variable to store the total sum of cost
+        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $tprofit = 0;
+        $data = [];
+        for ($x = 1; $x <= $days; $x++) {
+            $date = Carbon::parse("$year-$month-$x")->startOfDay();
+            $endDate = Carbon::parse("$year-$month-$x")->endOfDay();
+
+            $revenue = $account_trace->with('debt', 'cred')
+                ->whereBetween('date_issued', [$date, $endDate])
+                ->where('cred_code', 'LIKE', '4%')
+                ->sum('amount');
+
+            $cost = $account_trace->with('debt', 'cred')
+                ->whereBetween('date_issued', [$date, $endDate])
+                ->where('debt_code', 'LIKE', '5%')
+                ->sum('amount');
+
+            $data[] = [
+                'date' => $date->format('l, d'),
+                'revenue' => $revenue,
+                'cost' => $cost,
+                'profit' => $revenue - $cost,
+            ];
+
+            $sumRevenue += $revenue;
+            $sumCost += $cost;
+            $tprofit += ($revenue - $cost);
+        }
+
+        return view('report.daily-profit', [
+            'title' => 'Daily Profit',
+            'active' => 'reports',
+            'monthName' => Carbon::parse($year . '-' . $month . '-01')->format('F'),
+            'selectedMonth' => $month,
+            'selectedYear' => $year,
+            'data' => $data,
+            'sumRevenue' => $sumRevenue,
+            'sumCost' => $sumCost, // Add the sum of cost to the view data
+            'totalProfit' => $tprofit,
+        ])->with($request->all());
+    }
 }

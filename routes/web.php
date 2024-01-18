@@ -161,6 +161,7 @@ Route::post('/report/cashflow', [ReportController::class, 'cashflow'])->middlewa
 Route::post('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
 Route::post('/report/balance-sheet', [ReportController::class, 'balanceSheet'])->middleware('auth');
 Route::post('/report/profit-loss', [ReportController::class, 'profitLoss'])->middleware('auth');
+Route::post('/report/daily-profit', [ReportController::class, 'dailyProfit'])->middleware('auth');
 
 // End Report Area
 // ========================================================================================================
