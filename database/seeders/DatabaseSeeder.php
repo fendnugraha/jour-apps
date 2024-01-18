@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\Warehouse;
-use App\Models\AccountTrace;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -54,7 +53,7 @@ class DatabaseSeeder extends Seeder
             'warehouse_id' => 1
         ]);
 
-        Contact::factory()->count(50)->create();
+        // Contact::factory()->count(50)->create();
 
         Setting::create([
             'app_name' => 'Jour Apps',

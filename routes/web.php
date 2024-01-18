@@ -49,7 +49,7 @@ Route::get('/setting', function () {
 Route::get('/report', function () {
     return view('home.report', [
         'title' => 'Report',
-        'account' => ChartOfAccount::all()
+        'account' => ChartOfAccount::orderBy('acc_code', 'asc')->get(),
     ]);
 })->middleware('auth');
 

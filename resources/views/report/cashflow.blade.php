@@ -41,7 +41,70 @@
             </form>
             <div class="col-sm">
                 @foreach ($pendapatan as $accountGroup)
-                    <table class="table">
+                    <table class="table" {{$accountGroup->sum('balance') !== 0 ? '' : 'hidden'}}>
+                        <thead>
+                            <tr>
+                                <th>{{ $accountGroup->first()->account->name }}</th>
+                                <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($accountGroup as $account)
+                                <tr {{$account->balance !== 0 ? '' : 'hidden'}}>
+                                    <td>{{ $account->acc_name }}</td>
+                                    <td class="text-end">{{ number_format(intval($account->balance)) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
+            </div>
+
+            <div class="col-sm">
+                @foreach ($persediaan as $accountGroup)
+                    <table class="table" {{$accountGroup->sum('balance') !== 0 ? '' : 'hidden'}}>
+                        <thead>
+                            <tr>
+                                <th>{{ $accountGroup->first()->account->name }}</th>
+                                <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($accountGroup as $account)
+                                <tr {{$account->balance !== 0 ? '' : 'hidden'}}>
+                                    <td>{{ $account->acc_name }}</td>
+                                    <td class="text-end">{{ number_format(intval($account->balance)) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
+            </div>
+
+            <div class="col-sm">
+                @foreach ($investasi as $accountGroup)
+                    <table class="table" {{$accountGroup->sum('balance') !== 0 ? '' : 'hidden'}}>
+                        <thead>
+                            <tr>
+                                <th>{{ $accountGroup->first()->account->name }}</th>
+                                <th class="text-end">{{ number_format(intval($accountGroup->sum('balance'))) }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($accountGroup as $account)
+                                <tr {{$account->balance !== 0 ? '' : 'hidden'}}>
+                                    <td>{{ $account->acc_name }}</td>
+                                    <td class="text-end">{{ number_format(intval($account->balance)) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endforeach
+            </div>
+
+            <div class="col-sm">
+                @foreach ($assets as $accountGroup)
+                    <table class="table" {{$accountGroup->sum('balance') !== 0 ? '' : 'hidden'}}>
                         <thead>
                             <tr>
                                 <th>{{ $accountGroup->first()->account->name }}</th>
@@ -62,7 +125,7 @@
             
             <div class="col-sm">
                 @foreach ($piutang as $accountGroup)
-                    <table class="table">
+                    <table class="table" {{$accountGroup->sum('balance') !== 0 ? '' : 'hidden'}}>
                         <thead>
                             <tr>
                                 <th>{{ $accountGroup->first()->account->name }}</th>

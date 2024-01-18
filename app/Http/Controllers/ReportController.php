@@ -72,7 +72,7 @@ class ReportController extends Controller
             'title' => 'General Ledger',
             'active' => 'reports',
             'account_trace' => $account_trace->load(['debt', 'cred', 'warehouse', 'user']),
-            'account' => ChartOfAccount::all(),
+            'account' => ChartOfAccount::with(['account'])->orderBy('acc_code', 'asc')->get(),
             'debt_total' => $debt_total,
             'cred_total' => $cred_total,
             'initBalance' => $initBalance,
@@ -110,7 +110,7 @@ class ReportController extends Controller
         $initBalance = $chartOfAccounts->whereIn('account_id', [1, 2])->sum('st_balance');
 
         $account_trace = new AccountTrace();
-        $startBalance = $account_trace->cashflowCount('0000-00-00', $start_date);
+        $startBalance = $account_trace->cashflowCount('0000-00-00', $start_date->subDay(1));
         $endBalance = $account_trace->cashflowCount('0000-00-00', $end_date);
 
         if ($startBalance == 0) {
@@ -124,6 +124,9 @@ class ReportController extends Controller
             'active' => 'reports',
             'pendapatan' => $chartOfAccounts->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
             'piutang' => $chartOfAccounts->whereIn('account_id', [4, 5])->groupBy('account_id'),
+            'persediaan' => $chartOfAccounts->whereIn('account_id', [6, 7])->groupBy('account_id'),
+            'investasi' => $chartOfAccounts->whereIn('account_id', [10, 11, 12])->groupBy('account_id'),
+            'assets' => $chartOfAccounts->whereIn('account_id', [13, 14, 15, 16, 17, 18])->groupBy('account_id'),
             'hutang' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
             'modal' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
             'biaya' => $chartOfAccounts->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
