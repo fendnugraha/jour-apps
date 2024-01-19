@@ -110,8 +110,8 @@ class ReportController extends Controller
         $initBalance = $chartOfAccounts->whereIn('account_id', [1, 2])->sum('st_balance');
 
         $account_trace = new AccountTrace();
-        $startBalance = $account_trace->cashflowCount('0000-00-00', $start_date->subDay(1));
-        $endBalance = $account_trace->cashflowCount('0000-00-00', $end_date);
+        $startBalance = $initBalance + $account_trace->cashflowCount('0000-00-00', $start_date->subDay(1));
+        $endBalance = $initBalance + $account_trace->cashflowCount('0000-00-00', $end_date);
 
         if ($startBalance == 0) {
             $percentageChange = 0;
@@ -130,8 +130,8 @@ class ReportController extends Controller
             'hutang' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
             'modal' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
             'biaya' => $chartOfAccounts->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
-            'startBalance' => $initBalance + $startBalance,
-            'endBalance' => $initBalance + $endBalance,
+            'startBalance' => $startBalance,
+            'endBalance' => $endBalance,
             'percentageChange' => $percentageChange,
             'growth' => $endBalance - $startBalance
         ])->with($request->all());

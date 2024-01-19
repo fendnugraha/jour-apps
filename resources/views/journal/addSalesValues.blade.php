@@ -78,7 +78,6 @@
             </form>
        <!-- End Content -->
     </main>
-    </div>
 
 
 @endsection
