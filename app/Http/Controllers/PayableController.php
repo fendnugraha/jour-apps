@@ -111,10 +111,10 @@ class PayableController extends Controller
             ->groupBy('contact_id')
             ->first();
 
-        $pyb = Payable::select('Payables.*')
-            ->join('chart_of_accounts', 'Payables.account_code', '=', 'chart_of_accounts.acc_code')
-            ->where('Payables.contact_id', $id)
-            ->orderBy('Payables.date_issued', 'desc')
+        $pyb = Payable::select('payables.*')
+            ->join('chart_of_accounts', 'payables.account_code', '=', 'chart_of_accounts.acc_code')
+            ->where('payables.contact_id', $id)
+            ->orderBy('payables.date_issued', 'desc')
             ->get();
 
         $invoices = $pyb->pluck('invoice')->toArray();

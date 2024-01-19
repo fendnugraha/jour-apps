@@ -8,11 +8,10 @@
 
         <main class="content">
             
-                <h2>Daily Profit for {{ $monthName }} {{ $selectedYear }}</h2>
+                <h2>Daily Profit for {{ $monthName }} {{ $selectedYear }}. Total Profit: {{ number_format($totalProfit) }}</h2>
 
                 <div class="row h-100">
                     <div class="col-sm-4">
-                        <p>Total Profit: {{ number_format($totalProfit) }}</p>
                         <form action="/report/daily-profit" method="post">
                             @csrf
                             <div class="mb-3">
