@@ -20,7 +20,7 @@
                     <div class="card card-widget text-bg-secondary">
                         <div class="card-body">
                             <h5>Growth Rate (%)</h5>
-                            <h2 class="text-end">{!! $percentageChange > 0 ? '<i class="fa-solid fa-circle-up text-light"></i>' : '<i class="fa-solid fa-circle-down text-danger"></i>' !!} {{ number_format(intval($percentageChange), 2) . ' %' }}</h2>
+                            <h2 class="text-end">{!! $percentageChange > 0 ? '<i class="fa-solid fa-circle-up text-light"></i>' : '<i class="fa-solid fa-circle-down text-danger"></i>' !!} {{ number_format($percentageChange, 2). ' %' }}</h2>
                         </div>
                     </div>
                 </div>
