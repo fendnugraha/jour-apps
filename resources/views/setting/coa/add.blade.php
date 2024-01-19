@@ -44,7 +44,7 @@
                     <div class="mb-2 row">
                         <label for="st_balance" class="col-sm col-form-label">Saldo Awal</label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control @error('st_balance') is-invalid @enderror" name="st_balance" id="st_balance" value="{{old('st_balance')}}">
+                            <input type="number" class="form-control @error('st_balance') is-invalid @enderror" name="st_balance" id="st_balance" value="{{old('st_balance') == null ? 0 : old('st_balance')}}">
                             @error('st_balance')
                             <div class="invalid-feedback">
                                 <small>{{ $message }}</small>

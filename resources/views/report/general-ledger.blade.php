@@ -110,7 +110,7 @@
                 </td>
                 <td>{{ $ac->debt_code == $accounts ? number_format($ac->amount) : '' }}</td>
                 <td>{{ $ac->cred_code == $accounts ? number_format($ac->amount) : '' }}</td>
-                <td>{{ number_format($balance) }}</td>
+                <td>{{ number_format($initBalance + $balance) }}</td>
             </tr>
             @endforeach
         </tbody>
