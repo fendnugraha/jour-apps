@@ -39,7 +39,7 @@ Route::get('/auth/register_success', function () {
 // ========================================================================================================
 
 // Home Area
-Route::get('/home', [AccountTraceController::class, 'index'])->middleware('auth');
+Route::get('/home', [ReportController::class, 'index'])->middleware('auth');
 Route::get('/setting', function () {
     return view('home.setting', [
         'title' => 'Setting',
@@ -157,6 +157,7 @@ Route::delete('/setting/warehouse/{id}/delete', [WarehouseController::class, 'de
 
 // Report Area
 
+Route::post('/report', [ReportController::class, 'index'])->middleware('auth');
 Route::post('/report/cashflow', [ReportController::class, 'cashflow'])->middleware('auth');
 Route::post('/report/general-ledger', [ReportController::class, 'generalLedger'])->middleware('auth');
 Route::post('/report/balance-sheet', [ReportController::class, 'balanceSheet'])->middleware('auth');

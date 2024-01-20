@@ -14,17 +14,96 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $account_trace = new AccountTrace();
-        $initEquity = $account_trace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
-        $lastEquity = $account_trace->equityCount(Carbon::now()->endOfMonth()->endOfDay(), FALSE);
+        $accountTrace = new AccountTrace();
+        $endDate = \Carbon\Carbon::parse(now())->endOfDay();
+        // dd($endDate);
 
-        // \dd(Carbon::now()->endOfDay());
+        // Process profitLossCount and equityCount first
+        $accountTrace->profitLossCount('0000-00-00', $endDate);
+        $accountTrace->equityCount($endDate);
+
+        $initEquity = $accountTrace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
+        $lastEquity = $accountTrace->equityCount($endDate, FALSE);
+
+        // Assuming you already have $initEquity and $lastEquity calculated
+
+        $percentageChange = 0; // Default value if $initEquity is 0 to avoid division by zero
+
+        if ($initEquity != 0) {
+            $percentageChange = (($lastEquity - $initEquity) / $initEquity) * 100;
+        }
+
+        // Now $percentageChange contains the calculated percentage change
+
+
+        // Fetch transactions
+        $transactions = $accountTrace->load('debt', 'cred')
+            ->whereBetween('date_issued', [
+                '0000-00-00', $endDate,
+            ])
+            ->get();
+
+        // Fetch chart of accounts
+        $chartOfAccounts = ChartOfAccount::all();
+
+        // Calculate balances
+        foreach ($chartOfAccounts as $coaItem) {
+            $debit = $transactions->where('debt_code', $coaItem->acc_code)->sum('amount');
+            $credit = $transactions->where('cred_code', $coaItem->acc_code)->sum('amount');
+
+            if ($coaItem->Account->status == "D") {
+                $coaItem->balance = $coaItem->st_balance + $debit - $credit;
+            } else {
+                $coaItem->balance = $coaItem->st_balance + $credit - $debit;
+            }
+        }
+
+        $assets = $chartOfAccounts->load('account')->whereIn('account_id', \range(1, 18));
+        $liabilities = $chartOfAccounts->whereIn('account_id', \range(19, 25));
+        $equity = $chartOfAccounts->where('account_id', 26);
+        $cash = $chartOfAccounts->where('account_id', 1);
+        $bank = $chartOfAccounts->where('account_id', 2);
+
+        $totalCash = $cash->sum('balance') + $bank->sum('balance');
+
+        $receivable = $chartOfAccounts->whereIn('account_id', [4, 5])->groupBy('account_id');
+        $payable = $chartOfAccounts->whereIn('account_id', [19, 20])->groupBy('account_id');
+
+        $revenue = $chartOfAccounts->whereIn('account_id', \range(27, 30));
+        $cost = $chartOfAccounts->whereIn('account_id', [31, 32]);
+        $expense = $chartOfAccounts->whereIn('account_id', \range(33, 45));
+
+        $netProfit = $revenue->sum('balance') - $cost->sum('balance') - $expense->sum('balance');
+
+        $debtRatio = \round($liabilities->sum('balance') / $assets->sum('balance') * 100, 2);
+        $currentRatio = \round($assets->sum('balance') / $liabilities->sum('balance') * 100, 2);
+        $quickRatio = \round($totalCash / $liabilities->sum('balance') * 100, 2);
+
+        $debtToEquityRatio = \round($liabilities->sum('balance') / $equity->sum('balance') * 100, 2);
+        $returnToEquityRatio = \round($netProfit / $equity->sum('balance') * 100, 2);
+        $netProfitMarginRation = \round($netProfit / $revenue->sum('balance') * 100, 2);
 
         return view('report.index', [
             'title' => 'Reports',
             'active' => 'reports',
-            'initEquity' => $initEquity,
-            'lastEquity' => $lastEquity
+            'assets' => $assets,
+            'liabilities' => $liabilities,
+            'equity' => $equity,
+            'cash' => $cash,
+            'bank' => $bank,
+            'totalCash' => $totalCash,
+            'receivable' => $receivable,
+            'payable' => $payable,
+            'revenue' => $revenue,
+            'cost' => $cost,
+            'expense' => $expense,
+            'netProfit' => $netProfit,
+            'debtRatio' => $debtRatio,
+            'currentRatio' => $currentRatio,
+            'quickRatio' => $quickRatio,
+            'debtToEquityRatio' => $debtToEquityRatio,
+            'returnToEquityRatio' => $returnToEquityRatio,
+            'netProfitMarginRation' => $netProfitMarginRation,
         ]);
     }
 
