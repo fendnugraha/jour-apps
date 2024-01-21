@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export APP=/home/gsmtron1/jour/
+    - /bin/cp -R /home/gsmtron1/repositories/jour-apps $APP
