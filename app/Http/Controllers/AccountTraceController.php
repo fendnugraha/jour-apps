@@ -9,13 +9,25 @@ use Illuminate\Support\Facades\DB;
 
 class AccountTraceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->input('query');
+
+        $accountTrace = AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])
+            ->when($query, function ($query, $search) {
+                return $query->where('invoice', 'like', '%' . $search . '%');
+                // Replace 'column_name' with the actual column you want to search on.
+            })
+            ->latest()
+            ->paginate(8);
+
         return view('journal/index', [
             'title' => 'Journal Home',
-            'accountTrace' => AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])->orderBy('id', 'desc')->get(),
+            'accountTrace' => $accountTrace,
+            'query' => $query,
         ]);
     }
+
 
     public function addjournal()
     {

@@ -58,7 +58,7 @@ Route::get('/report', function () {
 // ========================================================================================================
 
 // Jurnal Area
-Route::get('/jurnal', [AccountTraceController::class, 'index'])->middleware('auth');
+Route::get('/jurnal', [AccountTraceController::class, 'index'])->name('jurnal.index')->middleware('auth');
 Route::get('/jurnal/addjournal', [AccountTraceController::class, 'addjournal'])->middleware('auth');
 Route::post('/jurnal/addjournal', [AccountTraceController::class, 'store'])->middleware('auth');
 Route::get('/jurnal/adddeposit', [AccountTraceController::class, 'adddeposit'])->middleware('auth');

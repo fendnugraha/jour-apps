@@ -14,42 +14,28 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $accountTrace = new AccountTrace();
         $endDate = \Carbon\Carbon::parse(now())->endOfDay();
-        // dd($endDate);
+        // Eager loading relationships
+        $accountTrace = AccountTrace::with(['debt', 'cred', 'debt.account', 'cred.account'])
+            ->whereBetween('date_issued', ['0000-00-00', $endDate])
+            ->latest()
+            ->get();
 
-        // Process profitLossCount and equityCount first
-        $accountTrace->profitLossCount('0000-00-00', $endDate);
-        $accountTrace->equityCount($endDate);
-
-        $initEquity = $accountTrace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
-        $lastEquity = $accountTrace->equityCount($endDate, FALSE);
-
-        // Assuming you already have $initEquity and $lastEquity calculated
-
-        $percentageChange = 0; // Default value if $initEquity is 0 to avoid division by zero
-
-        if ($initEquity != 0) {
-            $percentageChange = (($lastEquity - $initEquity) / $initEquity) * 100;
-        }
-
-        // Now $percentageChange contains the calculated percentage change
 
 
         // Fetch transactions
-        $transactions = $accountTrace->load('debt', 'cred')
-            ->whereBetween('date_issued', [
-                '0000-00-00', $endDate,
-            ])
-            ->get();
+        // $transactions = $accountTrace->load('debt', 'cred')
+        //     ->whereBetween('date_issued', [
+        //         '0000-00-00', $endDate,
+        //     ])->get();
 
         // Fetch chart of accounts
         $chartOfAccounts = ChartOfAccount::all();
 
         // Calculate balances
         foreach ($chartOfAccounts as $coaItem) {
-            $debit = $transactions->where('debt_code', $coaItem->acc_code)->sum('amount');
-            $credit = $transactions->where('cred_code', $coaItem->acc_code)->sum('amount');
+            $debit = $accountTrace->where('debt_code', $coaItem->acc_code)->sum('amount');
+            $credit = $accountTrace->where('cred_code', $coaItem->acc_code)->sum('amount');
 
             if ($coaItem->Account->status == "D") {
                 $coaItem->balance = $coaItem->st_balance + $debit - $credit;
@@ -223,6 +209,10 @@ class ReportController extends Controller
         $accountTrace = new AccountTrace();
         $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
         // dd($endDate);
+        $transaction = AccountTrace::with(['debt', 'cred', 'debt.account', 'cred.account'])
+            ->whereBetween('date_issued', ['0000-00-00', $endDate])
+            ->latest()
+            ->get();
 
         // Process profitLossCount and equityCount first
         $accountTrace->profitLossCount('0000-00-00', $endDate);
@@ -243,11 +233,11 @@ class ReportController extends Controller
 
 
         // Fetch transactions
-        $transactions = $accountTrace->load('debt', 'cred')
-            ->whereBetween('date_issued', [
-                '0000-00-00', $endDate,
-            ])
-            ->get();
+        // $transactions = $accountTrace->load('debt', 'cred')
+        //     ->whereBetween('date_issued', [
+        //         '0000-00-00', $endDate,
+        //     ])
+        //     ->get();
 
         // Fetch chart of accounts
         $chartOfAccounts = ChartOfAccount::with(['account', 'account_trace'])
@@ -255,8 +245,8 @@ class ReportController extends Controller
 
         // Calculate balances
         foreach ($chartOfAccounts as $coaItem) {
-            $debit = $transactions->where('debt_code', $coaItem->acc_code)->sum('amount');
-            $credit = $transactions->where('cred_code', $coaItem->acc_code)->sum('amount');
+            $debit = $transaction->where('debt_code', $coaItem->acc_code)->sum('amount');
+            $credit = $transaction->where('cred_code', $coaItem->acc_code)->sum('amount');
 
             if ($coaItem->Account->status == "D") {
                 $coaItem->balance = $coaItem->st_balance + $debit - $credit;

@@ -8,7 +8,7 @@
         <main class="content">
         <!-- Content  -->
         
-        <div class="content-menu d-flex gap-2">
+        <div class="content-menu d-flex gap-2 w-100">
             <div class="dropdown mb-2">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Add New
@@ -28,9 +28,15 @@
                   <li><a class="dropdown-item" href="/hutang">Hutang</a></li>
                 </ul>
             </div>
+            <div class="search-form">
+                <form action="{{ route('jurnal.index') }}" method="GET" class="d-flex gap-2 w-100">
+                    <input type="text" class="form-control flex-grow-3" name="query" placeholder="Search invoice .." value="{{ $query }}">
+                    <button type="submit" class="btn btn-primary flex-grow-1">Search</button>
+                </form>
+            </div>
         </div>
         
-        <table class="table display-no-order">
+        <table class="table">
             <thead>
                 <tr>
                     <th>DESKRIPSI</th>
@@ -81,6 +87,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{$accountTrace->links()}}
     </main>
         <!-- End Content -->
     </div>
