@@ -16,7 +16,7 @@
                         {{ Auth::user()->email }}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="/setting/general">Profile</a></li>
                         <li><a class="dropdown-item" href="/setting">Setting</a></li>
                         <li>
                             <hr class="dropdown-divider">

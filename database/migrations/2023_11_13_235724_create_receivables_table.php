@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('payment_status');
             $table->integer('payment_nth');
             $table->foreignId('contact_id');
-            $table->string('account_code', 10);
+            $table->string('account_code', 10)->index();
             $table->timestamps();
         });
     }

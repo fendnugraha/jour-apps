@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PayableController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\AccountTraceController;
@@ -52,6 +53,9 @@ Route::get('/report', function () {
         'account' => ChartOfAccount::orderBy('acc_code', 'asc')->get(),
     ]);
 })->middleware('auth');
+
+Route::get('setting/general', [SettingController::class, 'index'])->middleware('auth');
+Route::put('setting/general/{id}/update', [SettingController::class, 'update'])->name('profile.update')->middleware('auth');
 
 
 // End Home Area

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('acc_code', 30)->unique();
-            $table->string('acc_name', 100)->unique();
-            $table->foreignId('account_id');
+            $table->string('acc_code', 30)->unique()->index();
+            $table->string('acc_name', 100)->unique()->index();
+            $table->foreignId('account_id')->index();
             $table->bigInteger('st_balance')->default(0);
             $table->timestamps();
         });

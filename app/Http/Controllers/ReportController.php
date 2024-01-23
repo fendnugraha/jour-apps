@@ -262,7 +262,7 @@ class ReportController extends Controller
             'liabilities' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
             'equity' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
             'percentageChange' => $percentageChange
-        ], \compact('transactions'))->with($request->all());
+        ], \compact('transaction'))->with($request->all());
     }
 
 

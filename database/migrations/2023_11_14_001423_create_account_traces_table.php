@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('account_traces', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('date_issued');
+            $table->dateTime('date_issued')->index();
             $table->string('invoice', 60)->index();
             $table->string('description', 160);
-            $table->string('debt_code', 60);
-            $table->string('cred_code', 60);
+            $table->string('debt_code', 60)->index();
+            $table->string('cred_code', 60)->index();
             $table->integer('amount');
             $table->integer('status')->default(1);
             $table->string('rcv_pay', 30)->nullable();
             $table->integer('payment_status')->nullable();
             $table->integer('payment_nth')->nullable();
-            $table->foreignId('user_id');
-            $table->foreignId('warehouse_id');
+            $table->foreignId('user_id')->index();
+            $table->foreignId('warehouse_id')->index();
             $table->timestamps();
         });
     }

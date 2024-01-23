@@ -1,6 +1,6 @@
 <div class="sidebar">
   <div class="brand-name d-flex justify-content-center align-items-center">
-      <strong>Jour</strong><Span>Accounting</Span>
+      <strong>{{ \App\Models\Setting::first()->app_name }}</strong>
   </div>
   <div class="accordion accordion-flush" id="accordionFlushExample">
       <div class="accordion-item">
