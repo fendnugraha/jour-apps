@@ -102,14 +102,23 @@ table, tr {
 .main-content main.content .setting-icon .setting-icon-action {
   text-decoration: none;
   background-color: #f4f9fb;
-  height: 200px;
-  width: 200px;
+  height: 250px;
+  width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   border-radius: 15px;
   color: #150b04;
+  transition: all 0.3s;
+}
+.main-content main.content .setting-icon .setting-icon-action h1 {
+  font-size: 5rem;
+}
+.main-content main.content .setting-icon .setting-icon-action:hover {
+  background-color: #150b04;
+  color: #f4f9fb;
+  box-shadow: #150b04 0px 5px 15px;
 }
 
 .dashboard-area {

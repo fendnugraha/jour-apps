@@ -137,14 +137,25 @@ table, tr {
       .setting-icon-action {
         text-decoration: none;
         background-color: $my-secondary-color;
-        height: 200px;
-        width: 200px;
+        height: 250px;
+        width: 250px;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         border-radius: 15px;
         color: $my-quinary-color;
+        transition: all 0.3s;
+
+        h1{
+          font-size: 5rem;
+        }
+      }
+
+      .setting-icon-action:hover {
+        background-color: $my-quinary-color;
+        color: $my-secondary-color;
+        box-shadow: #150b04 0px 5px 15px;
       }
     }
   }
