@@ -65,7 +65,7 @@ class AccountTrace extends Model
 
     public function endBalanceBetweenDate($account_code, $start_date, $end_date)
     {
-        $initBalance = ChartOfAccount::with('account')->where('acc_code', $account_code)->first();
+        $initBalance = ChartOfAccount::with('account', 'account_trace', 'debt', 'cred')->where('acc_code', $account_code)->first();
         $transaction = $this->whereBetween('date_issued', [
             Carbon::parse($start_date)->startOfDay(),
             Carbon::parse($end_date)->endOfDay(),
@@ -91,30 +91,39 @@ class AccountTrace extends Model
     public function profitLossCount($start_date, $end_date)
     {
         // Use relationships if available
-        $start_date = Carbon::parse($start_date)->startOfDay();
-        $end_date = Carbon::parse($end_date)->endOfDay();
+        $start_date = Carbon::parse($start_date)->copy()->startOfDay();
+        $end_date = Carbon::parse($end_date)->copy()->endOfDay();
 
-        // \dd($start_date, $end_date);
-        $coa = ChartOfAccount::all();
+        $coa = ChartOfAccount::with(['account', 'debt', 'cred'])->whereIn('account_id', \range(27, 45))->get();
 
-        foreach ($coa as $coaItem) {
-            // Use a more descriptive variable name
-            $coaItem->balance = $this->endBalanceBetweenDate($coaItem->acc_code, $start_date, $end_date);
+        $transactions = $this->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [$start_date, $end_date])
+            ->groupBy('debt_code', 'cred_code')
+            ->get();
+
+        foreach ($coa as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
+
+            $value->balance = ($value->account->status == "D") ? ($value->st_balance + $debit - $credit) : ($value->st_balance + $credit - $debit);
         }
 
         // Use collections for filtering
-        $revenue = $coa->whereIn('account_id', ['27', '28', '29', '30'])->sum('balance');
-        $cost = $coa->whereIn('account_id', ['31', '32'])->sum('balance');
+        $revenue = $coa->whereIn('account_id', \range(27, 30))->sum('balance');
+        $cost = $coa->whereIn('account_id', \range(31, 32))->sum('balance');
         $expense = $coa->whereIn('account_id', \range(33, 45))->sum('balance');
 
-        // \dd($coa->whereIn('account_id', \range(27, 30))->toArray());
-
-        // Use Eloquent to update a specific record
-        ChartOfAccount::where('acc_code', '30100-002')->update(['st_balance' => $revenue - $cost - $expense]);
+        // Use Eloquent to update a specific record if it exists
+        $specificRecord = ChartOfAccount::where('acc_code', '30100-002')->first();
+        if ($specificRecord) {
+            $specificRecord->update(['st_balance' => $revenue - $cost - $expense]);
+        }
 
         // Return the calculated profit or loss
         return $revenue - $cost - $expense;
     }
+
 
 
     public function equityCount($end_date, $includeEquity = true)

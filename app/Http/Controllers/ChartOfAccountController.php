@@ -10,9 +10,11 @@ class ChartOfAccountController extends Controller
 {
     public function index()
     {
+        $accounts = ChartOfAccount::with('account')->get();
+
         return view('setting.coa.index', [
             'title' => 'Chart of Accounts',
-            'accounts' => ChartOfAccount::all(),
+            'accounts' => $accounts,
         ]);
     }
 

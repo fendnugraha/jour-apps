@@ -11,11 +11,11 @@ class WarehouseController extends Controller
 {
     public function index()
     {
-        $warehouse = Warehouse::all();
+        $warehouse = new Warehouse();
 
         return view('setting/warehouse/index', [
             'title' => 'Warehouse',
-            'warehouse' => $warehouse,
+            'warehouse' => $warehouse->load('ChartOfAccount')->get(),
             'account' => ChartOfAccount::whereIn('account_id', [1, 2])->get()
         ]);
     }

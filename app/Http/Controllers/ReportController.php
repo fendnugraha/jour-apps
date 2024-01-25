@@ -202,67 +202,43 @@ class ReportController extends Controller
         ])->with($request->all());
     }
 
-
-
     public function balanceSheet(Request $request)
     {
         $accountTrace = new AccountTrace();
         $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
-        // dd($endDate);
-        $transaction = AccountTrace::with(['debt', 'cred', 'debt.account', 'cred.account'])
-            ->whereBetween('date_issued', ['0000-00-00', $endDate])
-            ->latest()
-            ->get();
-
-        // Process profitLossCount and equityCount first
         $accountTrace->profitLossCount('0000-00-00', $endDate);
-        $accountTrace->equityCount($endDate);
 
-        $initEquity = $accountTrace->equityCount(Carbon::now()->subMonth()->endOfMonth()->endOfDay(), FALSE);
-        $lastEquity = $accountTrace->equityCount($endDate, FALSE);
-
-        // Assuming you already have $initEquity and $lastEquity calculated
-
-        $percentageChange = 0; // Default value if $initEquity is 0 to avoid division by zero
-
-        if ($initEquity != 0) {
-            $percentageChange = (($lastEquity - $initEquity) / $initEquity) * 100;
-        }
-
-        // Now $percentageChange contains the calculated percentage change
-
-
-        // Fetch transactions
-        // $transactions = $accountTrace->load('debt', 'cred')
-        //     ->whereBetween('date_issued', [
-        //         '0000-00-00', $endDate,
-        //     ])
-        //     ->get();
-
-        // Fetch chart of accounts
-        $chartOfAccounts = ChartOfAccount::with(['account', 'account_trace'])
+        $transactions = $accountTrace->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [Carbon::create(0000, 1, 1)->endOfDay(), $endDate])
+            ->groupBy('debt_code', 'cred_code')
             ->get();
 
-        // Calculate balances
-        foreach ($chartOfAccounts as $coaItem) {
-            $debit = $transaction->where('debt_code', $coaItem->acc_code)->sum('amount');
-            $credit = $transaction->where('cred_code', $coaItem->acc_code)->sum('amount');
+        $chartOfAccounts = ChartOfAccount::with(['account'])->get();
 
-            if ($coaItem->Account->status == "D") {
-                $coaItem->balance = $coaItem->st_balance + $debit - $credit;
-            } else {
-                $coaItem->balance = $coaItem->st_balance + $credit - $debit;
-            }
+        foreach ($chartOfAccounts as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
+
+            $value->balance = ($value->account->status == "D") ? ($value->st_balance + $debit - $credit) : ($value->st_balance + $credit - $debit);
         }
+
+        $initEquity = $chartOfAccounts->where('acc_code', '30100-001')->first()->st_balance;
+        $assets = $chartOfAccounts->whereIn('account_id', \range(1, 18));
+        $liabilities = $chartOfAccounts->whereIn('account_id', \range(19, 25));
+        $equity = $chartOfAccounts->where('account_id', 26);
+
+        ChartOfAccount::where('acc_code', '30100-001')->update([
+            'st_balance' => $initEquity + $assets->sum('balance') - $liabilities->sum('balance') - $equity->sum('balance'),
+        ]);
 
         return view('report.balance-sheet', [
             'title' => 'Balance Sheet',
             'active' => 'reports',
-            'assets' => $chartOfAccounts->whereIn('account_id', \range(1, 18))->groupBy('account_id'),
-            'liabilities' => $chartOfAccounts->whereIn('account_id', \range(19, 25))->groupBy('account_id'),
-            'equity' => $chartOfAccounts->where('account_id', 26)->groupBy('account_id'),
-            'percentageChange' => $percentageChange
-        ], \compact('transaction'))->with($request->all());
+            'assets' => $assets->groupBy('account_id'),
+            'liabilities' => $liabilities->groupBy('account_id'),
+            'equity' => $equity->groupBy('account_id'),
+        ])->with($request->all());
     }
 
 
