@@ -13,7 +13,7 @@
                 <div class="card card-widget text-bg-dark">
                     <div class="card-body">
                         <h4>Bills</h4>
-                        <h1><i class="fa-solid fa-receipt"></i> {{custom_number($rcvs->bill)}}</h1>
+                        <h1><i class="fa-solid fa-receipt"></i> {{custom_number($bill_total)}}</h1>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 <div class="card card-widget bg-secondary-subtle">
                     <div class="card-body">
                         <h4>Payments</h4>
-                        <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($rcvs->payment)}}</h1>
+                        <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($payment_total)}}</h1>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="card card-widget text-bg-secondary">
                     <div class="card-body">
                         <h4>Balance</h4>
-                        <h1><i class="fa-solid fa-file-invoice"></i> {{custom_number($rcvs->balance)}}</h1>
+                        <h1><i class="fa-solid fa-file-invoice"></i> {{custom_number($balance_total)}}</h1>
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@
           </div>
           
         </div>
-        <h4>{{ $rcvs->contact->name }}. Total: {{ number_format($rcvs->balance) }}</h4>
+        <h4>{{ $rcv->first()->contact->name }}. Total: {{ number_format($balance_total) }}</h4>
         <table class="display-no-order table">
             <thead>
                 <tr>

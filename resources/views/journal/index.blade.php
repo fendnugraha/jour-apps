@@ -36,7 +36,7 @@
             </div>
         </div>
         
-        <table class="table display-no-order">
+        <table class="table">
             <thead>
                 <tr>
                     <th>DESKRIPSI</th>
@@ -87,7 +87,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{-- {{$accountTrace->links()}} --}}
+        {{$accountTrace->links()}}
     </main>
         <!-- End Content -->
     </div>

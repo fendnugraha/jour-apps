@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <form action="/report/cashflow" method="post" class="row mt-3">
+            <form action="/report/cashflow" method="post" class="row my-3">
                 @csrf
                     <div class="form-group col d-flex gap-1 align-items-center">
                         <label for="start_date">Dari</label>

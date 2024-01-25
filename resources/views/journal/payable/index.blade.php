@@ -13,7 +13,7 @@
                 <div class="card card-widget text-bg-dark">
                     <div class="card-body">
                         <h3>Invoices</h3>
-                        <h1><i class="fa-solid fa-file-invoice"></i> {{ number_format($bill_total->count()) }}</h1>
+                        <h1><i class="fa-solid fa-file-invoice"></i> {{ number_format($payables->count()) }}</h1>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                 <div class="card card-widget bg-secondary-subtle">
                     <div class="card-body">
                         <h3>Bills</h3>
-                        <h1><i class="fa-solid fa-receipt"></i> {{custom_number($bill_total->sum('bill'))}}</h1>
+                        <h1><i class="fa-solid fa-receipt"></i> {{custom_number($bills)}}</h1>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="card card-widget text-bg-secondary">
                     <div class="card-body">
                         <h3>Payments</h3>
-                        <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($bill_total->sum('payment'))}}</h1>
+                        <h1><i class="fa-solid fa-credit-card"></i> {{custom_number($payments)}}</h1>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 </ul>
             </div> --}}
         </div>
-        <h4>Total: {{ number_format($bill_total->sum('balance')) }}</h4>
+        <h4>Total: {{ number_format($bill_total) }}</h4>
         <table class="table display-no-order">
         <thead>
         <tr>
@@ -60,16 +60,17 @@
         </thead>
         <tbody>
             
-            @foreach ($bill_total as $py)
+            @foreach ($payables as $py)
+            <?php $bills = $py->sum('bill_amount') - $py->sum('payment_amount') ?>
             <tr>
-                 <td>{{ strtoupper($py->contact->name) }}</td>
-                 <td>{{ number_format($py->balance) }}</td>
+                 <td>{{ strtoupper($py->first()->contact->name) }}</td>
+                 <td>{{ number_format($bills) }}</td>
                  <td>
-                     <span class="badge {{ $py->balance == 0 ? 'text-bg-success' : 'text-bg-danger' }}">
-                    {{ $py->balance == 0 ? 'Paid' : 'Unpaid' }}</span>
+                     <span class="badge {{ $bills == 0 ? 'text-bg-success' : 'text-bg-danger' }}">
+                    {{ $bills == 0 ? 'Paid' : 'Unpaid' }}</span>
                 </td>
                  <td>
-                    <a href="/hutang/{{ $py->contact->id }}/detail" class="badge text-bg-primary">
+                    <a href="/hutang/{{ $py->first()->contact->id }}/detail" class="badge text-bg-primary">
                         <i class="fa-solid fa-eye"></i>
                     </a>
                  </td>  

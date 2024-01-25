@@ -45,7 +45,7 @@
                             <!-- Table header and other HTML here -->
                         
                             <tbody class="table-group-divider">
-                                @foreach ($data as $item)
+                                @foreach ($dailyProfits as $item)
                                 <thead>
                                     <tr class="table-dark">
                                       <th colspan="2">{{ $item['date'] }}</th>

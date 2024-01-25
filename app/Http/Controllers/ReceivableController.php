@@ -17,7 +17,7 @@ class ReceivableController extends Controller
 {
     public function index()
     {
-        $bill_total = Receivable::select(
+        $bill_total = Receivable::with('contact')->select(
             DB::raw('receivables.contact_id, SUM(bill_amount) as bill, SUM(payment_amount) as payment, SUM(bill_amount - payment_amount) as balance')
         )
             ->join('contacts', 'contacts.id', '=', 'receivables.contact_id')
@@ -199,20 +199,17 @@ class ReceivableController extends Controller
 
     public function detail($id)
     {
-        $rcvs = Receivable::select(
-            'contact_id',
-            DB::raw('SUM(bill_amount) as bill'),
-            DB::raw('SUM(payment_amount) as payment'),
-            DB::raw('SUM(bill_amount - payment_amount) as balance')
-        )
-            ->where('contact_id', $id)
-            ->groupBy('contact_id')
-            ->first();
+        // $rcvs = Receivable::select(
+        //     'contact_id',
+        //     DB::raw('SUM(bill_amount) as bill'),
+        //     DB::raw('SUM(payment_amount) as payment'),
+        //     DB::raw('SUM(bill_amount - payment_amount) as balance')
+        // )
+        //     ->where('contact_id', $id)
+        //     ->groupBy('contact_id')
+        //     ->first();
 
-        $rcv = Receivable::select('receivables.*')
-            ->join('chart_of_accounts', 'receivables.account_code', '=', 'chart_of_accounts.acc_code')
-            ->where('receivables.contact_id', $id)
-            ->orderBy('receivables.date_issued', 'desc')
+        $rcv = Receivable::with(['contact', 'account'])->where('contact_id', $id)->orderBy('date_issued', 'desc')
             ->get();
 
         $invoices = $rcv->pluck('invoice')->toArray();
@@ -220,6 +217,11 @@ class ReceivableController extends Controller
             ->whereIn('invoice', $invoices)
             ->groupBy('invoice')
             ->pluck('balance', 'invoice');
+
+        $bill_total = $rcv->sum('bill_amount');
+        $payment_total = $rcv->sum('payment_amount');
+        $balance_total = $bill_total - $payment_total;
+        $rcvs = $rcv->groupBy('invoice');
 
         $rscFund = ChartOfAccount::whereIn('account_id', [1, 2, 6, 19, 26])->get();
 
@@ -233,7 +235,10 @@ class ReceivableController extends Controller
             'rcvs' => $rcvs,
             'invoices' => $invoices,
             'balances' => $balances,
-            'rscFund' => $rscFund
+            'rscFund' => $rscFund,
+            'bill_total' => $bill_total,
+            'payment_total' => $payment_total,
+            'balance_total' => $balance_total
         ]);
     }
 

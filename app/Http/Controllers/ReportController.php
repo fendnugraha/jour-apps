@@ -14,37 +14,25 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $endDate = \Carbon\Carbon::parse(now())->endOfDay();
-        // Eager loading relationships
-        $accountTrace = AccountTrace::with(['debt', 'cred', 'debt.account', 'cred.account'])
-            ->whereBetween('date_issued', ['0000-00-00', $endDate])
-            ->latest()
+        $accountTrace = new AccountTrace();
+        $endDate = Carbon::now()->endOfDay();
+
+        $transactions = $accountTrace->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [Carbon::create(0000, 1, 1)->endOfDay(), $endDate])
+            ->groupBy('debt_code', 'cred_code')
             ->get();
 
+        $chartOfAccounts = ChartOfAccount::with(['account'])->get();
 
+        foreach ($chartOfAccounts as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
 
-        // Fetch transactions
-        // $transactions = $accountTrace->load('debt', 'cred')
-        //     ->whereBetween('date_issued', [
-        //         '0000-00-00', $endDate,
-        //     ])->get();
-
-        // Fetch chart of accounts
-        $chartOfAccounts = ChartOfAccount::all();
-
-        // Calculate balances
-        foreach ($chartOfAccounts as $coaItem) {
-            $debit = $accountTrace->where('debt_code', $coaItem->acc_code)->sum('amount');
-            $credit = $accountTrace->where('cred_code', $coaItem->acc_code)->sum('amount');
-
-            if ($coaItem->Account->status == "D") {
-                $coaItem->balance = $coaItem->st_balance + $debit - $credit;
-            } else {
-                $coaItem->balance = $coaItem->st_balance + $credit - $debit;
-            }
+            $value->balance = ($value->account->status == "D") ? ($value->st_balance + $debit - $credit) : ($value->st_balance + $credit - $debit);
         }
 
-        $assets = $chartOfAccounts->load('account')->whereIn('account_id', \range(1, 18));
+        $assets = $chartOfAccounts->whereIn('account_id', \range(1, 18));
         $liabilities = $chartOfAccounts->whereIn('account_id', \range(19, 25));
         $equity = $chartOfAccounts->where('account_id', 26);
         $cash = $chartOfAccounts->where('account_id', 1);
@@ -147,36 +135,35 @@ class ReportController extends Controller
 
     public function cashflow(Request $request)
     {
-        $chartOfAccounts = ChartOfAccount::with(['account', 'account_trace'])
-            ->get();
+        $accountTrace = new AccountTrace();
         $start_date = Carbon::parse($request->start_date)->startOfDay();
         $end_date = Carbon::parse($request->end_date)->endOfDay();
 
-        foreach ($chartOfAccounts as $value) {
-            $debit = AccountTrace::where('debt_code', 'LIKE', '10100%')
-                ->where('cred_code', $value->acc_code)
-                ->whereBetween('date_issued', [$start_date, $end_date])
-                ->orWhere('debt_code', 'LIKE', '10200%')
-                ->where('cred_code', $value->acc_code)
-                ->whereBetween('date_issued', [$start_date, $end_date])
-                ->sum('amount');
+        $chartOfAccounts = ChartOfAccount::with(['account'])->get();
+        $cashBank = $chartOfAccounts->whereIn('account_id', [1, 2]);
 
-            $credit = AccountTrace::where('cred_code', 'LIKE', '10100%')
-                ->where('debt_code', $value->acc_code)
-                ->whereBetween('date_issued', [$start_date, $end_date])
-                ->orWhere('cred_code', 'LIKE', '10200%')
-                ->where('debt_code', $value->acc_code)
-                ->whereBetween('date_issued', [$start_date, $end_date])
-                ->sum('amount');
+        $transactions = $accountTrace->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->groupBy('debt_code', 'cred_code')
+            ->whereIn('debt_code', $cashBank->pluck('acc_code'))
+            ->whereBetween('date_issued', [$start_date, $end_date])
+            ->orWhereIn('cred_code', $cashBank->pluck('acc_code'))
+            ->whereBetween('date_issued', [$start_date, $end_date])
+            ->get();
+
+        foreach ($chartOfAccounts as $value) {
+            $debit = $transactions->where('cred_code', $value->acc_code)
+                ->sum('total');
+            $credit = $transactions->where('debt_code', $value->acc_code)
+                ->sum('total');
 
             $value->balance = $debit - $credit;
         }
 
         $initBalance = $chartOfAccounts->whereIn('account_id', [1, 2])->sum('st_balance');
 
-        $account_trace = new AccountTrace();
-        $startBalance = $initBalance + $account_trace->cashflowCount('0000-00-00', $start_date->subDay(1));
-        $endBalance = $initBalance + $account_trace->cashflowCount('0000-00-00', $end_date);
+        $startBalance = $initBalance + $accountTrace->cashflowCount('0000-00-00', $start_date->subDay(1));
+        $endBalance = $initBalance + $accountTrace->cashflowCount('0000-00-00', $end_date);
 
         if ($startBalance == 0) {
             $percentageChange = 0;
@@ -244,37 +231,32 @@ class ReportController extends Controller
 
     public function profitLoss(Request $request)
     {
-        $coa = ChartOfAccount::with(['account'])->get();
+        $accountTrace = new AccountTrace();
+        $startDate = Carbon::parse($request->start_date)->startOfDay();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
+        // $accountTrace->profitLossCount('0000-00-00', $endDate);
 
-        $account_trace = new AccountTrace();
-        $account_trace->profitLossCount($request->start_date, $request->end_date);
-
-        $coa->loadMissing('account_trace');
-
-        $transactions = $account_trace->load('debt', 'cred')
-            ->whereBetween('date_issued', [
-                Carbon::parse($request->start_date)->startOfDay(),
-                Carbon::parse($request->end_date)->endOfDay(),
-            ])
+        $transactions = $accountTrace->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [$startDate, $endDate])
+            ->groupBy('debt_code', 'cred_code')
             ->get();
 
-        foreach ($coa as $value) {
-            $debit = $transactions->where('debt_code', $value->acc_code)->sum('amount');
-            $credit = $transactions->where('cred_code', $value->acc_code)->sum('amount');
+        $chartOfAccounts = ChartOfAccount::with(['account'])->get();
 
-            if ($value->Account->status == "D") {
-                $value->balance = $debit - $credit;
-            } else {
-                $value->balance = $credit - $debit;
-            }
+        foreach ($chartOfAccounts as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
+
+            $value->balance = ($value->account->status == "D") ? ($value->st_balance + $debit - $credit) : ($value->st_balance + $credit - $debit);
         }
 
         return view('report.profit-loss', [
             'title' => 'Profit Loss',
             'active' => 'reports',
-            'revenue' => $coa->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
-            'cost' => $coa->whereIn('account_id', \range(31, 32))->groupBy('account_id'),
-            'expense' => $coa->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
+            'revenue' => $chartOfAccounts->whereIn('account_id', \range(27, 30))->groupBy('account_id'),
+            'cost' => $chartOfAccounts->whereIn('account_id', \range(31, 32))->groupBy('account_id'),
+            'expense' => $chartOfAccounts->whereIn('account_id', \range(33, 45))->groupBy('account_id'),
         ])->with($request->all());
     }
 
@@ -311,7 +293,7 @@ class ReportController extends Controller
                 ->where('debt_code', 'LIKE', '5%')
                 ->sum('amount');
 
-            $data[] = [
+            $dailyProfits[] = [
                 'date' => $date->format('l, d'),
                 'revenue' => $revenue,
                 'cost' => $cost,
@@ -329,7 +311,7 @@ class ReportController extends Controller
             'monthName' => Carbon::parse($year . '-' . $month . '-01')->format('F'),
             'selectedMonth' => $month,
             'selectedYear' => $year,
-            'data' => $data,
+            'dailyProfits' => $dailyProfits,
             'sumRevenue' => $sumRevenue,
             'sumCost' => $sumCost, // Add the sum of cost to the view data
             'totalProfit' => $tprofit,

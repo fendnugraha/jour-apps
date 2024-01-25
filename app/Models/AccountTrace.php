@@ -150,16 +150,16 @@ class AccountTrace extends Model
     {
         $cashAccount = ChartOfAccount::with('account', 'account_trace')->get();
 
-        foreach ($cashAccount as $value) {
-            $debit = $this->where('debt_code', $value->acc_code)->whereBetween('date_issued', [
-                Carbon::parse($start_date)->startOfDay(),
-                Carbon::parse($end_date)->endOfDay(),
-            ])->sum('amount');
+        $transactions = $this->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [$start_date, $end_date])
+            ->groupBy('debt_code', 'cred_code')
+            ->get();
 
-            $credit = $this->where('cred_code', $value->acc_code)->whereBetween('date_issued', [
-                Carbon::parse($start_date)->startOfDay(),
-                Carbon::parse($end_date)->endOfDay(),
-            ])->sum('amount');
+        foreach ($cashAccount as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
 
             $value->balance = $debit - $credit;
         }

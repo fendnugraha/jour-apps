@@ -13,19 +13,14 @@ class AccountTraceController extends Controller
     {
         $query = $request->input('query');
 
-        // $accountTrace = AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])
-        //     ->when($query, function ($query, $search) {
-        //         return $query->where('invoice', 'like', '%' . $search . '%');
-        //         // Replace 'column_name' with the actual column you want to search on.
-        //     })
-        //     ->latest()
-        //     ->paginate(8);
-
-        $accountTrace = AccountTrace::with(['debt', 'cred', 'warehouse', 'user'])->get();
+        $accountTrace = AccountTrace::with(['debt', 'cred', 'user', 'warehouse'])->when($query, function ($query, $search) {
+            return $query->where('invoice', 'like', '%' . $search . '%');
+            // Replace 'column_name' with the actual column you want to search on.
+        })->latest();
 
         return view('journal/index', [
             'title' => 'Journal Home',
-            'accountTrace' => $accountTrace,
+            'accountTrace' => $accountTrace->paginate(8),
             'query' => $query,
         ]);
     }

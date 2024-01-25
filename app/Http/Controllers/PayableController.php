@@ -15,16 +15,17 @@ class PayableController extends Controller
 
     public function index()
     {
-        $bill_total = Payable::select(
-            DB::raw('payables.contact_id, SUM(bill_amount) as bill, SUM(payment_amount) as payment, SUM(bill_amount - payment_amount) as balance')
-        )
-            ->join('contacts', 'contacts.id', '=', 'payables.contact_id')
-            ->groupBy('payables.contact_id')
-            ->get();
+        $payables = Payable::with('contact')->get();
+        $bills = $payables->sum('bill_amount');
+        $payments = $payables->sum('payment_amount');
+        $bill_total = $bills - $payments;
 
         return view('journal.payable.index', [
             'title' => 'Hutang',
-            'bill_total' => $bill_total
+            'bill_total' => $bill_total,
+            'payables' => $payables->groupBy('contact_id'),
+            'bills' => $bills,
+            'payments' => $payments
         ]);
     }
 
@@ -101,20 +102,7 @@ class PayableController extends Controller
 
     public function detail($id)
     {
-        $pybs = Payable::select(
-            'contact_id',
-            DB::raw('SUM(bill_amount) as bill'),
-            DB::raw('SUM(payment_amount) as payment'),
-            DB::raw('SUM(bill_amount - payment_amount) as balance')
-        )
-            ->where('contact_id', $id)
-            ->groupBy('contact_id')
-            ->first();
-
-        $pyb = Payable::select('payables.*')
-            ->join('chart_of_accounts', 'payables.account_code', '=', 'chart_of_accounts.acc_code')
-            ->where('payables.contact_id', $id)
-            ->orderBy('payables.date_issued', 'desc')
+        $pyb = Payable::with(['contact', 'account'])->where('contact_id', $id)->orderBy('date_issued', 'desc')
             ->get();
 
         $invoices = $pyb->pluck('invoice')->toArray();
@@ -122,6 +110,11 @@ class PayableController extends Controller
             ->whereIn('invoice', $invoices)
             ->groupBy('invoice')
             ->pluck('balance', 'invoice');
+
+        $bill_total = $pyb->sum('bill_amount');
+        $payment_total = $pyb->sum('payment_amount');
+        $balance_total = $bill_total - $payment_total;
+        $pybs = $pyb->groupBy('invoice');
 
         $rscFund = ChartOfAccount::whereIn('account_id', [1, 2, 6, 19, 26])->get();
 
@@ -134,7 +127,10 @@ class PayableController extends Controller
             'pybs' => $pybs,
             'invoices' => $invoices,
             'balances' => $balances,
-            'rscFund' => $rscFund
+            'rscFund' => $rscFund,
+            'bill_total' => $bill_total,
+            'payment_total' => $payment_total,
+            'balance_total' => $balance_total
         ]);
     }
 
