@@ -96,7 +96,7 @@
                     </thead>
                     <tbody>
                         @foreach ($accountGroup as $account)
-                        @if($account->balance > 0)
+                        @if($account->balance != 0)
                         <tr>
                             <td>{{ $account->acc_name }}</td>
                             <td class="text-end">{{ number_format(intval($account->balance)) }}</td>
