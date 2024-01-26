@@ -84,8 +84,8 @@ class ReportController extends Controller
     public function generalLedger(Request $request)
     {
         $accountTrace = new AccountTrace();
-        $startDate = Carbon::parse($request->start_date)->subDay();
-        $endDate = Carbon::parse($request->end_date)->addDay();
+        $startDate = Carbon::parse($request->start_date)->startOfDay();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
         $account_trace = $accountTrace->with('debt', 'cred', 'warehouse', 'user')->where('debt_code', $request->accounts)
             ->whereBetween('date_issued', [$startDate, $endDate])
             ->orWhere('cred_code', $request->accounts)
