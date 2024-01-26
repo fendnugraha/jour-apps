@@ -23,7 +23,7 @@
                 <div class="card card-widget text-bg-dark">
                     <div class="card-body p-3">
                         <h5>Debet</h5>
-                        <h4><i class="fa-solid fa-file-invoice"></i> {{ number_format(intval($debt_total->total)) }}</h4>
+                        <h4><i class="fa-solid fa-file-invoice"></i> {{ number_format(intval($debt_total)) }}</h4>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 <div class="card card-widget text-bg-dark">
                     <div class="card-body p-3">
                         <h5>Kredit</h5>
-                        <h4><i class="fa-solid fa-file-invoice"></i> {{ number_format(intval($cred_total->total)) }}</h4>
+                        <h4><i class="fa-solid fa-file-invoice"></i> {{ number_format(intval($cred_total)) }}</h4>
                     </div>
                 </div>
             </div>

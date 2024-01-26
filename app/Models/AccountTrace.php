@@ -65,7 +65,7 @@ class AccountTrace extends Model
 
     public function endBalanceBetweenDate($account_code, $start_date, $end_date)
     {
-        $initBalance = ChartOfAccount::with('account', 'account_trace', 'debt', 'cred')->where('acc_code', $account_code)->first();
+        $initBalance = ChartOfAccount::where('acc_code', $account_code)->first();
         $transaction = $this->whereBetween('date_issued', [
             Carbon::parse($start_date)->startOfDay(),
             Carbon::parse($end_date)->endOfDay(),
@@ -94,10 +94,9 @@ class AccountTrace extends Model
         $start_date = Carbon::parse($start_date)->copy()->startOfDay();
         $end_date = Carbon::parse($end_date)->copy()->endOfDay();
 
-        $coa = ChartOfAccount::with(['account', 'debt', 'cred'])->whereIn('account_id', \range(27, 45))->get();
+        $coa = ChartOfAccount::with('account')->whereIn('account_id', \range(27, 45))->get();
 
-        $transactions = $this->with(['debt', 'cred'])
-            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+        $transactions = $this->selectRaw('debt_code, cred_code, SUM(amount) as total')
             ->whereBetween('date_issued', [$start_date, $end_date])
             ->groupBy('debt_code', 'cred_code')
             ->get();
@@ -148,10 +147,9 @@ class AccountTrace extends Model
 
     public function cashflowCount($start_date, $end_date)
     {
-        $cashAccount = ChartOfAccount::with('account', 'account_trace')->get();
+        $cashAccount = ChartOfAccount::all();
 
-        $transactions = $this->with(['debt', 'cred'])
-            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+        $transactions = $this->selectRaw('debt_code, cred_code, SUM(amount) as total')
             ->whereBetween('date_issued', [$start_date, $end_date])
             ->groupBy('debt_code', 'cred_code')
             ->get();

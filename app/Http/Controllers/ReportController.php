@@ -83,48 +83,27 @@ class ReportController extends Controller
 
     public function generalLedger(Request $request)
     {
+        $accountTrace = new AccountTrace();
         $startDate = Carbon::parse($request->start_date)->subDay();
-        $endDate = \Carbon\Carbon::parse($request->end_date)->addDay();
-        $account_trace = AccountTrace::where('debt_code', $request->accounts)
-            ->whereBetween('date_issued', [$request->start_date, $endDate])
+        $endDate = Carbon::parse($request->end_date)->addDay();
+        $account_trace = $accountTrace->with('debt', 'cred', 'warehouse', 'user')->where('debt_code', $request->accounts)
+            ->whereBetween('date_issued', [$startDate, $endDate])
             ->orWhere('cred_code', $request->accounts)
-            ->WhereBetween('date_issued', [$request->start_date, $endDate])
+            ->WhereBetween('date_issued', [$startDate, $endDate])
             ->orderBy('date_issued', 'asc')
             ->get();
 
-        if ($request->accounts == null) {
-            $account_trace = AccountTrace::whereBetween('date_issued', [$request->start_date, $endDate])
-                ->orderBy('date_issued', 'asc')
-                ->get();
-        }
+        $debt_total = $account_trace->where('debt_code', $request->accounts)->sum('amount');
+        $cred_total = $account_trace->where('cred_code', $request->accounts)->sum('amount');
 
-        $debt_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-            ->where('debt_code', $request->accounts)
-            ->whereBetween('date_issued', [$request->start_date, $endDate])
-            ->first();
-
-        $cred_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-            ->whereBetween('date_issued', [$request->start_date, $endDate])
-            ->where('cred_code', $request->accounts)->first();
-
-        if ($request->accounts == null) {
-            $debt_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-                ->whereBetween('date_issued', [$request->start_date, $endDate])
-                ->first();
-            $cred_total = AccountTrace::select(DB::raw('SUM(amount) as total'))
-                ->whereBetween('date_issued', [$request->start_date, $endDate])
-                ->first();
-        }
-
-        $initBalanceDate = Carbon::parse($request->start_date)->subDays(1)->format('Y-m-d');
-        $account_traces = new AccountTrace();
-        $initBalance = $account_traces->endBalanceBetweenDate($request->accounts, '0000-00-00', $initBalanceDate);
-        $endBalance = $account_traces->endBalanceBetweenDate($request->accounts, '0000-00-00', $request->end_date);
+        $initBalanceDate = Carbon::parse($startDate)->subDays(1)->endOfDay();
+        $initBalance = $accountTrace->endBalanceBetweenDate($request->accounts, '0000-00-00', $initBalanceDate);
+        $endBalance = $accountTrace->endBalanceBetweenDate($request->accounts, '0000-00-00', $request->end_date);
 
         return view('report.general-ledger', [
             'title' => 'General Ledger',
             'active' => 'reports',
-            'account_trace' => $account_trace->load(['debt', 'cred', 'warehouse', 'user']),
+            'account_trace' => $account_trace,
             'account' => ChartOfAccount::with(['account'])->orderBy('acc_code', 'asc')->get(),
             'debt_total' => $debt_total,
             'cred_total' => $cred_total,
@@ -144,11 +123,11 @@ class ReportController extends Controller
 
         $transactions = $accountTrace->with(['debt', 'cred'])
             ->selectRaw('debt_code, cred_code, SUM(amount) as total')
-            ->groupBy('debt_code', 'cred_code')
             ->whereIn('debt_code', $cashBank->pluck('acc_code'))
             ->whereBetween('date_issued', [$start_date, $end_date])
             ->orWhereIn('cred_code', $cashBank->pluck('acc_code'))
             ->whereBetween('date_issued', [$start_date, $end_date])
+            ->groupBy('debt_code', 'cred_code')
             ->get();
 
         foreach ($chartOfAccounts as $value) {
@@ -192,7 +171,7 @@ class ReportController extends Controller
     public function balanceSheet(Request $request)
     {
         $accountTrace = new AccountTrace();
-        $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
         $accountTrace->profitLossCount('0000-00-00', $endDate);
 
         $transactions = $accountTrace->with(['debt', 'cred'])
@@ -278,17 +257,17 @@ class ReportController extends Controller
         $sumCost = 0;    // Variable to store the total sum of cost
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $tprofit = 0;
-        $data = [];
+
         for ($x = 1; $x <= $days; $x++) {
             $date = Carbon::parse("$year-$month-$x")->startOfDay();
             $endDate = Carbon::parse("$year-$month-$x")->endOfDay();
 
-            $revenue = $account_trace->with('debt', 'cred')
+            $revenue = $account_trace->load('debt', 'cred')
                 ->whereBetween('date_issued', [$date, $endDate])
                 ->where('cred_code', 'LIKE', '4%')
                 ->sum('amount');
 
-            $cost = $account_trace->with('debt', 'cred')
+            $cost = $account_trace->load('debt', 'cred')
                 ->whereBetween('date_issued', [$date, $endDate])
                 ->where('debt_code', 'LIKE', '5%')
                 ->sum('amount');
