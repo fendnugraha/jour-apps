@@ -78,8 +78,8 @@
                         <select name="invoice" id="invoice" class="form-select {{ $errors->has('invoice') ? 'is-invalid' : '' }}">
                             <option value="">Pilih Faktur</option>
                             @foreach($balances as $invoice => $balance)
-                            @if($balance > 0)
-                                <option value="{{ $invoice }}" {{ old('invoice') == $invoice ? 'selected' : '' }}>{{ $invoice }} || {{ number_format($balance, 2) }}</option>
+                            @if($balance->net_balance > 0)
+                                <option value="{{ $balance->invoice }}" {{ old('invoice') == $balance->invoice ? 'selected' : '' }}>{{$balance->date_issued}} || {{ $balance->invoice }} || {{ number_format($balance->net_balance, 2) }}</option>
                             @endif
                             @endforeach
                         </select>
@@ -168,7 +168,7 @@
                             <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-danger">
                             <i class="fa-solid fa-trash"></i>
                             </button>
-                        </form>
+                        </form>  
                     </td>
                 </tr>
                 @endforeach

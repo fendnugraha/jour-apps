@@ -59,8 +59,7 @@
                         <br>
                         <small>#{{ $acctrace->id }} | {{ $acctrace->date_issued }} | {{ $acctrace->invoice }}</small>
                         <br>
-                        Note: {{ $acctrace->description }} @foreach ($acctrace->receivable as $rcv) {{ "(". $rcv->contact->name .")" }} @endforeach
-                        @foreach ($acctrace->payable as $py) {{ "(". $py->contact->name .")" }} @endforeach
+                        Note: {{ $acctrace->description }}. {{$acctrace->receivable->first()->contact->name  ?? ''}}
                     </td>
                     <td class="text-end">{{ number_format($acctrace->amount) }}</td>
                     <td class="text-center">
