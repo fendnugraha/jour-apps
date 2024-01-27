@@ -106,7 +106,7 @@
                     <span class="badge text-bg-warning">{{ $ac->warehouse->w_name}}</span>
                     <span class="badge text-bg-dark">{{ $ac->user->name}}</span>
                     <br>
-                    #{{ $ac->id }}. {{ $ac->description }}
+                    #{{ $ac->id }}. {{ $ac->description }} . {{$ac->receivable->first()->contact->name  ?? ''}} {{$ac->payable->first()->contact->name  ?? ''}}
                 </td>
                 <td>{{ $ac->debt_code == $accounts ? number_format($ac->amount) : '' }}</td>
                 <td>{{ $ac->cred_code == $accounts ? number_format($ac->amount) : '' }}</td>
