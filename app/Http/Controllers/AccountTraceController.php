@@ -16,11 +16,11 @@ class AccountTraceController extends Controller
         $accountTrace = AccountTrace::with(['debt', 'cred', 'user', 'warehouse'])->when($query, function ($query, $search) {
             return $query->where('invoice', 'like', '%' . $search . '%');
             // Replace 'column_name' with the actual column you want to search on.
-        })->latest();
+        })->orderBy('id', 'desc')->paginate(8);
 
         return view('journal/index', [
             'title' => 'Journal Home',
-            'accountTrace' => $accountTrace->paginate(8),
+            'accountTrace' => $accountTrace,
             'query' => $query,
         ]);
     }

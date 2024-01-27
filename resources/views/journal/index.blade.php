@@ -10,7 +10,7 @@
         
         <div class="content-menu d-flex gap-2 w-100">
             <div class="dropdown mb-2">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Add New
                 </button>
                 <ul class="dropdown-menu">
@@ -20,7 +20,7 @@
                 </ul>
             </div>
             <div class="dropdown mb-2">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Finance
                 </button>
                 <ul class="dropdown-menu">
@@ -28,10 +28,13 @@
                   <li><a class="dropdown-item" href="/hutang">Hutang</a></li>
                 </ul>
             </div>
-            <div class="search-form">
-                <form action="{{ route('jurnal.index') }}" method="GET" class="d-flex gap-2 w-100">
-                    <input type="text" class="form-control flex-grow-3" name="query" placeholder="Search invoice .." value="{{ $query }}">
-                    <button type="submit" class="btn btn-primary flex-grow-1">Search</button>
+            <div class="search-form flex-grow-1">
+                <form action="{{ route('jurnal.index') }}" method="GET" class="">
+                    @csrf
+                    <div class="input-group">
+                    <input type="text" class="form-control" name="query" placeholder="Search invoice .." value="{{ $query }}">
+                    <button type="submit" class="btn btn-primary ">Search</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -58,13 +61,13 @@
                         <br>
                         Note: {{ $acctrace->description }}
                     </td>
-                    <td>{{ number_format($acctrace->amount) }}</td>
-                    <td>
+                    <td class="text-end">{{ number_format($acctrace->amount) }}</td>
+                    <td class="text-center">
                         <span class="badge {{ $acctrace->status == 1 ? 'text-bg-success' : 'text-bg-danger' }}">
                         {{ $acctrace->status == 1 ? 'Success' : 'Void' }}
                         </span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <div class="action-buttons" {{ $acctrace->rcv_pay !== null ? 'hidden' : '' }}>
                         <a href="/jurnal/{{ $acctrace->id }}" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-eye"></i>
@@ -87,7 +90,7 @@
                 @endforeach
             </tbody>
         </table>
-        {{$accountTrace->links()}}
+        {{$accountTrace->links() }}
     </main>
         <!-- End Content -->
     </div>
