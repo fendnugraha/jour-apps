@@ -15,4 +15,9 @@ class Contact extends Model
     {
         return $this->hasMany(Receivable::class);
     }
+
+    public function payables()
+    {
+        return $this->hasMany(Payable::class);
+    }
 }

@@ -20,7 +20,12 @@ class AccountTrace extends Model
 
     public function receivable()
     {
-        return $this->belongsTo(Receivable::class, 'invoice', 'invoice')->where('payment_nth', 'payment_nth');
+        return $this->hasMany(Receivable::class, 'invoice', 'invoice');
+    }
+
+    public function payable()
+    {
+        return $this->hasMany(Payable::class, 'invoice', 'invoice');
     }
 
     public function user()

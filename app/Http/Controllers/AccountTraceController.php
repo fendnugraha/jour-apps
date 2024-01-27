@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountTrace;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
+use App\Models\Receivable;
 use Illuminate\Support\Facades\DB;
 
 class AccountTraceController extends Controller
@@ -13,10 +14,15 @@ class AccountTraceController extends Controller
     {
         $query = $request->input('query');
 
-        $accountTrace = AccountTrace::with(['debt', 'cred', 'user', 'warehouse'])->when($query, function ($query, $search) {
+        if ($query) {
+            $accountTrace = AccountTrace::with(['debt', 'cred', 'user', 'warehouse', 'receivable'])->where('invoice', 'like', '%' . $query . '%')->orderBy('id', 'desc')->paginate(8);
+        }
+
+        $accountTrace = AccountTrace::with(['debt', 'cred', 'user', 'warehouse', 'receivable', 'payable'])->when($query, function ($query, $search) {
             return $query->where('invoice', 'like', '%' . $search . '%');
             // Replace 'column_name' with the actual column you want to search on.
         })->orderBy('id', 'desc')->paginate(8);
+
 
         return view('journal/index', [
             'title' => 'Journal Home',
