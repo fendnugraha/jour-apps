@@ -59,7 +59,7 @@
                         <br>
                         <small>#{{ $acctrace->id }} | {{ $acctrace->date_issued }} | {{ $acctrace->invoice }}</small>
                         <br>
-                        Note: {{ $acctrace->description }}. {{$acctrace->receivable->first()->contact->name  ?? ''}}
+                        Note: {{ $acctrace->description }}. {{$acctrace->receivable->first()->contact->name  ?? ''}} {{$acctrace->payable->first()->contact->name  ?? ''}}
                     </td>
                     <td class="text-end">{{ number_format($acctrace->amount) }}</td>
                     <td class="text-center">
