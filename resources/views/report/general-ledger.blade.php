@@ -96,7 +96,7 @@
             <?php
             $debt_amount = $ac->debt_code == $accounts ? $ac->amount : 0;
             $cred_amount = $ac->cred_code == $accounts ? $ac->amount : 0;
-            $balance += $debt_amount - $cred_amount;
+            $status == 'D' ?  $balance += $debt_amount - $cred_amount : $balance += $cred_amount - $debt_amount;
             ?>
             <tr>
                 <td>{{ $ac->date_issued }}</td>

@@ -108,7 +108,8 @@ class ReportController extends Controller
             'debt_total' => $debt_total,
             'cred_total' => $cred_total,
             'initBalance' => $initBalance,
-            'endBalance' => $endBalance
+            'endBalance' => $endBalance,
+            'status' => ChartOfAccount::with(['account'])->where('acc_code', $request->accounts)->first()->account->status
         ])->with($request->all());
     }
 
