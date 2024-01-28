@@ -86,7 +86,7 @@
                 <select name="account" id="account" class="form-select {{ $errors->has('account') ? 'is-invalid' : '' }}">
                     <option value="">Pilih Akun</option>
                     @foreach ($account as $ac)
-                        <option value="{{ $ac->id }}" {{ old('account') == $ac->id ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                        <option value="{{ $ac->id }}" {{ old('account') == $ac->id ? 'selected' : '' }}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                     @endforeach
                 </select>
             </div>

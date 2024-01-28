@@ -28,7 +28,7 @@
                     <select name="debt_code" id="debt_code" class="form-select @error('debt_code') is-invalid @enderror">
                         <option value="">Pilih Akun Debet</option>
                         @foreach ($account as $ac)
-                            <option value="{{ $ac->acc_code }}" {{$accountTrace->debt_code == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                            <option value="{{ $ac->acc_code }}" {{$accountTrace->debt_code == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                         @endforeach
                     </select>
                     @error('debt_code')
@@ -44,7 +44,7 @@
                     <select name="cred_code" id="cred_code" class="form-select @error('cred_code') is-invalid @enderror">
                         <option value="">Pilih Akun Credit</option>
                         @foreach ($account as $ac)
-                            <option value="{{ $ac->acc_code }}" {{$accountTrace->cred_code == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                            <option value="{{ $ac->acc_code }}" {{$accountTrace->cred_code == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                         @endforeach
                     </select>
                     @error('cred_code')

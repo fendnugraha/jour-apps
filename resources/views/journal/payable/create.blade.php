@@ -27,7 +27,7 @@
                     <select name="debt_code" class="form-select @error('debt_code') is-invalid @enderror" id="debt-code-payable">
                         <option value="">Pilih Sumber Dana</option>
                         @foreach ($rscFund as $ac)
-                            <option value="{{ $ac->acc_code }}" {{old('debt_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                            <option value="{{ $ac->acc_code }}" {{old('debt_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                         @endforeach
                     </select>
                     @error('debt_code')
@@ -47,7 +47,7 @@
                     <select name="cred_code" id="cred_code" class="form-select @error('cred_code') is-invalid @enderror">
                         <option value="">Pilih Akun Hutang</option>
                         @foreach ($account as $ac)
-                            <option value="{{ $ac->acc_code }}" {{old('cred_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                            <option value="{{ $ac->acc_code }}" {{old('cred_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                         @endforeach
                     </select>
                     @error('cred_code')

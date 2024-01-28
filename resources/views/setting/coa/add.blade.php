@@ -31,7 +31,7 @@
                             <select name="acc_type" id="acc_type" class="form-select @error('acc_type') is-invalid @enderror">
                                 <option value="">Pilih Tipe Akun</option>
                                @foreach ($accounts as $ac)
-                                   <option value="{{ $ac->id }}" {{old('id') == $ac->id ? 'selected' : ''}}>{{ $ac->code }} - {{ $ac->name }}</option>                           
+                                   <option value="{{ $ac->id }}" {{old('id') == $ac->id ? 'selected' : ''}}>{{ $ac->name }} - {{ $ac->code }}</option>                           
                                @endforeach
                             </select>
                             @error('acc_type')

@@ -54,7 +54,7 @@
                         <select name="accounts" id="accounts" class="form-select">
                             <option value="">Pilih Akun</option>
                             @foreach ($account as $ac)
-                                <option value="{{ $ac->acc_code }}" {{$accounts == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                                <option value="{{ $ac->acc_code }}" {{$accounts == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                             @endforeach
                         </select>
                     </div>

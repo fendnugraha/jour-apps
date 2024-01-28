@@ -27,7 +27,7 @@
                     <select name="debt_code" id="debt_code" class="form-select @error('debt_code') is-invalid @enderror">
                         <option value="">Pilih Akun Piutang</option>
                         @foreach ($rcv as $ac)
-                            <option value="{{ $ac->acc_code }}" {{old('debt_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                            <option value="{{ $ac->acc_code }}" {{old('debt_code') == $ac->acc_code ? 'selected' : ''}}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                         @endforeach
                     </select>
                     @error('debt_code')
