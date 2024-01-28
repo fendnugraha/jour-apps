@@ -110,15 +110,17 @@ table, tr {
   flex-direction: column;
   border-radius: 15px;
   color: #150b04;
-  transition: all 0.3s;
+  transition: all 0.1s;
 }
 .main-content main.content .setting-icon .setting-icon-action h1 {
   font-size: 5rem;
 }
 .main-content main.content .setting-icon .setting-icon-action:hover {
-  background-color: #150b04;
-  color: #f4f9fb;
-  box-shadow: #150b04 0px 5px 15px;
+  background-color: #bdc3af;
+  box-shadow: #cecece 1px 2px 20px;
+}
+.main-content main.content .setting-icon .setting-icon-action:hover h1 {
+  font-size: 5.5rem;
 }
 
 .dashboard-area {

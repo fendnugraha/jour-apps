@@ -145,7 +145,7 @@ table, tr {
         flex-direction: column;
         border-radius: 15px;
         color: $my-quinary-color;
-        transition: all 0.3s;
+        transition: all 0.1s;
 
         h1{
           font-size: 5rem;
@@ -153,9 +153,12 @@ table, tr {
       }
 
       .setting-icon-action:hover {
-        background-color: $my-quinary-color;
-        color: $my-secondary-color;
-        box-shadow: #150b04 0px 5px 15px;
+        background-color: $my-tertiary-color;
+        box-shadow: #cecece 1px 2px 20px;
+
+        h1{
+          font-size: 5.5rem;
+        }
       }
     }
   }

@@ -51,6 +51,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            User::where('id', Auth::id())->update(['last_login' => now()]);
             return \redirect()->intended('/jurnal');
         }
 
@@ -61,8 +62,6 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        User::where('id', Auth::id())->update(['last_login' => now()]);
-
         Auth::logout();
 
         $request->session()->invalidate();

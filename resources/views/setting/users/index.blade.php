@@ -37,7 +37,7 @@
         <td>{{ $u->role }}</td>
         <td>{{ $u->created_at }}</td>
         <td>{{ date('Y-m-d H:i:s', strtotime($u->last_login)) }}</td>
-        <td>{{ $u->status }}</td>
+        <td>{!! $u->status == 1 ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>' !!}</td>
         <td>{{ $u->warehouse->w_name }}</td>
         <td>
             <a href="/setting/user/{{ $u->id }}/edit" class="btn btn-warning btn-sm">
