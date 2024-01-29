@@ -79,7 +79,7 @@
                             <option value="">Pilih Faktur</option>
                             @foreach($balances as $invoice => $balance)
                             @if($balance->net_balance > 0)
-                                <option value="{{ $balance->invoice }}" {{ old('invoice') == $balance->invoice ? 'selected' : '' }}>{{$balance->date_issued}} || {{ $balance->invoice }} || {{ number_format($balance->net_balance, 2) }}</option>
+                                <option value="{{ $balance->invoice }}" {{ old('invoice') == $balance->invoice ? 'selected' : '' }}>{{$balance->date_issued}} || {{ $balance->invoice }} || {{ number_format($balance->net_balance) }}</option>
                             @endif
                             @endforeach
                         </select>
@@ -94,7 +94,7 @@
                         <select name="debt_code" id="debt_code" class="form-select {{ $errors->has('debt_code') ? 'is-invalid' : '' }}">
                             <option value="">Pilih Akun Debet</option>
                             @foreach ($rscFund as $ac)
-                                <option value="{{ $ac->acc_code }}" {{ old('debt_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                                <option value="{{ $ac->acc_code }}" {{ old('debt_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                             @endforeach
                         </select>
                         @error('debt_code')
@@ -130,7 +130,7 @@
           </div>
           
         </div>
-        <h4>{{ $rcv->first()->contact->name }}. Total: {{ number_format($balance_total) }}</h4>
+        <h4>{{ $rcv->first()->contact->name }}. <strong class="text-primary">Total: {{ number_format($balance_total) }}</strong></h4>
         <table class="display-no-order table">
             <thead>
                 <tr>

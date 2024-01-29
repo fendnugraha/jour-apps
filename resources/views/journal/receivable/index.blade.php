@@ -48,8 +48,8 @@
                 </ul>
             </div>
         </div>
-        <h4>Total: {{ number_format($bill_total->sum('balance')) }}</h4>
-        <table class="table display-no-order">
+        <h4 class="ms-auto">Total: <strong class="text-primary">{{ number_format($bill_total->sum('balance')) }}</strong></h4>
+        <table class="table display">
         <thead>
         <tr>
             <th>Contact</th>

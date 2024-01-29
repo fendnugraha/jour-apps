@@ -8,7 +8,7 @@
 
         <main class="content">
         <!-- Content  -->
-        <div class="row mb-3">
+        <div class="row mb-3 g-1">
             <div class="col-lg">
                 <div class="card card-widget text-bg-dark">
                     <div class="card-body">
@@ -49,7 +49,7 @@
             </div> --}}
         </div>
         <h4>Total: {{ number_format($bill_total) }}</h4>
-        <table class="table display-no-order">
+        <table class="table display">
         <thead>
         <tr>
             <th>Contact</th>

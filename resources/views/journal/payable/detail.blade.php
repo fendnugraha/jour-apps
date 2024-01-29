@@ -78,8 +78,8 @@
                         <select name="invoice" id="invoice" class="form-select {{ $errors->has('invoice') ? 'is-invalid' : '' }}">
                             <option value="">Pilih Faktur</option>
                             @foreach($balances as $invoice => $balance)
-                            @if($balance > 0)
-                                <option value="{{ $invoice }}" {{ old('invoice') == $invoice ? 'selected' : '' }}>{{ $invoice }} || {{ number_format($balance, 2) }}</option>
+                            @if($balance->net_balance > 0)
+                                <option value="{{ $balance->invoice }}" {{ old('invoice') == $balance->invoice ? 'selected' : '' }}>{{$balance->date_issued}} || {{ $balance->invoice }} || {{ number_format($balance->net_balance) }}</option>
                             @endif
                             @endforeach
                         </select>
@@ -94,7 +94,7 @@
                         <select name="cred_code" id="cred_code" class="form-select {{ $errors->has('cred_code') ? 'is-invalid' : '' }}">
                             <option value="">Pilih Akun Debet</option>
                             @foreach ($rscFund as $ac)
-                                <option value="{{ $ac->acc_code }}" {{ old('cred_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_code }} - {{ $ac->acc_name }}</option>
+                                <option value="{{ $ac->acc_code }}" {{ old('cred_code') == $ac->acc_code ? 'selected' : '' }}>{{ $ac->acc_name }} - {{ $ac->acc_code }}</option>
                             @endforeach
                         </select>
                         @error('cred_code')

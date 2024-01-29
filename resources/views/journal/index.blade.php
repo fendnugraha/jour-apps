@@ -30,7 +30,7 @@
             </div>
             <div class="search-form flex-grow-1">
                 <form action="{{ route('jurnal.index') }}" method="GET" class="">
-                    @csrf
+                    {{-- @csrf --}}
                     <div class="input-group">
                     <input type="text" class="form-control" name="query" placeholder="Search invoice .." value="{{ $query }}">
                     <button type="submit" class="btn btn-primary ">Search</button>

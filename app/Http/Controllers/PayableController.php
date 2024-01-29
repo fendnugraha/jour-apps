@@ -106,10 +106,11 @@ class PayableController extends Controller
             ->get();
 
         $invoices = $pyb->pluck('invoice')->toArray();
-        $balances = Payable::selectRaw('invoice, SUM(bill_amount) - SUM(payment_amount) AS balance')
-            ->whereIn('invoice', $invoices)
-            ->groupBy('invoice')
-            ->pluck('balance', 'invoice');
+        $balances = Payable::selectRaw('
+        invoice,
+        SUM(bill_amount - payment_amount) AS net_balance,
+        MIN(date_issued) as date_issued
+        ')->whereIn('invoice', $invoices)->groupBy('invoice')->get();
 
         $bill_total = $pyb->sum('bill_amount');
         $payment_total = $pyb->sum('payment_amount');
