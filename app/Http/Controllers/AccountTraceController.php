@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AccountTracesImport;
+use App\Models\Receivable;
 use App\Models\AccountTrace;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
-use App\Models\Receivable;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AccountTraceController extends Controller
 {
@@ -171,5 +173,10 @@ class AccountTraceController extends Controller
         $accountTrace->delete();
 
         return redirect('/jurnal')->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function import()
+    {
+        Excel::import(new AccountTracesImport, request()->file('your_file'));
     }
 }

@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReceivablesExport;
 use Carbon\Carbon;
 use App\Models\Contact;
 use App\Models\Receivable;
 use App\Models\AccountTrace;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
-use Illuminate\Support\Facades\DB;
-use Psy\Readline\Hoa\Console;
+use Illuminate\Routing\Controller;
 
-use function Laravel\Prompts\alert;
+use App\Exports\ReceivablesExportExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+use Illuminate\Support\Facades\DB;
 
 class ReceivableController extends Controller
 {
@@ -199,18 +202,12 @@ class ReceivableController extends Controller
 
     public function detail($id)
     {
-        // $rcvs = Receivable::select(
-        //     'contact_id',
-        //     DB::raw('SUM(bill_amount) as bill'),
-        //     DB::raw('SUM(payment_amount) as payment'),
-        //     DB::raw('SUM(bill_amount - payment_amount) as balance')
-        // )
-        //     ->where('contact_id', $id)
-        //     ->groupBy('contact_id')
-        //     ->first();
-
         $rcv = Receivable::with(['contact', 'account'])->where('contact_id', $id)->orderBy('date_issued', 'desc')
             ->get();
+
+        if ($rcv->count() == 0) {
+            return redirect()->back()->with('error', 'Receivable not found');
+        }
 
         $invoices = $rcv->pluck('invoice')->toArray();
         $balances = Receivable::selectRaw('
@@ -420,5 +417,10 @@ class ReceivableController extends Controller
         } else {
             return redirect('/piutang/' . $rcv->contact_id . '/detail')->with('success', 'Receivable deleted successfully');
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new ReceivablesExport, 'Receivables ' . Carbon::now() . '.xlsx');
     }
 }

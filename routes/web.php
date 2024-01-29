@@ -74,6 +74,8 @@ Route::get('/jurnal/{id}/edit', [AccountTraceController::class, 'edit'])->middle
 Route::put('/jurnal/{id}/edit', [AccountTraceController::class, 'update'])->name('jurnal.update')->middleware('auth');
 Route::delete('/jurnal/{id}/delete', [AccountTraceController::class, 'destroy'])->name('jurnal.delete')->middleware('auth');
 
+Route::get('jurnal/import', [AccountTraceController::class, 'import']);
+
 
 // End Jurnal Area
 // ========================================================================================================
@@ -94,6 +96,8 @@ Route::get('/piutang/addReceivableDeposit', [ReceivableController::class, 'addRe
 
 Route::get('/piutang/addReceivableSales', [ReceivableController::class, 'addReceivableSales'])->middleware('auth');
 Route::post('/piutang/addReceivableSales', [ReceivableController::class, 'storeReceivableSales'])->middleware('auth');
+
+Route::get('receivable/export/', [ReceivableController::class, 'export']);
 
 
 // End Piutang Area

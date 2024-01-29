@@ -47,6 +47,7 @@
                 <li><a class="dropdown-item" href="/piutang/addReceivableSales">Piutang Penjualan Barang</a></li>
                 </ul>
             </div>
+            <a href="/receivable/export" class="btn btn-success"><i class="fa-solid fa-file-export"></i> Export to Excel</a>
         </div>
         <h4 class="ms-auto">Total: <strong class="text-primary">{{ number_format($bill_total->sum('balance')) }}</strong></h4>
         <table class="table display">
