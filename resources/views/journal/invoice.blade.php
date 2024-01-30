@@ -37,13 +37,17 @@
             <div class="row mt-4">
                 <div class="col">
                     <table class="table table-bordered">
+                        <colgroup>
+                        <col style="width: 75%">
+                        <col style="width: 25%">
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>Description</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-group-divider">
                             <tr>
                                 <td>{{$accountTrace->description}}</td>
                                 <td>{{number_format($accountTrace->amount)}}</td>
