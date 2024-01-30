@@ -96,7 +96,7 @@
                     </td>
                     <td class="text-center">
                         <div class="action-buttons" {{ $acctrace->rcv_pay !== null ? 'hidden' : '' }}>
-                        <a href="/jurnal/{{ $acctrace->id }}" class="btn btn-primary btn-sm">
+                        <a href="/jurnal/{{ $acctrace->id }}/detail" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-eye"></i>
                         </a>
                         <a href="/jurnal/{{ $acctrace->id }}/edit" class="btn btn-warning btn-sm">

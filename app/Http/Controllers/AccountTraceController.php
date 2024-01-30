@@ -179,4 +179,14 @@ class AccountTraceController extends Controller
     {
         Excel::import(new AccountTracesImport, request()->file('your_file'));
     }
+
+    public function detail($id)
+    {
+        $accountTrace = AccountTrace::find($id);
+
+        return view('journal/invoice', [
+            'title' => 'Journal / Details',
+            'accountTrace' => $accountTrace,
+        ]);
+    }
 }

@@ -76,6 +76,8 @@ Route::delete('/jurnal/{id}/delete', [AccountTraceController::class, 'destroy'])
 
 Route::get('jurnal/import', [AccountTraceController::class, 'import']);
 
+Route::get('/jurnal/{id}/detail', [AccountTraceController::class, 'detail'])->middleware('auth');
+
 
 // End Jurnal Area
 // ========================================================================================================
