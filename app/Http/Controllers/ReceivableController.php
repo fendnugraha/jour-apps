@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
 use Illuminate\Routing\Controller;
 
-use App\Exports\ReceivablesExportExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\DB;

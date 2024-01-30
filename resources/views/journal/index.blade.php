@@ -9,7 +9,7 @@
         <!-- Content  -->
         
         <div class="content-menu d-flex gap-2 w-100">
-            <div class="dropdown mb-2">
+            <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Add New
                 </button>
@@ -19,7 +19,7 @@
                   <li><a class="dropdown-item" href="/jurnal/addSalesValues">Penjualan (Value)</a></li>
                 </ul>
             </div>
-            <div class="dropdown mb-2">
+            <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle px-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Finance
                 </button>
@@ -28,16 +28,43 @@
                   <li><a class="dropdown-item" href="/hutang">Hutang</a></li>
                 </ul>
             </div>
+            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cashBank">Cash & Bank</a>
             <div class="search-form flex-grow-1">
                 <form action="{{ route('jurnal.index') }}" method="GET" class="">
                     {{-- @csrf --}}
                     <div class="input-group">
                     <input type="text" class="form-control" name="query" placeholder="Search invoice .." value="{{ $query }}">
-                    <button type="submit" class="btn btn-primary ">Search</button>
+                    <button type="submit" class="btn btn-primary "><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 </form>
             </div>
         </div>
+
+        <!-- Modal -->
+<div class="modal fade" id="cashBank" tabindex="-1" aria-labelledby="cashBankLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="cashBankLabel">Filter Balance Sheets (Neraca)</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/report/cash-bank" method="post">
+                @csrf
+                <div class="form-group mb-3">
+                    <label for="end_date">Sampai</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control" value="{{ date('Y-m-d') }}">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
         
         <table class="table">
             <thead>

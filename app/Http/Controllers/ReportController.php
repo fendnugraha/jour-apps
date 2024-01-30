@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Report;
 use App\Models\AccountTrace;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
-use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class ReportController extends Controller
 {
@@ -295,6 +292,35 @@ class ReportController extends Controller
             'sumRevenue' => $sumRevenue,
             'sumCost' => $sumCost, // Add the sum of cost to the view data
             'totalProfit' => $tprofit,
+        ])->with($request->all());
+    }
+
+    public function cashBankReport(Request $request)
+    {
+        $accountTrace = new AccountTrace();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
+
+        $transactions = $accountTrace->with(['debt', 'cred'])
+            ->selectRaw('debt_code, cred_code, SUM(amount) as total')
+            ->whereBetween('date_issued', [Carbon::create(0000, 1, 1)->endOfDay(), $endDate])
+            ->groupBy('debt_code', 'cred_code')
+            ->get();
+
+        $chartOfAccounts = ChartOfAccount::with(['account'])->get();
+
+        foreach ($chartOfAccounts as $value) {
+            $debit = $transactions->where('debt_code', $value->acc_code)->sum('total');
+            $credit = $transactions->where('cred_code', $value->acc_code)->sum('total');
+
+            $value->balance = ($value->account->status == "D") ? ($value->st_balance + $debit - $credit) : ($value->st_balance + $credit - $debit);
+        }
+
+        $cashBank = $chartOfAccounts->whereIn('account_id', \range(1, 2));
+
+        return view('report.cash-bank', [
+            'title' => 'Cash Bank',
+            'active' => 'reports',
+            'cashBank' => $cashBank->groupBy('account_id'),
         ])->with($request->all());
     }
 }

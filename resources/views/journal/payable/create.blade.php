@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="mb-2 row">
-                <label for="amount" class="col-sm col-form-label">Amount</label>
+                <label for="amount" class="col-sm col-form-label">Jumlah</label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{old('amount')}}">
                     @error('amount')

@@ -65,7 +65,7 @@
                     @csrf            
                     <!-- Isi form pembayaran di sini -->
                     <div class="mb-3">
-                        <label for="date_issued" class="form-label">Date</label>
+                        <label for="date_issued" class="form-label">Tanggal</label>
                         <input type="datetime-local" class="form-control {{ $errors->has('date_issued') ? 'is-invalid' : '' }}" id="date_issued" name="date_issued" placeholder="Masukkan tanggal pembayaran" value="{{ old('date') == null ? date('Y-m-d H:i') : old('date') }}">
                         @error('date_issued')
                         <div class="invalid-feedback">

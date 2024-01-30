@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">{{ Auth::user()->warehouse->w_name }} | {{ $title }}</a>
+        <a class="navbar-brand" href="#">{{ Auth::user()->warehouse->w_name }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -34,9 +34,4 @@
     </div>
 </nav>
 
-    <nav style="--bs-breadcrumb-divider: '/';" aria-label="breadcrumb">
-        <ol class="breadcrumb ms-3 my-1">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
-        </ol>
-    </nav>
+    <small class="ms-3 my-3 text-muted">{{ $title }}</small>

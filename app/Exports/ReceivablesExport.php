@@ -19,7 +19,9 @@ class ReceivablesExport implements FromQuery, ShouldAutoSize, WithHeadings, With
     public function query()
     {
         return Receivable::query()->select(
-            DB::raw('receivables.contact_id, min(contacts.name) as name, SUM(bill_amount) as bill, SUM(payment_amount) as payment, SUM(bill_amount - payment_amount) as balance')
+            DB::raw('receivables.contact_id, min(contacts.name) as name, 
+            SUM(bill_amount) as bill, SUM(payment_amount) as payment, 
+            SUM(bill_amount - payment_amount) as balance')
         )
             ->join('contacts', 'contacts.id', '=', 'receivables.contact_id')
             ->groupBy('receivables.contact_id');

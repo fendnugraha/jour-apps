@@ -11,7 +11,7 @@
         <form action="/jurnal/addjournal" method="post">
             @csrf
             <div class="mb-2 row">
-              <label for="date_issued" class="col-sm col-form-label">date_issued</label>
+              <label for="date_issued" class="col-sm col-form-label">Tanggal</label>
               <div class="col-sm-8">
                   <input type="datetime-local" class="form-control @error('date_issued') is-invalid @enderror" name="date_issued" id="date_issued" value="{{old('date_issued') == null ? date('Y-m-d H:i') : old('date_issued')}}">
                   @error('date_issued')
@@ -50,7 +50,7 @@
                 </div>
               </div>
               <div class="mb-2 row">
-                <label for="amount" class="col-sm col-form-label">Amount</label>
+                <label for="amount" class="col-sm col-form-label">Jumlah</label>
                 <div class="col-sm-8">
                   <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{old('amount')}}" placeholder="Jumlah Deposit">
                   @error('amount')
