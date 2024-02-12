@@ -139,8 +139,9 @@ class ReportController extends Controller
 
         $initBalance = $chartOfAccounts->whereIn('account_id', [1, 2])->sum('st_balance');
 
-        $startBalance = $initBalance + $accountTrace->cashflowCount('0000-00-00', $start_date->subDay(1));
+        $startBalance = $initBalance + $accountTrace->cashflowCount('0000-00-00', $start_date);
         $endBalance = $initBalance + $accountTrace->cashflowCount('0000-00-00', $end_date);
+        // \dd($end_date->subDay(1), $end_date, $startBalance, $endBalance);
 
         if ($startBalance == 0) {
             $percentageChange = 0;

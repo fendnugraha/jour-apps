@@ -11,6 +11,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\AccountTraceController;
 use App\Http\Controllers\ChartOfAccountController;
+use App\Models\Receivable;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,60 +63,62 @@ Route::put('setting/general/{id}/update', [SettingController::class, 'update'])-
 // ========================================================================================================
 
 // Jurnal Area
-Route::get('/jurnal', [AccountTraceController::class, 'index'])->name('jurnal.index')->middleware('auth');
-Route::get('/jurnal/addjournal', [AccountTraceController::class, 'addjournal'])->middleware('auth');
-Route::post('/jurnal/addjournal', [AccountTraceController::class, 'store'])->middleware('auth');
-Route::get('/jurnal/adddeposit', [AccountTraceController::class, 'adddeposit'])->middleware('auth');
+Route::controller(AccountTraceController::class)->group(function () {
+    Route::get('/jurnal', 'index')->name('jurnal.index')->middleware('auth');
+    Route::get('/jurnal/addjournal', 'addjournal')->middleware('auth');
+    Route::post('/jurnal/addjournal', 'store')->middleware('auth');
+    Route::get('/jurnal/adddeposit', 'adddeposit')->middleware('auth');
 
-Route::get('/jurnal/addSalesValues', [AccountTraceController::class, 'addSalesValues'])->middleware('auth');
-Route::post('/jurnal/addSalesValues', [AccountTraceController::class, 'storeSalesValues'])->middleware('auth');
+    Route::get('/jurnal/addSalesValues', 'addSalesValues')->middleware('auth');
+    Route::post('/jurnal/addSalesValues', 'storeSalesValues')->middleware('auth');
 
-Route::get('/jurnal/{id}/edit', [AccountTraceController::class, 'edit'])->middleware('auth');
-Route::put('/jurnal/{id}/edit', [AccountTraceController::class, 'update'])->name('jurnal.update')->middleware('auth');
-Route::delete('/jurnal/{id}/delete', [AccountTraceController::class, 'destroy'])->name('jurnal.delete')->middleware('auth');
-
-Route::get('jurnal/import', [AccountTraceController::class, 'import']);
-
-Route::get('/jurnal/{id}/detail', [AccountTraceController::class, 'detail'])->middleware('auth');
+    Route::get('/jurnal/{id}/edit', 'edit')->middleware('auth');
+    Route::put('/jurnal/{id}/edit', 'update')->name('jurnal.update')->middleware('auth');
+    Route::delete('/jurnal/{id}/delete', 'destroy')->name('jurnal.delete')->middleware('auth');
+});
 
 
 // End Jurnal Area
 // ========================================================================================================
 
 // Piutang Area
-Route::get('/piutang', [ReceivableController::class, 'index'])->middleware('auth');
-Route::get('/piutang/{id}/invoice', [ReceivableController::class, 'invoice'])->middleware('auth');
-Route::get('/piutang/addPiutang', [ReceivableController::class, 'addReceivable'])->middleware('auth');
-Route::post('/piutang/addPiutang', [ReceivableController::class, 'store'])->middleware('auth');
-Route::get('/piutang/{id}/edit', [ReceivableController::class, 'edit'])->middleware('auth');
-Route::put('/piutang/{id}/edit', [ReceivableController::class, 'update'])->name('piutang.update')->middleware('auth');
-Route::delete('/piutang/{id}/delete', [ReceivableController::class, 'destroy'])->name('piutang.delete')->middleware('auth');
-Route::get('/piutang/{id}/detail', [ReceivableController::class, 'detail'])->middleware('auth');
+Route::controller(ReceivableController::class)->group(function () {
+    Route::get('/piutang', 'index')->middleware('auth');
+    Route::get('/piutang/{id}/invoice', 'invoice')->middleware('auth');
+    Route::get('/piutang/addPiutang', 'addReceivable')->middleware('auth');
+    Route::post('/piutang/addPiutang', 'store')->middleware('auth');
+    Route::get('/piutang/{id}/edit', 'edit')->middleware('auth');
+    Route::put('/piutang/{id}/edit', 'update')->name('piutang.update')->middleware('auth');
+    Route::delete('/piutang/{id}/delete', 'destroy')->name('piutang.delete')->middleware('auth');
+    Route::get('/piutang/{id}/detail', 'detail')->middleware('auth');
 
-Route::post('piutang/payment', [ReceivableController::class, 'storePayment'])->middleware('auth');
+    Route::post('piutang/payment', 'storePayment')->middleware('auth');
 
-Route::get('/piutang/addReceivableDeposit', [ReceivableController::class, 'addReceivableDeposit'])->middleware('auth');
+    Route::get('/piutang/addReceivableDeposit', 'addReceivableDeposit')->middleware('auth');
 
-Route::get('/piutang/addReceivableSales', [ReceivableController::class, 'addReceivableSales'])->middleware('auth');
-Route::post('/piutang/addReceivableSales', [ReceivableController::class, 'storeReceivableSales'])->middleware('auth');
+    Route::get('/piutang/addReceivableSales', 'addReceivableSales')->middleware('auth');
+    Route::post('/piutang/addReceivableSales', 'storeReceivableSales')->middleware('auth');
 
-Route::get('receivable/export/', [ReceivableController::class, 'export']);
+    Route::get('receivable/export/', 'export')->middleware('auth');
+});
 
 
 // End Piutang Area
 // ========================================================================================================
 
 // Hutang Area
-Route::get('/hutang', [PayableController::class, 'index'])->middleware('auth');
-Route::get('/hutang/{id}/invoice', [PayableController::class, 'invoice'])->middleware('auth');
-Route::get('/hutang/add', [PayableController::class, 'create'])->middleware('auth');
-Route::post('/hutang/add', [PayableController::class, 'store'])->middleware('auth');
-Route::get('/hutang/{id}/detail', [PayableController::class, 'detail'])->middleware('auth');
-Route::get('/hutang/{id}/edit', [PayableController::class, 'edit'])->middleware('auth');
-Route::put('/hutang/{id}/edit', [PayableController::class, 'update'])->name('hutang.update')->middleware('auth');
-Route::delete('/hutang/{id}/delete', [PayableController::class, 'destroy'])->name('hutang.delete')->middleware('auth');
+Route::controller(PayableController::class)->group(function () {
+    Route::get('/hutang', 'index')->middleware('auth');
+    Route::get('/hutang/{id}/invoice', 'invoice')->middleware('auth');
+    Route::get('/hutang/add', 'create')->middleware('auth');
+    Route::post('/hutang/add', 'store')->middleware('auth');
+    Route::get('/hutang/{id}/detail', 'detail')->middleware('auth');
+    Route::get('/hutang/{id}/edit', 'edit')->middleware('auth');
+    Route::put('/hutang/{id}/edit', 'update')->name('hutang.update')->middleware('auth');
+    Route::delete('/hutang/{id}/delete', 'destroy')->name('hutang.delete')->middleware('auth');
 
-Route::post('hutang/payment', [PayableController::class, 'payment'])->middleware('auth');
+    Route::post('hutang/payment', 'payment')->middleware('auth');
+});
 
 // End Hutang Area
 // ========================================================================================================
