@@ -84,7 +84,7 @@
                             </div>
                             @enderror
                         </div>
-                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Update</button>
 
                     </form>
                 </div>

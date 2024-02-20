@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="d-flex mt-3 justify-content-start gap-2 align-items-center">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" onclick="this.disabled=true;this.value='Sending, please wait...';this.form.submit();">Save</button>
             <button type="reset" class="btn btn-secondary">Reset</button>
             <a href="/piutang" class="btn btn-danger">Cancel</a>
         </div>

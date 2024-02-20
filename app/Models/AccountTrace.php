@@ -169,6 +169,6 @@ class AccountTrace extends Model
 
         $result = $cashAccount->whereIn('account_id', [1, 2])->sum('balance');
 
-        return $result;
+        return $result; 
     }
 }
